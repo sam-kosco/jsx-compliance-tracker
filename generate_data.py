@@ -235,15 +235,73 @@ def parse_debriefs(wb):
 # STEP 5: Write data.json
 # ─────────────────────────────────────────────
 
-def write_json(planes, debriefs):
+def write_json(planes, debriefs, requests=None):
     output = {
         "generated": datetime.now(timezone.utc).isoformat(),
         "planes":    planes,
         "debriefs":  debriefs,
+        "requests":  requests or [],
     }
     with open("data.json", "w") as f:
         json.dump(output, f, indent=2, default=str)
-    print(f"  Written: data.json  ({len(planes)} planes, {len(debriefs)} debriefs)")
+    print(f"  Written: data.json  ({len(planes)} planes, {len(debriefs)} debriefs, {len(requests or [])} active requests)")
+
+
+
+
+# ─────────────────────────────────────────────
+# STEP 6: Process service requests
+# ─────────────────────────────────────────────
+
+def process_requests(debriefs):
+    """
+    Reads requests.json, checks each open request for fulfillment
+    against debriefs since the request date, and returns active requests.
+
+    Fulfillment: all requested services must appear (flag=1) across
+    debriefs for that tail on or after the requestDate.
+    """
+    req_path = "requests.json"
+    if not os.path.exists(req_path):
+        print("  No requests.json found — skipping")
+        return []
+
+    with open(req_path) as f:
+        data = json.load(f)
+
+    all_reqs = data.get("requests", [])
+    active = []
+
+    for req in all_reqs:
+        if req.get("status") != "open":
+            continue
+
+        tail     = req["tail"]
+        req_date = req["requestDate"]
+        services = req["services"]
+
+        # Find debriefs for this tail on or after requestDate
+        relevant = [d for d in debriefs if d["tail"] == tail and (d["date"] or "") >= req_date]
+
+        # Union of services performed across relevant debriefs
+        done = set()
+        for d in relevant:
+            for svc in services:
+                if d.get(svc) == 1:
+                    done.add(svc)
+
+        if all(s in done for s in services):
+            print(f"  Request {req['requestId']} FULFILLED — {tail} {services}")
+            req["status"] = "fulfilled"
+            # Write back fulfilled status
+            data["requests"] = all_reqs
+            with open(req_path, "w") as f:
+                json.dump(data, f, indent=2)
+        else:
+            active.append(req)
+
+    print(f"  Active requests: {len(active)} of {len(all_reqs)} total")
+    return active
 
 
 # ─────────────────────────────────────────────
@@ -269,6 +327,8 @@ if __name__ == "__main__":
     debriefs = parse_debriefs(wb)
 
     print("\nWriting data.json...")
-    write_json(planes, debriefs)
+    print("\nProcessing service requests...")
+    active_requests = process_requests(debriefs)
+    write_json(planes, debriefs, active_requests)
 
     print("\n=== Done ===")
