@@ -1,0 +1,185 @@
+name: Manage Service Requests
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Action to perform: create | update | delete"
+        required: true
+        type: string
+      payload:
+        description: "JSON string containing request data"
+        required: true
+        type: string
+
+jobs:
+  manage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Manage request
+        env:
+          ACTION:        ${{ github.event.inputs.action }}
+          PAYLOAD:       ${{ github.event.inputs.payload }}
+          TENANT_ID:     ${{ secrets.TENANT_ID }}
+          CLIENT_ID:     ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        run: |
+          python3 - << 'PYEOF'
+          import json, os, sys, requests
+          from datetime import datetime, timezone
+
+          action  = os.environ["ACTION"].strip()
+          payload = json.loads(os.environ["PAYLOAD"])
+
+          # ── Load current requests.json ──────────────────────
+          try:
+              with open("requests.json") as f:
+                  data = json.load(f)
+          except Exception:
+              data = {"requests": []}
+
+          reqs = data.get("requests", [])
+
+          # ── Apply action ────────────────────────────────────
+          if action == "create":
+              reqs.append(payload)
+              print(f"Created request {payload['requestId']} for {payload['tail']}")
+
+          elif action == "update":
+              rid = payload.get("requestId")
+              idx = next((i for i,r in enumerate(reqs) if r["requestId"]==rid), None)
+              if idx is not None:
+                  reqs[idx] = payload
+                  print(f"Updated request {rid}")
+              else:
+                  # Not found — append as new
+                  reqs.append(payload)
+                  print(f"Request {rid} not found — created as new")
+
+          elif action == "delete":
+              rid = payload.get("requestId")
+              before = len(reqs)
+              reqs = [r for r in reqs if r["requestId"] != rid]
+              print(f"Deleted request {rid} ({before - len(reqs)} removed)")
+
+          else:
+              print(f"Unknown action: {action}")
+              sys.exit(1)
+
+          # ── Write back ──────────────────────────────────────
+          data["requests"] = reqs
+          with open("requests.json", "w") as f:
+              json.dump(data, f, indent=2)
+          print(f"requests.json updated: {len(reqs)} total requests")
+
+          # ── Send email via Graph API ─────────────────────────
+          def get_token():
+              tid = os.environ["TENANT_ID"]
+              r = requests.post(
+                  f"https://login.microsoftonline.com/{tid}/oauth2/v2.0/token",
+                  data={
+                      "grant_type":    "client_credentials",
+                      "client_id":     os.environ["CLIENT_ID"],
+                      "client_secret": os.environ["CLIENT_SECRET"],
+                      "scope":         "https://graph.microsoft.com/.default",
+                  }
+              )
+              r.raise_for_status()
+              return r.json()["access_token"]
+
+          def send_email(token, subject, body_html):
+              r = requests.post(
+                  "https://graph.microsoft.com/v1.0/users/foxtrot.automation@foxtrotaviation.com/sendMail",
+                  headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+                  json={
+                      "message": {
+                          "subject": subject,
+                          "body": {"contentType": "HTML", "content": body_html},
+                          "toRecipients": [{"emailAddress": {"address": "jsx.requests@foxtrotaviation.com"}}],
+                      }
+                  }
+              )
+              return r.status_code
+
+          SVC_NAMES = {
+              "IC": "Interior Detail",
+              "EC": "Exterior Detail",
+              "DSC": "Deep Seat Clean",
+              "CE": "Carpet Extraction",
+          }
+
+          try:
+              token = get_token()
+
+              if action == "create":
+                  svcs = ", ".join(SVC_NAMES.get(s,s) for s in payload.get("services",[]))
+                  body = f"""
+          <p>A new service request has been submitted for a JSX aircraft.</p>
+          <table style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px">
+            <tr><td style="padding:6px 12px;font-weight:bold;color:#555">Tail Number</td><td style="padding:6px 12px">{payload.get('tail')}</td></tr>
+            <tr style="background:#f9f9f9"><td style="padding:6px 12px;font-weight:bold;color:#555">Requested By Date</td><td style="padding:6px 12px">{payload.get('requestDate')}</td></tr>
+            <tr><td style="padding:6px 12px;font-weight:bold;color:#555">Services Requested</td><td style="padding:6px 12px">{svcs}</td></tr>
+            <tr style="background:#f9f9f9"><td style="padding:6px 12px;font-weight:bold;color:#555">Location</td><td style="padding:6px 12px">{payload.get('location') or 'Not specified'}</td></tr>
+            <tr><td style="padding:6px 12px;font-weight:bold;color:#555">Requestor</td><td style="padding:6px 12px">{payload.get('requestorName')} ({payload.get('requestorEmail')})</td></tr>
+            <tr style="background:#f9f9f9"><td style="padding:6px 12px;font-weight:bold;color:#555">Notes</td><td style="padding:6px 12px">{payload.get('notes') or '—'}</td></tr>
+            <tr><td style="padding:6px 12px;font-weight:bold;color:#555">Request ID</td><td style="padding:6px 12px;color:#888;font-size:12px">{payload.get('requestId')}</td></tr>
+          </table>
+          <p style="margin-top:16px;color:#888;font-size:12px">— Foxtrot Aviation Services JSX Compliance Tracker</p>
+          """
+                  code = send_email(token, f"[JSX Service Request] {payload.get('tail')} — {svcs}", body)
+                  print(f"Email sent (status {code})")
+
+              elif action == "update":
+                  svcs = ", ".join(SVC_NAMES.get(s,s) for s in payload.get("services",[]))
+                  body = f"""
+          <p>A service request has been updated.</p>
+          <table style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px">
+            <tr><td style="padding:6px 12px;font-weight:bold;color:#555">Request ID</td><td style="padding:6px 12px;font-size:12px">{payload.get('requestId')}</td></tr>
+            <tr style="background:#f9f9f9"><td style="padding:6px 12px;font-weight:bold;color:#555">Tail Number</td><td style="padding:6px 12px">{payload.get('tail')}</td></tr>
+            <tr><td style="padding:6px 12px;font-weight:bold;color:#555">Requested By Date</td><td style="padding:6px 12px">{payload.get('requestDate')}</td></tr>
+            <tr style="background:#f9f9f9"><td style="padding:6px 12px;font-weight:bold;color:#555">Services Requested</td><td style="padding:6px 12px">{svcs}</td></tr>
+            <tr><td style="padding:6px 12px;font-weight:bold;color:#555">Notes</td><td style="padding:6px 12px">{payload.get('notes') or '—'}</td></tr>
+          </table>
+          <p style="margin-top:16px;color:#888;font-size:12px">— Foxtrot Aviation Services JSX Compliance Tracker</p>
+          """
+                  code = send_email(token, f"[JSX Service Request UPDATED] {payload.get('tail')}", body)
+                  print(f"Update email sent (status {code})")
+
+              elif action == "delete":
+                  body = f"""
+          <p>A service request has been removed.</p>
+          <table style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px">
+            <tr><td style="padding:6px 12px;font-weight:bold;color:#555">Request ID</td><td style="padding:6px 12px;font-size:12px">{payload.get('requestId')}</td></tr>
+            <tr style="background:#f9f9f9"><td style="padding:6px 12px;font-weight:bold;color:#555">Tail Number</td><td style="padding:6px 12px">{payload.get('tail')}</td></tr>
+            <tr><td style="padding:6px 12px;font-weight:bold;color:#555">Removed by</td><td style="padding:6px 12px">{payload.get('requestorName','Unknown')}</td></tr>
+          </table>
+          <p style="margin-top:16px;color:#888;font-size:12px">— Foxtrot Aviation Services JSX Compliance Tracker</p>
+          """
+                  code = send_email(token, f"[JSX Service Request REMOVED] {payload.get('tail')}", body)
+                  print(f"Removal email sent (status {code})")
+
+          except Exception as e:
+              print(f"Email error (non-fatal): {e}")
+          PYEOF
+
+      - name: Commit updated requests.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add requests.json
+          git diff --cached --quiet || git commit -m "chore: ${{ github.event.inputs.action }} service request [$(date -u '+%Y-%m-%d %H:%M UTC')]"
+          git push
