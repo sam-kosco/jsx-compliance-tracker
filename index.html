@@ -706,6 +706,76 @@
     .compliance-grid { grid-template-columns: repeat(2,1fr); }
     .history-row { grid-template-columns: 1fr 1fr; }
   }
+
+  /* CUSTOM TAIL SEARCH DROPDOWN */
+  .tail-search-wrap { position:relative; flex:1; }
+  .tail-search-wrap input {
+    width:100%; border:1.5px solid var(--gray); border-right:none;
+    border-radius:4px 0 0 4px; padding:10px 14px;
+    font-family:var(--sans); font-size:14px; font-weight:600;
+    color:var(--text); outline:none; background:white; box-sizing:border-box;
+  }
+  .tail-search-wrap input:focus { border-color:var(--orange); }
+  .tail-dropdown {
+    position:absolute; top:calc(100% + 2px); left:0; right:0;
+    background:var(--white); border:1.5px solid var(--orange);
+    border-radius:0 0 4px 4px; box-shadow:var(--shadow-md);
+    max-height:380px; overflow-y:auto; z-index:200; display:none;
+  }
+  .tail-dropdown::-webkit-scrollbar { width:4px; }
+  .tail-dropdown::-webkit-scrollbar-thumb { background:var(--gray); border-radius:4px; }
+  .tail-dropdown-item {
+    padding:9px 14px; font-family:var(--cond); font-size:15px;
+    font-weight:700; color:var(--navy); cursor:pointer; letter-spacing:0.5px;
+    border-bottom:1px solid var(--gray-light); transition:background 0.1s;
+  }
+  .tail-dropdown-item:last-child { border-bottom:none; }
+  .tail-dropdown-item:hover { background:var(--orange-pale); color:var(--orange); }
+  .tail-dropdown-empty { padding:12px 14px; font-size:13px; color:var(--text-light); font-style:italic; }
+
+  /* Allow dropdown to escape card boundary */
+  /* Allow tail dropdown to escape card boundary */
+  #lookup-card,
+  #lookup-card .card-body,
+  #lookup-card .search-row,
+  #lookup-card .tail-search-wrap {
+    overflow: visible;
+  }
+  /* But keep the dropdown itself scrollable */
+  #tail-dropdown {
+    overflow-y: auto;
+  }
+
+  /* DETAIL PANEL CLOSE */
+  .detail-close {
+    width:28px; height:28px; border-radius:50%;
+    border:1.5px solid rgba(255,255,255,0.3);
+    background:rgba(255,255,255,0.1); color:white;
+    font-size:16px; line-height:1; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:background 0.15s, border-color 0.15s; flex-shrink:0;
+  }
+  .detail-close:hover { background:rgba(255,255,255,0.25); border-color:rgba(255,255,255,0.6); }
+
+  /* PER-JOB COMPLIANCE BREAKDOWN */
+  .breakdown-strip {
+    grid-column:1/-1;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+  }
+  .breakdown-card {
+    background:var(--white); border-radius:var(--radius);
+    border:1px solid var(--gray-light); box-shadow:var(--shadow-sm);
+    padding:14px 16px 12px; position:relative; overflow:hidden;
+  }
+  .breakdown-job { font-family:var(--cond); font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--text-light); margin-bottom:4px; }
+  .breakdown-job-full { font-size:11px; color:var(--text-light); font-weight:500; margin-bottom:10px; line-height:1.2; }
+  .breakdown-pct { font-family:var(--cond); font-size:32px; font-weight:800; line-height:1; letter-spacing:-1px; margin-bottom:6px; }
+  .breakdown-bar-track { height:5px; background:var(--gray-light); border-radius:3px; overflow:hidden; margin-bottom:4px; }
+  .breakdown-bar-fill { height:100%; border-radius:3px; transition:width 0.6s ease; }
+  .breakdown-sub { font-size:10px; color:var(--text-light); font-weight:500; }
+
 </style>
 </head>
 <body>
@@ -781,14 +851,28 @@
         <div class="card-title">🔍 Tail Number Lookup</div>
       </div>
       <div class="card-body">
-        <div class="search-row">
-          <select class="search-select" id="tail-select">
-            <option value="">— Select a tail number —</option>
-          </select>
-          <button class="search-btn" onclick="searchTail()">Look Up</button>
+        <div class="search-row" style="display:flex;gap:0;margin-bottom:0">
+          <div class="tail-search-wrap">
+            <input type="text" id="tail-input"
+                   placeholder="Search a Tail Number"
+                   autocomplete="off"
+                   oninput="onTailInput(this.value)"
+                   onfocus="openDropdown()"
+                   style="text-transform:uppercase">
+            <div class="tail-dropdown" id="tail-dropdown"></div>
+          </div>
+          <button class="search-btn" onclick="searchFromInput()">Look Up</button>
         </div>
         <div id="detail-panel"></div>
       </div>
+    </div>
+
+    <!-- PER-JOB COMPLIANCE BREAKDOWN -->
+    <div class="breakdown-strip full-width">
+      <div class="breakdown-card" id="bd-IC"></div>
+      <div class="breakdown-card" id="bd-EC"></div>
+      <div class="breakdown-card" id="bd-DSC"></div>
+      <div class="breakdown-card" id="bd-CE"></div>
     </div>
 
     <!-- NONCOMPLIANT -->
@@ -826,8 +910,8 @@
               <th style="width:4px;padding:0"></th>
               <th>Tail #</th>
               <th>Last Service</th>
-              <th class="r">Interior Clean (30d)</th>
-              <th class="r">Exterior Clean (90d)</th>
+              <th class="r">Interior Detail (30d)</th>
+              <th class="r">Exterior Detail (90d)</th>
               <th class="r">Deep Seat Clean (30d)</th>
               <th class="r">Carpet Extraction (90d)</th>
             </tr>
@@ -850,8 +934,8 @@ const DATA_URL  = "data.json";
 const SOON_DAYS = 7;
 
 const JOB_NAMES = {
-  IC:  "Interior Clean",
-  EC:  "Exterior Clean",
+  IC:  "Interior Detail",
+  EC:  "Exterior Detail",
   DSC: "Deep Seat Clean",
   CE:  "Carpet Extraction"
 };
@@ -901,6 +985,17 @@ function tryLogin() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  const inp = document.getElementById('tail-input');
+  if (inp) {
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter') searchFromInput();
+      if (e.key === 'Escape') closeDropdown();
+    });
+  }
+  document.addEventListener('click', e => {
+    const wrap = document.querySelector('.tail-search-wrap');
+    if (wrap && !wrap.contains(e.target)) closeDropdown();
+  });
   document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key==='Enter') tryLogin(); });
   document.getElementById('band-date').textContent = 'Current as of ' + new Date().toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'2-digit'});
 });
@@ -956,14 +1051,8 @@ function renderAll() {
   document.getElementById('soon-list').innerHTML = soon.length ? soon.map(p=>planeCard(p,'soon')).join('')      : '<div class="empty-state">No aircraft due within 7 days</div>';
 
   // Populate dropdown
-  const sel = document.getElementById('tail-select');
-  sel.innerHTML = '<option value="">— Select a tail number —</option>';
-  [...planes].sort((a,b)=>a.tail.localeCompare(b.tail)).forEach(p => {
-    const o = document.createElement('option');
-    o.value = p.tail;
-    o.textContent = `${p.tail}  (${p.type})`;
-    sel.appendChild(o);
-  });
+  window._allTails = [...planes].map(p=>p.tail).sort((a,b)=>a.localeCompare(b));
+  renderBreakdown(planes);
 
   document.getElementById('fleet-count').textContent = planes.length + ' aircraft';
   document.getElementById('fleet-body').innerHTML = [...planes].sort((a,b)=>a.tail.localeCompare(b.tail)).map(p => {
@@ -994,10 +1083,76 @@ function planeCard(p, type) {
 }
 
 // ── TAIL LOOKUP ───────────────────────────────────
-function searchTail() { const t=document.getElementById('tail-select').value; if(t) selectTail(t); }
+// ── CUSTOM DROPDOWN ──────────────────────────────────
+function renderDropdown(query) {
+  const dd = document.getElementById('tail-dropdown');
+  if (!dd) return;
+  const tails = window._allTails || [];
+  const q = query.trim().toUpperCase();
+  const filtered = q ? tails.filter(t => t.includes(q)) : tails;
+  if (filtered.length === 0) {
+    dd.innerHTML = '<div class="tail-dropdown-empty">No matching tails</div>';
+    dd.style.maxHeight = '48px'; dd.style.overflowY = 'hidden';
+  } else {
+    dd.innerHTML = filtered.map(t => {
+      const label = q
+        ? t.replace(q, '<span style="color:var(--orange);font-weight:800">'+q+'</span>')
+        : t;
+      return '<div class="tail-dropdown-item" onmousedown="pickTail(\'' + t + '\')">' + label + '</div>';
+    }).join('');
+    const show = Math.min(filtered.length, 10);
+    dd.style.maxHeight = (show * 38) + 'px';
+    dd.style.overflowY = filtered.length > 10 ? 'auto' : 'hidden';
+  }
+  dd.style.display = 'block';
+}
+
+function openDropdown() { renderDropdown(document.getElementById('tail-input').value); }
+function closeDropdown() { const dd=document.getElementById('tail-dropdown'); if(dd) dd.style.display='none'; }
+function pickTail(tail) { document.getElementById('tail-input').value=tail; closeDropdown(); selectTail(tail); }
+function onTailInput(val) { renderDropdown(val); }
+
+function searchFromInput() {
+  const input = document.getElementById('tail-input').value.trim().toUpperCase();
+  closeDropdown();
+  if (!input || !DATA) return;
+  if (DATA.planes.find(p => p.tail === input)) { selectTail(input); return; }
+  const match = (window._allTails||[]).find(t => t.includes(input));
+  if (match) { document.getElementById('tail-input').value = match; selectTail(match); }
+}
+
+function closeDetail() {
+  const panel = document.getElementById('detail-panel');
+  panel.style.display = 'none'; panel.innerHTML = '';
+  document.getElementById('tail-input').value = '';
+}
+
+// ── PER-JOB COMPLIANCE BREAKDOWN ─────────────────────
+const JSX_JOB_COLORS = { IC:'#E07B20', EC:'#0891B2', DSC:'#6366F1', CE:'#7C3AED' };
+const JSX_JOB_NAMES  = { IC:'Interior Detail', EC:'Exterior Detail', DSC:'Deep Seat Clean', CE:'Carpet Extraction', ID:'Interior Detail', ED:'Exterior Detail' };
+
+function renderBreakdown(planes) {
+  ['IC','EC','DSC','CE'].forEach(job => { const DISP_CODE = {IC:'ID',EC:'ED',DSC:'DSC',CE:'CE'};
+    const el = document.getElementById('bd-' + job);
+    if (!el) return;
+    const total = planes.length;
+    if (total === 0) { el.innerHTML = ''; return; }
+    const compliant = planes.filter(p => typeof p[job]==='number' && p[job]>=0).length;
+    const pct = Math.round((compliant/total)*100);
+    const color = pct >= 80 ? JSX_JOB_COLORS[job] : pct >= 50 ? 'var(--orange)' : 'var(--red)';
+    el.innerHTML = `
+      <div class="breakdown-job">${DISP_CODE[job]||job}</div>
+      <div class="breakdown-job-full">${JSX_JOB_NAMES[job]}</div>
+      <div class="breakdown-pct" style="color:${color}">${pct}%</div>
+      <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+      <div class="breakdown-sub">${compliant} of ${total} aircraft compliant</div>
+    `;
+  });
+}
 
 function selectTail(tail) {
-  document.getElementById('tail-select').value = tail;
+  closeDropdown();
+  document.getElementById('tail-input').value = tail;
   const p = DATA.planes.find(x=>x.tail===tail);
   if (!p) return;
 
@@ -1006,8 +1161,8 @@ function selectTail(tail) {
   const statusLabel = status==='over' ? 'Noncompliant' : status==='warn' ? 'Due Soon' : 'Compliant';
 
   const JOBS = [
-    { key:'IC',  name:'Interior Clean',    cycle:'30-day cycle' },
-    { key:'EC',  name:'Exterior Clean',    cycle:'90-day cycle' },
+    { key:'IC',  name:'Interior Detail',    cycle:'30-day cycle' },
+    { key:'EC',  name:'Exterior Detail',    cycle:'90-day cycle' },
     { key:'DSC', name:'Deep Seat Clean',   cycle:'30-day cycle' },
     { key:'CE',  name:'Carpet Extraction', cycle:'90-day cycle' },
   ];
