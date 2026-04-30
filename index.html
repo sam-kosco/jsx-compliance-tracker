@@ -736,10 +736,11 @@
   /* Allow dropdown to escape card boundary */
   /* Allow tail dropdown to escape card boundary */
   #lookup-card,
+  #lookup-card.card,
   #lookup-card .card-body,
   #lookup-card .search-row,
   #lookup-card .tail-search-wrap {
-    overflow: visible;
+    overflow: visible !important;
   }
   /* But keep the dropdown itself scrollable */
   #tail-dropdown {
@@ -846,7 +847,7 @@
     </div>
 
     <!-- TAIL LOOKUP — full width, at top -->
-    <div class="card col-full">
+    <div class="card col-full" id="lookup-card">
       <div class="card-header">
         <div class="card-title">🔍 Tail Number Lookup</div>
       </div>
@@ -1195,13 +1196,16 @@ function selectTail(tail) {
   panel.style.display = 'block';
   panel.className = 'fade-in';
   panel.innerHTML = `
-    <div class="detail-top">
+    <div class="detail-top" style="position:relative">
       <div>
         <div class="detail-tail">${p.tail}</div>
         <div class="detail-type-line">${p.type}</div>
         <div class="detail-meta">Last service: ${fmtDate(p.lastService)}</div>
       </div>
-      <div class="detail-status-pill ${status}">${statusLabel}</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="detail-status-pill ${status}">${statusLabel}</div>
+        <button class="detail-close" onclick="closeDetail()" title="Close">&#x2715;</button>
+      </div>
     </div>
     <div class="compliance-grid">${cells}</div>
     <div class="history-wrap">
