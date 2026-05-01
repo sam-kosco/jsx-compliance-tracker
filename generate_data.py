@@ -253,6 +253,50 @@ def write_json(planes, debriefs, requests=None):
 # STEP 6: Process service requests
 # ─────────────────────────────────────────────
 
+def get_graph_token():
+    """Get Microsoft Graph API token for sending emails."""
+    import requests as req_lib
+    r = req_lib.post(
+        f"https://login.microsoftonline.com/{os.environ['TENANT_ID']}/oauth2/v2.0/token",
+        data={
+            "grant_type":    "client_credentials",
+            "client_id":     os.environ["CLIENT_ID"],
+            "client_secret": os.environ["CLIENT_SECRET"],
+            "scope":         "https://graph.microsoft.com/.default",
+        }
+    )
+    r.raise_for_status()
+    return r.json()["access_token"]
+
+
+def send_email(token, to_addresses, subject, body_html):
+    """Send email via Graph API from foxtrot.automation."""
+    import requests as req_lib
+    recipients = [{"emailAddress": {"address": a}} for a in to_addresses]
+    r = req_lib.post(
+        "https://graph.microsoft.com/v1.0/users/foxtrot.automation@foxtrotaviation.com/sendMail",
+        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+        json={
+            "message": {
+                "subject": subject,
+                "body": {"contentType": "HTML", "content": body_html},
+                "toRecipients": recipients,
+            }
+        }
+    )
+    return r.status_code
+
+
+SVC_NAMES = {
+    "IC": "Interior Detail",
+    "EC": "Exterior Detail",
+    "DSC": "Deep Seat Clean",
+    "CE": "Carpet Extraction",
+}
+
+DISTRO = "jsx.requests@foxtrotaviation.com"
+
+
 def process_requests(debriefs):
     """
     Reads requests.json, checks each open request for fulfillment
@@ -260,6 +304,10 @@ def process_requests(debriefs):
 
     Fulfillment: all requested services must appear (flag=1) across
     debriefs for that tail on or after the requestDate.
+
+    Also sends:
+      - Fulfillment email to the requestor when all services are complete
+      - Warning email to the distro if any request is due in 1 day
     """
     req_path = "requests.json"
     if not os.path.exists(req_path):
@@ -271,19 +319,32 @@ def process_requests(debriefs):
 
     all_reqs = data.get("requests", [])
     active = []
+    changed = False
+
+    # Get Graph token once — only if we have credentials
+    token = None
+    has_creds = all(k in os.environ for k in ("TENANT_ID", "CLIENT_ID", "CLIENT_SECRET"))
+    if has_creds:
+        try:
+            token = get_graph_token()
+        except Exception as e:
+            print(f"  Warning: Could not get Graph token for emails: {e}")
+
+    today = date.today()
 
     for req in all_reqs:
         if req.get("status") != "open":
             continue
 
-        tail     = req["tail"]
-        req_date = req["requestDate"]
-        services = req["services"]
+        tail      = req["tail"]
+        req_date  = req["requestDate"]
+        services  = req["services"]
+        req_id    = req["requestId"]
 
         # Find debriefs for this tail on or after requestDate
         relevant = [d for d in debriefs if d["tail"] == tail and (d["date"] or "") >= req_date]
 
-        # Union of services performed across relevant debriefs
+        # Union of services performed
         done = set()
         for d in relevant:
             for svc in services:
@@ -291,17 +352,84 @@ def process_requests(debriefs):
                     done.add(svc)
 
         if all(s in done for s in services):
-            print(f"  Request {req['requestId']} FULFILLED — {tail} {services}")
+            # ── FULFILLED ──────────────────────────────────
+            print(f"  Request {req_id} FULFILLED — {tail} {services}")
             req["status"] = "fulfilled"
-            # Write back fulfilled status
-            data["requests"] = all_reqs
-            with open(req_path, "w") as f:
-                json.dump(data, f, indent=2)
+            changed = True
+
+            if token:
+                try:
+                    svcs_str = ", ".join(SVC_NAMES.get(s, s) for s in services)
+                    to = [req["requestorEmail"]]
+                    if req.get("additionalEmail"):
+                        to.append(req["additionalEmail"])
+
+                    body = f"""
+<p>Good news — your service request for <strong>{tail}</strong> has been fulfilled.</p>
+<table style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;margin-top:12px">
+  <tr><td style="padding:6px 14px;font-weight:bold;color:#555;background:#f9f9f9">Tail Number</td><td style="padding:6px 14px">{tail}</td></tr>
+  <tr><td style="padding:6px 14px;font-weight:bold;color:#555">Services Completed</td><td style="padding:6px 14px">{svcs_str}</td></tr>
+  <tr><td style="padding:6px 14px;font-weight:bold;color:#555;background:#f9f9f9">Originally Requested By</td><td style="padding:6px 14px;background:#f9f9f9">{req_date}</td></tr>
+  <tr><td style="padding:6px 14px;font-weight:bold;color:#555">Request ID</td><td style="padding:6px 14px;color:#888;font-size:12px">{req_id}</td></tr>
+</table>
+<p style="margin-top:16px">All requested services have been recorded in the Foxtrot JSX Compliance Tracker. No further action is needed.</p>
+<p style="margin-top:16px;color:#888;font-size:12px">— Foxtrot Aviation Services JSX Compliance Tracker</p>
+"""
+                    code = send_email(token, to, f"[JSX Request Fulfilled] {tail} — {svcs_str}", body)
+                    print(f"  Fulfillment email sent to {to} (status {code})")
+                except Exception as e:
+                    print(f"  Fulfillment email error: {e}")
+
         else:
+            # ── STILL OPEN — check 1-day warning ───────────
+            try:
+                req_dt = datetime.strptime(req_date, "%Y-%m-%d").date()
+                days_until = (req_dt - today).days
+            except Exception:
+                days_until = None
+
+            if days_until is not None and days_until == 1 and not req.get('warned'):
+                # Due tomorrow — send warning to distro
+                remaining = [s for s in services if s not in done]
+                completed = [s for s in services if s in done]
+                svcs_remaining = ", ".join(SVC_NAMES.get(s, s) for s in remaining)
+                svcs_done      = ", ".join(SVC_NAMES.get(s, s) for s in completed) if completed else "None"
+
+                if token:
+                    try:
+                        body = f"""
+<p><strong>⚠ Warning:</strong> The following service request is due <strong>tomorrow ({req_date})</strong> and has not yet been fully completed.</p>
+<table style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;margin-top:12px">
+  <tr><td style="padding:6px 14px;font-weight:bold;color:#555;background:#fff8f0">Tail Number</td><td style="padding:6px 14px;background:#fff8f0">{tail}</td></tr>
+  <tr><td style="padding:6px 14px;font-weight:bold;color:#555">Services Still Needed</td><td style="padding:6px 14px;color:#D97706;font-weight:bold">{svcs_remaining}</td></tr>
+  <tr><td style="padding:6px 14px;font-weight:bold;color:#555;background:#fff8f0">Services Completed</td><td style="padding:6px 14px;background:#fff8f0">{svcs_done}</td></tr>
+  <tr><td style="padding:6px 14px;font-weight:bold;color:#555">Due Date</td><td style="padding:6px 14px">{req_date}</td></tr>
+  <tr><td style="padding:6px 14px;font-weight:bold;color:#555;background:#fff8f0">Requested By</td><td style="padding:6px 14px;background:#fff8f0">{req["requestorName"]} ({req["requestorEmail"]})</td></tr>
+  <tr><td style="padding:6px 14px;font-weight:bold;color:#555">Location</td><td style="padding:6px 14px">{req.get("location") or "Not specified"}</td></tr>
+  <tr><td style="padding:6px 14px;font-weight:bold;color:#555;background:#fff8f0">Notes</td><td style="padding:6px 14px;background:#fff8f0">{req.get("notes") or "—"}</td></tr>
+</table>
+<p style="margin-top:16px;color:#888;font-size:12px">— Foxtrot Aviation Services JSX Compliance Tracker</p>
+"""
+                        code = send_email(token, [DISTRO],
+                            f"[JSX ⚠ Due Tomorrow] {tail} — {svcs_remaining}", body)
+                        print(f"  1-day warning email sent for {req_id} (status {code})")
+                        req['warned'] = True
+                        changed = True
+                    except Exception as e:
+                        print(f"  Warning email error: {e}")
+
             active.append(req)
+
+    # Write back if any requests were fulfilled
+    if changed:
+        data["requests"] = all_reqs
+        with open(req_path, "w") as f:
+            json.dump(data, f, indent=2)
+        print("  requests.json updated with fulfilled statuses")
 
     print(f"  Active requests: {len(active)} of {len(all_reqs)} total")
     return active
+
 
 
 # ─────────────────────────────────────────────
