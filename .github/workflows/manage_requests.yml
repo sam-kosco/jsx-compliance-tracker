@@ -101,7 +101,7 @@ jobs:
               r.raise_for_status()
               return r.json()["access_token"]
 
-          def send_email(token, subject, body_html):
+          def send_email(token, to_addresses, subject, body_html):
               r = requests.post(
                   "https://graph.microsoft.com/v1.0/users/foxtrot.automation@foxtrotaviation.com/sendMail",
                   headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
@@ -140,8 +140,27 @@ jobs:
           </table>
           <p style="margin-top:16px;color:#888;font-size:12px">— Foxtrot Aviation Services JSX Compliance Tracker</p>
           """
-                  code = send_email(token, f"[JSX Service Request] {payload.get('tail')} — {svcs}", body)
-                  print(f"Email sent (status {code})")
+                  # Confirmation to requestor (+ cc if provided)
+                  to = [payload.get('requestorEmail')]
+                  if payload.get('additionalEmail'):
+                      to.append(payload['additionalEmail'])
+                  confirmation_body = f"""
+          <p>Your service request has been received and the JSX team has been notified.</p>
+          <table style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;margin-top:12px">
+            <tr><td style="padding:6px 14px;font-weight:bold;color:#555;background:#f9f9f9">Tail Number</td><td style="padding:6px 14px;background:#f9f9f9">{payload.get('tail')}</td></tr>
+            <tr><td style="padding:6px 14px;font-weight:bold;color:#555">Requested By Date</td><td style="padding:6px 14px">{payload.get('requestDate')}</td></tr>
+            <tr><td style="padding:6px 14px;font-weight:bold;color:#555;background:#f9f9f9">Services Requested</td><td style="padding:6px 14px;background:#f9f9f9">{svcs}</td></tr>
+            <tr><td style="padding:6px 14px;font-weight:bold;color:#555">Location</td><td style="padding:6px 14px">{payload.get('location') or 'Not specified'}</td></tr>
+            <tr><td style="padding:6px 14px;font-weight:bold;color:#555;background:#f9f9f9">Notes</td><td style="padding:6px 14px;background:#f9f9f9">{payload.get('notes') or '—'}</td></tr>
+            <tr><td style="padding:6px 14px;font-weight:bold;color:#555">Request ID</td><td style="padding:6px 14px;color:#888;font-size:12px">{payload.get('requestId')}</td></tr>
+          </table>
+          <p style="margin-top:16px;color:#888;font-size:12px">— Foxtrot Aviation Services JSX Compliance Tracker</p>
+          """
+                  code1 = send_email(token, to, f"[JSX Request Confirmed] {payload.get('tail')} — {svcs}", confirmation_body)
+                  print(f"Confirmation email sent to requestor (status {code1})")
+                  # Notification to distro
+                  code2 = send_email(token, ["jsx.requests@foxtrotaviation.com"], f"[JSX Service Request] {payload.get('tail')} — {svcs}", body)
+                  print(f"Notification email sent to distro (status {code2})")
 
               elif action == "update":
                   svcs = ", ".join(SVC_NAMES.get(s,s) for s in payload.get("services",[]))
@@ -156,7 +175,7 @@ jobs:
           </table>
           <p style="margin-top:16px;color:#888;font-size:12px">— Foxtrot Aviation Services JSX Compliance Tracker</p>
           """
-                  code = send_email(token, f"[JSX Service Request UPDATED] {payload.get('tail')}", body)
+                  code = send_email(token, ["jsx.requests@foxtrotaviation.com"], f"[JSX Service Request UPDATED] {payload.get('tail')}", body)
                   print(f"Update email sent (status {code})")
 
               elif action == "delete":
@@ -169,7 +188,7 @@ jobs:
           </table>
           <p style="margin-top:16px;color:#888;font-size:12px">— Foxtrot Aviation Services JSX Compliance Tracker</p>
           """
-                  code = send_email(token, f"[JSX Service Request REMOVED] {payload.get('tail')}", body)
+                  code = send_email(token, ["jsx.requests@foxtrotaviation.com"], f"[JSX Service Request REMOVED] {payload.get('tail')}", body)
                   print(f"Removal email sent (status {code})")
 
           except Exception as e:
