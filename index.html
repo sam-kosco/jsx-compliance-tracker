@@ -618,7 +618,7 @@ const REQ_URL    = 'requests.json';
 const SOON_DAYS  = 7;
 // GitHub workflow dispatch — PAT scoped to `workflow` only
 const GH_REPO    = 'sam-kosco/jsx-compliance-tracker';
-const GH_PAT     = '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'; // Replace with actual PAT before deploying
+const GH_PAT     = 'REPLACE_WITH_PAT'; // Replace with actual PAT before deploying
 
 const JOBS = ['IC','EC','DSC','CE'];
 const JOB_NAMES  = {IC:'Interior Detail',EC:'Exterior Detail',DSC:'Deep Seat Clean',CE:'Carpet Extraction'};
@@ -716,10 +716,22 @@ async function loadAll() {
 // ── HELPERS ───────────────────────────────────────────
 const wc = v => v==='No Service'?'none':typeof v==='number'&&v<0?'over':typeof v==='number'&&v<=SOON_DAYS?'warn':'ok';
 const wl = v => v==='No Service'?'No Service':v<0?`${Math.abs(v)}d over`:`${v}d left`;
-const fmtDate = d => d ? new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
-const fmtDateShort = d => d ? new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'2-digit'}) : '—';
-const todayISO = () => new Date().toISOString().slice(0,10);
-const tomorrowISO = () => { const d=new Date(); d.setDate(d.getDate()+1); return d.toISOString().slice(0,10); };
+const fmtDate = d => d ? new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'America/New_York'}) : '—';
+const fmtDateShort = d => d ? new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'2-digit',timeZone:'America/New_York'}) : '—';
+// ── EST date helpers ─────────────────────────────────
+// Always use America/New_York so dates match operational timezone
+function nowEST() {
+  return new Date(new Date().toLocaleString('en-US', {timeZone:'America/New_York'}));
+}
+const todayISO = () => {
+  const d = nowEST();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+};
+const tomorrowISO = () => {
+  const d = nowEST();
+  d.setDate(d.getDate()+1);
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+};
 
 const isNC   = p => JOBS.some(j => p[j]==='No Service'||(typeof p[j]==='number'&&p[j]<0));
 const isSoon = p => !isNC(p) && JOBS.some(j => typeof p[j]==='number'&&p[j]<=SOON_DAYS&&p[j]>=0);
@@ -758,11 +770,11 @@ function renderAll() {
   if (!DATA) return;
   const planes = DATA.planes;
   const gen = DATA.generated ? new Date(DATA.generated) : new Date();
-  const dateStr = gen.toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
-  document.getElementById('hdr-updated').textContent = 'Updated '+dateStr;
+  const dateStr = gen.toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/New_York'});
+  document.getElementById('hdr-updated').textContent = 'Updated '+dateStr+' EST';
   ['band-date','band-date-2','band-date-3'].forEach(id => {
     const el = document.getElementById(id);
-    if(el) el.textContent = 'Current as of '+gen.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'2-digit'});
+    if(el) el.textContent = 'Current as of '+gen.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'2-digit',timeZone:'America/New_York'});
   });
 
   const nc   = planes.filter(isNC).sort((a,b)=>worst(a)-worst(b));
