@@ -1,7 +1,7 @@
 name: JSX Compliance Data Refresh
 
 on:
-  # schedule:
+  schedule:
     # Runs every hour at :00
     - cron: "0 * * * *"
   workflow_dispatch:
