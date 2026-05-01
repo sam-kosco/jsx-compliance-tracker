@@ -2,16 +2,14 @@ name: JSX Compliance Data Refresh
 
 on:
   schedule:
-    # Runs every hour at :00
     - cron: "0 * * * *"
   workflow_dispatch:
-    # Allows manual trigger from Actions tab
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # needed to commit data.json back to the repo
+      contents: write
 
     steps:
       - name: Check out repo
@@ -36,7 +34,6 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data.json
-          # Only commit if data.json actually changed
+          git add data.json requests.json
           git diff --cached --quiet || git commit -m "chore: refresh data.json [$(date -u '+%Y-%m-%d %H:%M UTC')]"
           git push
