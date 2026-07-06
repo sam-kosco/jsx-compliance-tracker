@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-06T16:18:22.007766+00:00",
+  "generated": "2026-07-06T18:53:14.089879+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -212,7 +212,7 @@
     {
       "tail": "N261JX",
       "type": "EMB 135",
-      "lastService": "2026-04-23",
+      "lastService": "2026-07-07",
       "lastIC": "2026-04-23",
       "lastEC": "2026-04-23",
       "lastDSC": "2026-04-23",
@@ -225,15 +225,15 @@
     {
       "tail": "N262JX",
       "type": "EMB 135",
-      "lastService": "2026-04-17",
-      "lastIC": "2026-04-17",
+      "lastService": "2026-07-06",
+      "lastIC": "2026-07-06",
       "lastEC": "2026-04-17",
       "lastDSC": "2026-03-31",
-      "lastCE": "2026-03-31",
-      "IC": -50,
+      "lastCE": "2026-07-06",
+      "IC": 30,
       "EC": 10,
       "DSC": -67,
-      "CE": -7
+      "CE": 90
     },
     {
       "tail": "N263JX",
@@ -2259,6 +2259,38 @@
       "notes": "",
       "subId": "_6534068562396417636",
       "link": "https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQC1ZKQAHzFpTJADu3mDpyP9AcxkXLxO5LiGv1Gj55TVNtQ"
+    },
+    {
+      "tail": "N261JX",
+      "type": "EMB 135",
+      "location": "TEB",
+      "date": "2026-07-07",
+      "tech": "Sam Kosco",
+      "IC": 0,
+      "EC": 0,
+      "DSC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "other": 1,
+      "notes": "",
+      "subId": "_6591697856025590439",
+      "link": "https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQCqYYLpYzOASKBF0vO0PWwhAQhrhzZcgGF__ha1U4bTk5I"
+    },
+    {
+      "tail": "N262JX",
+      "type": "EMB 135",
+      "location": "TEB",
+      "date": "2026-07-06",
+      "tech": "Sam Kosco",
+      "IC": 1,
+      "EC": 0,
+      "DSC": 0,
+      "CE": 1,
+      "biohazard": 0,
+      "other": 1,
+      "notes": "",
+      "subId": "_6591698046026906223",
+      "link": "https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQAHCtpHaUViQLsWWFIaSrCjAUbRXLVAYWokLpQ28aiXk8k"
     }
   ],
   "requests": []
