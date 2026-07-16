@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-16T18:04:08.008546+00:00",
+  "generated": "2026-07-16T20:01:04.884831+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -392,6 +392,19 @@
       "CE": 1
     },
     {
+      "tail": "N919JX",
+      "type": "EMB 145",
+      "lastService": null,
+      "lastIC": null,
+      "lastEC": null,
+      "lastDSC": null,
+      "lastCE": null,
+      "IC": "No Service",
+      "EC": "No Service",
+      "DSC": "No Service",
+      "CE": "No Service"
+    },
+    {
       "tail": "N922JX",
       "type": "EMB 145",
       "lastService": "2026-04-22",
@@ -481,6 +494,19 @@
       "EC": 2,
       "DSC": -58,
       "CE": 2
+    },
+    {
+      "tail": "N935JX",
+      "type": "EMB 145",
+      "lastService": null,
+      "lastIC": null,
+      "lastEC": null,
+      "lastDSC": null,
+      "lastCE": null,
+      "IC": "No Service",
+      "EC": "No Service",
+      "DSC": "No Service",
+      "CE": "No Service"
     },
     {
       "tail": "N937JX",
@@ -676,6 +702,19 @@
       "EC": -11,
       "DSC": -71,
       "CE": -11
+    },
+    {
+      "tail": "N963JX",
+      "type": "EMB 145",
+      "lastService": "2026-03-21",
+      "lastIC": "2026-03-21",
+      "lastEC": "2026-03-21",
+      "lastDSC": "2026-03-21",
+      "lastCE": null,
+      "IC": -87,
+      "EC": -27,
+      "DSC": -87,
+      "CE": "No Service"
     },
     {
       "tail": "N963JX",
