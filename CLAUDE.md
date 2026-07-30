@@ -29,9 +29,9 @@ jsx-compliance-tracker/
 
 ### Compliance Data Pipeline
 1. Field techs submit JotForm debriefs after each service on a JSX aircraft
-2. Power Automate appends submissions to `Power Flows/JSX/JSX Master Sheet.xlsx` on SharePoint
+2. Power Automate appends submissions to `Power Flows/Debriefs/JSX Debriefs.xlsx` on SharePoint (same folder and pattern as the Envoy/PSA/Mesa/GoJet trackers)
 3. `data_refresh.yml` runs hourly via cron
-4. `generate_data.py` downloads the Excel via Microsoft Graph API, calculates compliance windows for all 11 tails, checks open service requests for fulfillment, and writes `data.json`
+4. `generate_data.py` downloads the Excel via Microsoft Graph API, computes last-service dates from the raw debrief rows, calculates compliance windows for every tail on the roster, checks open service requests for fulfillment, and writes `data.json`
 5. GitHub commits `data.json` and `requests.json`; GitHub Pages serves the updated dashboard
 
 ### Service Requests
@@ -74,7 +74,7 @@ Window = Cycle Length - Days Since Last Service
 
 ## Fleet
 
-11 tails, all EMB 145. Tail list is maintained in the `Tail List` sheet of the JSX Master Sheet Excel on SharePoint.
+Mixed EMB 145 / EMB 135 / ATR fleet (~58 tails). Tail roster is maintained on `Sheet2` of the JSX Debriefs Excel on SharePoint (columns: Tail Number, Plane Type, Last ... formula columns the script ignores, Status). A tail with `Status = Disabled` is excluded from the tracker; any other status (Active, blank) is included. Duplicate roster rows are deduped by the script.
 
 ---
 
@@ -134,7 +134,7 @@ Distro membership for `jsx.requests@foxtrotaviation.com` is managed in Microsoft
 | `CLIENT_SECRET` | App secret — **expires every 24 months**, set a renewal reminder |
 
 **SharePoint Drive ID:** `b!_bzXaIx86kOufgJN3ih-BaDIDthKYuxJkJtLi1Bm5irGjCEnK-VHSpBRRm3_SDKU`  
-**SharePoint Excel path:** `Power Flows/JSX/JSX Master Sheet.xlsx`
+**SharePoint Excel path:** `Power Flows/Debriefs/JSX Debriefs.xlsx`
 
 ---
 
@@ -157,7 +157,7 @@ const GH_PAT = 'ghp_xxxxxxxxxxxxxxxxxxxx';
 ### `data_refresh.yml`
 - **Trigger:** Hourly cron + manual dispatch
 - **Script:** `generate_data.py`
-- **What it does:** Downloads JSX Master Sheet from SharePoint, calculates compliance for all 11 tails, checks service request fulfillment, sends fulfillment and 1-day warning emails as needed, writes `data.json` and `requests.json`, commits both
+- **What it does:** Downloads JSX Debriefs from SharePoint, computes compliance for every rostered tail from the raw debrief rows, checks service request fulfillment, sends fulfillment and 1-day warning emails as needed, writes `data.json` and `requests.json`, commits both
 
 ### `manage_requests.yml`
 - **Trigger:** `workflow_dispatch` only — called by the dashboard via GitHub API
@@ -224,7 +224,8 @@ Check that `TENANT_ID`, `CLIENT_ID`, and `CLIENT_SECRET` secrets are all set cor
 |------|------|--------|
 | Renew CLIENT_SECRET | Every 24 months | Entra → new secret → update GitHub Secret in this repo and envoy-compliance-tracker |
 | Renew GH_PAT | Every 1 year | GitHub → new PAT (workflow scope) → update `const GH_PAT` in `index.html` |
-| Add tail to fleet | As needed | Add to Tail List sheet in JSX Master Sheet on SharePoint |
+| Add tail to fleet | As needed | Add to Sheet2 (tail roster) in JSX Debriefs on SharePoint with Status = Active |
+| Hide tail from tracker | As needed | Set Status = Disabled on Sheet2 in JSX Debriefs |
 | Change dashboard password | As needed | Update `const PASSWORD = 'JSX2026'` in `index.html` |
 | Pause hourly refresh | As needed | Comment out `cron:` line in `data_refresh.yml` |
 | Excel moved on SharePoint | If relocated | Update `FILE_PATH` in `generate_data.py` |

@@ -1,8 +1,10 @@
 """
 JSX Compliance Data Relay
 =========================
-Reads the Planes and Debriefs tables from JSX Master Sheet.xlsx on SharePoint
-and writes data.json to the repo root for the GitHub Pages dashboard to consume.
+Reads JSX Debriefs.xlsx on SharePoint (same Power Flows/Debriefs pattern as
+the Envoy/PSA/Mesa/GoJet trackers), computes last-service dates and
+compliance windows from the raw debrief rows, and writes data.json to the
+repo root for the GitHub Pages dashboard to consume.
 
 Runs on GitHub Actions on an hourly schedule.
 
@@ -13,8 +15,12 @@ Credentials required (set as GitHub Secrets):
 
 File locations:
   SharePoint Drive ID : b!_bzXaIx86kOufgJN3ih-BaDIDthKYuxJkJtLi1Bm5irGjCEnK-VHSpBRRm3_SDKU
-  File path           : Power Flows/JSX/JSX Master Sheet.xlsx
-  Sheets read         : Planes, Debriefs
+  File path           : Power Flows/Debriefs/JSX Debriefs.xlsx
+  Sheets read         : Sheet1 (Debriefs table), Sheet2 (tail roster)
+
+Sheet2's "Last ..." columns are Excel array formulas whose cached values go
+stale (Power Automate never recalculates them), so this script ignores them
+and recomputes everything from the Sheet1 debrief rows.
 """
 
 import os
@@ -32,7 +38,7 @@ CLIENT_ID     = os.environ["CLIENT_ID"]
 CLIENT_SECRET = os.environ["CLIENT_SECRET"]
 
 DRIVE_ID  = "b!_bzXaIx86kOufgJN3ih-BaDIDthKYuxJkJtLi1Bm5irGjCEnK-VHSpBRRm3_SDKU"
-FILE_PATH = "Power Flows/JSX/JSX Master Sheet.xlsx"
+FILE_PATH = "Power Flows/Debriefs/JSX Debriefs.xlsx"
 
 # Job cycle lengths in days
 CYCLES = {"IC": 30, "EC": 90, "DSC": 30, "CE": 90}
@@ -69,7 +75,7 @@ def download_excel(token):
     )
     resp = requests.get(url, headers={"Authorization": f"Bearer {token}"})
     resp.raise_for_status()
-    path = "/tmp/jsx_master_sheet.xlsx"
+    path = "/tmp/jsx_debriefs.xlsx"
     with open(path, "wb") as f:
         f.write(resp.content)
     print(f"  Downloaded {len(resp.content):,} bytes → {path}")
@@ -77,76 +83,170 @@ def download_excel(token):
 
 
 # ─────────────────────────────────────────────
-# STEP 3: Parse Excel — Planes sheet
+# HELPERS
 # ─────────────────────────────────────────────
 
-def parse_planes(wb):
+def flag(v):
+    """0 for No/blank/0, 1 for anything else (handles 1/0, Yes/No, 'Yes. x')."""
+    if v is None:
+        return 0
+    s = str(v).strip().lower()
+    return 0 if s in ("no", "0", "", "none", "nan", "false") else 1
+
+
+def parse_date_val(v):
+    """Return a date or None. Handles datetime/date, ISO strings, Excel serials."""
+    if v is None:
+        return None
+    if isinstance(v, datetime):
+        return v.date()
+    if isinstance(v, date):
+        return v
+    if isinstance(v, (int, float)):
+        # Excel serial date (Power Automate sometimes writes these)
+        from datetime import timedelta
+        return date(1899, 12, 30) + timedelta(days=int(v))
+    s = str(v).strip()
+    try:
+        return datetime.fromisoformat(s[:10]).date()
+    except ValueError:
+        return None
+
+
+# ─────────────────────────────────────────────
+# STEP 3: Read tail roster — Sheet2
+# ─────────────────────────────────────────────
+
+def read_tail_roster(wb):
     """
-    Reads the Planes sheet. Columns expected:
+    Sheet2 columns (0-indexed):
       0: Tail Number
       1: Plane Type
-      2: Last Service   (date or empty)
-      3: Last IC        (date or empty)
-      4: Last EC        (date or empty)
-      5: Last DSC       (date or empty)
-      6: Last CE        (date or empty)
-      7-10: Compliance window columns (formula-driven — we recalculate from dates)
-
-    We recalculate compliance windows here rather than relying on Excel formula
-    results, which openpyxl can't evaluate. Formula: cycle - (today - last_date).
+      2-6: Last Service / Last IC / Last EC / Last DSC / Last CE
+           (array formulas — cached values are stale, ignored here)
+      7: Status — "Disabled" hides the tail from the tracker; anything
+         else (Active, blank) shows it, so a forgotten status on a newly
+         added tail doesn't silently drop it.
     """
-    import openpyxl
-    ws = wb["Planes"]
-    today = date.today()
-    planes = []
+    ws = wb["Sheet2"]
+    roster = []
+    seen = set()
+    disabled = 0
+    for row in list(ws.iter_rows(values_only=True))[1:]:
+        tail = str(row[0] or "").strip().upper()
+        if not tail or tail in seen:
+            continue
+        seen.add(tail)
+        status = str(row[7] or "").strip().lower() if len(row) > 7 else ""
+        if status == "disabled":
+            disabled += 1
+            continue
+        roster.append({"tail": tail, "type": str(row[1] or "").strip()})
+    print(f"  Tail roster (Sheet2): {len(roster)} active tails ({disabled} disabled)")
+    return roster
+
+
+# ─────────────────────────────────────────────
+# STEP 4: Parse debriefs — Sheet1
+# ─────────────────────────────────────────────
+
+def parse_debriefs(wb):
+    """
+    Reads the Debriefs table on Sheet1. Columns expected (0-indexed):
+      0:  Tail Number
+      1:  Plane Type
+      2:  Service Location
+      3:  Date
+      4:  Technician
+      5:  Turn               (info only)
+      6:  RON                (info only)
+      7:  Interior Detail    (IC)
+      8:  Exterior Detail    (EC)
+      9:  Deep Seat Clean    (DSC)
+      10: Carpet Extraction  (CE)
+      11: Biohazard
+      12: Sub ID
+      13: Job Revenue        (not used by the dashboard)
+    """
+    ws = wb["Sheet1"]
+    debriefs = []
 
     rows = list(ws.iter_rows(values_only=True))
-    header = rows[0]
-    print(f"  Planes sheet: {len(rows)-1} data rows")
+    print(f"  Debriefs sheet: {len(rows)-1} data rows")
 
     for row in rows[1:]:
-        tail = row[0]
+        tail = str(row[0] or "").strip().upper()
         if not tail:
             continue
 
-        plane_type   = row[1] or ""
-        last_service = row[2]  # may be datetime or None
+        d = parse_date_val(row[3])
 
-        # Parse each last-service date
-        last_dates = {}
-        for i, job in enumerate(["IC", "EC", "DSC", "CE"]):
-            val = row[3 + i]
-            if isinstance(val, datetime):
-                last_dates[job] = val.date()
-            elif isinstance(val, date):
-                last_dates[job] = val
-            else:
-                last_dates[job] = None
+        debriefs.append({
+            "tail":     tail,
+            "type":     str(row[1] or ""),
+            "location": str(row[2] or ""),
+            "date":     d.isoformat() if d else None,
+            "tech":     str(row[4] or ""),
+            "turn":     flag(row[5]),
+            "ron":      flag(row[6]),
+            "IC":       flag(row[7]),
+            "EC":       flag(row[8]),
+            "DSC":      flag(row[9]),
+            "CE":       flag(row[10]),
+            "biohazard":flag(row[11]),
+            "subId":    str(row[12] or ""),
+            "link":     None,
+        })
 
-        # Calculate compliance windows
+    print(f"  Parsed {len(debriefs)} debrief records.")
+    return debriefs
+
+
+# ─────────────────────────────────────────────
+# STEP 4b: Build planes compliance table
+# ─────────────────────────────────────────────
+
+def build_planes(roster, debriefs):
+    """
+    For each tail in the roster, find the most recent date each tracked
+    service (IC/EC/DSC/CE) was performed, then calculate compliance windows:
+    window = cycle - days since last service ("No Service" if never).
+    """
+    today = date.today()
+
+    by_tail = {}
+    for d in debriefs:
+        by_tail.setdefault(d["tail"], []).append(d)
+
+    planes = []
+    for entry in roster:
+        tail = entry["tail"]
+        records = by_tail.get(tail, [])
+
+        last_dates = {job: None for job in CYCLES}
+        last_service = None  # most recent debrief of any kind
+
+        for d in records:
+            if not d["date"]:
+                continue
+            d_date = datetime.strptime(d["date"], "%Y-%m-%d").date()
+            if last_service is None or d_date > last_service:
+                last_service = d_date
+            for job in CYCLES:
+                if d[job] == 1 and (last_dates[job] is None or d_date > last_dates[job]):
+                    last_dates[job] = d_date
+
         windows = {}
         for job, cycle in CYCLES.items():
             if last_dates[job] is None:
                 windows[job] = "No Service"
             else:
-                days_since = (today - last_dates[job]).days
-                windows[job] = cycle - days_since
-
-        # Last service date (most recent of any job)
-        valid_dates = [d for d in last_dates.values() if d is not None]
-        if isinstance(last_service, datetime):
-            last_svc_str = last_service.date().isoformat()
-        elif isinstance(last_service, date):
-            last_svc_str = last_service.isoformat()
-        elif valid_dates:
-            last_svc_str = max(valid_dates).isoformat()
-        else:
-            last_svc_str = None
+                windows[job] = cycle - (today - last_dates[job]).days
 
         planes.append({
-            "tail":        str(tail),
-            "type":        str(plane_type),
-            "lastService": last_svc_str,
+            "tail":        tail,
+            "type":        entry["type"],
+            "lastService": last_service.isoformat() if last_service else None,
             "lastIC":      last_dates["IC"].isoformat()  if last_dates["IC"]  else None,
             "lastEC":      last_dates["EC"].isoformat()  if last_dates["EC"]  else None,
             "lastDSC":     last_dates["DSC"].isoformat() if last_dates["DSC"] else None,
@@ -157,78 +257,8 @@ def parse_planes(wb):
             "CE":          windows["CE"],
         })
 
-    print(f"  Parsed {len(planes)} planes.")
+    print(f"  Built compliance for {len(planes)} planes.")
     return planes
-
-
-# ─────────────────────────────────────────────
-# STEP 4: Parse Excel — Debriefs sheet
-# ─────────────────────────────────────────────
-
-def parse_debriefs(wb):
-    """
-    Reads the Debriefs sheet. Columns expected (0-indexed):
-      0:  Tail Number
-      1:  Plane Type
-      2:  Service Location
-      3:  Date
-      4:  Technician
-      5:  Interior Clean    (1 = done, 0 = not done)
-      6:  Exterior Clean
-      7:  Deep Seat Clean
-      8:  Carpet Extraction
-      9:  Biohazard
-      10: Other
-      11: Notes
-      12: Sub ID
-      13: Raw Link          (SharePoint PDF link)
-    """
-    ws = wb["Debriefs"]
-    debriefs = []
-
-    rows = list(ws.iter_rows(values_only=True))
-    print(f"  Debriefs sheet: {len(rows)-1} data rows")
-
-    for row in rows[1:]:
-        tail = row[0]
-        if not tail:
-            continue
-
-        # Parse date
-        date_val = row[3]
-        if isinstance(date_val, datetime):
-            date_str = date_val.date().isoformat()
-        elif isinstance(date_val, date):
-            date_str = date_val.isoformat()
-        else:
-            date_str = None
-
-        # Service flags — treat any truthy non-zero value as done
-        def flag(v):
-            try:
-                return 1 if int(v) >= 1 else 0
-            except (TypeError, ValueError):
-                return 0
-
-        debriefs.append({
-            "tail":     str(tail),
-            "type":     str(row[1] or ""),
-            "location": str(row[2] or ""),
-            "date":     date_str,
-            "tech":     str(row[4] or ""),
-            "IC":       flag(row[5]),
-            "EC":       flag(row[6]),
-            "DSC":      flag(row[7]),
-            "CE":       flag(row[8]),
-            "biohazard":flag(row[9]),
-            "other":    flag(row[10]),
-            "notes":    str(row[11] or ""),
-            "subId":    str(row[12] or ""),
-            "link":     str(row[13] or "") if row[13] else None,
-        })
-
-    print(f"  Parsed {len(debriefs)} debrief records.")
-    return debriefs
 
 
 # ─────────────────────────────────────────────
@@ -451,8 +481,11 @@ if __name__ == "__main__":
 
     print("\nParsing workbook...")
     wb       = openpyxl.load_workbook(xlsx_path, data_only=True)
-    planes   = parse_planes(wb)
+    roster   = read_tail_roster(wb)
     debriefs = parse_debriefs(wb)
+
+    print("\nBuilding compliance table...")
+    planes   = build_planes(roster, debriefs)
 
     print("\nWriting data.json...")
     print("\nProcessing service requests...")
