@@ -41,7 +41,7 @@ DRIVE_ID  = "b!_bzXaIx86kOufgJN3ih-BaDIDthKYuxJkJtLi1Bm5irGjCEnK-VHSpBRRm3_SDKU"
 FILE_PATH = "Power Flows/Debriefs/JSX Debriefs.xlsx"
 
 # Job cycle lengths in days
-CYCLES = {"IC": 30, "EC": 90, "DSC": 30, "CE": 90}
+CYCLES = {"IC": 30, "EC": 90, "CE": 90}
 
 # ─────────────────────────────────────────────
 # STEP 1: Get Graph API token
@@ -122,9 +122,9 @@ def read_tail_roster(wb):
     Sheet2 columns (0-indexed):
       0: Tail Number
       1: Plane Type
-      2-6: Last Service / Last IC / Last EC / Last DSC / Last CE
+      2-5: Last Service / Last IC / Last EC / Last CE
            (array formulas — cached values are stale, ignored here)
-      7: Status — "Disabled" hides the tail from the tracker; anything
+      6: Status — "Disabled" hides the tail from the tracker; anything
          else (Active, blank) shows it, so a forgotten status on a newly
          added tail doesn't silently drop it.
     """
@@ -137,7 +137,7 @@ def read_tail_roster(wb):
         if not tail or tail in seen:
             continue
         seen.add(tail)
-        status = str(row[7] or "").strip().lower() if len(row) > 7 else ""
+        status = str(row[6] or "").strip().lower() if len(row) > 6 else ""
         if status == "disabled":
             disabled += 1
             continue
@@ -158,15 +158,14 @@ def parse_debriefs(wb):
       2:  Service Location
       3:  Date
       4:  Technician
-      5:  Turn               (info only)
-      6:  RON                (info only)
-      7:  Interior Detail    (IC)
-      8:  Exterior Detail    (EC)
-      9:  Deep Seat Clean    (DSC)
-      10: Carpet Extraction  (CE)
-      11: Biohazard
-      12: Sub ID
-      13: Job Revenue        (not used by the dashboard)
+      5:  RON                (info only)
+      6:  Interior Detail    (IC)
+      7:  Exterior Detail    (EC)
+      8:  Carpet Extraction  (CE)
+      9:  Biohazard
+      10: Sub ID
+      11: Job Revenue        (not used by the dashboard)
+      12: Web Report Link    (PDF link shown in the dashboard)
     """
     ws = wb["Sheet1"]
     debriefs = []
@@ -187,15 +186,13 @@ def parse_debriefs(wb):
             "location": str(row[2] or ""),
             "date":     d.isoformat() if d else None,
             "tech":     str(row[4] or ""),
-            "turn":     flag(row[5]),
-            "ron":      flag(row[6]),
-            "IC":       flag(row[7]),
-            "EC":       flag(row[8]),
-            "DSC":      flag(row[9]),
-            "CE":       flag(row[10]),
-            "biohazard":flag(row[11]),
-            "subId":    str(row[12] or ""),
-            "link":     None,
+            "ron":      flag(row[5]),
+            "IC":       flag(row[6]),
+            "EC":       flag(row[7]),
+            "CE":       flag(row[8]),
+            "biohazard":flag(row[9]),
+            "subId":    str(row[10] or ""),
+            "link":     str(row[12]).strip() if len(row) > 12 and row[12] else None,
         })
 
     print(f"  Parsed {len(debriefs)} debrief records.")
@@ -247,13 +244,11 @@ def build_planes(roster, debriefs):
             "tail":        tail,
             "type":        entry["type"],
             "lastService": last_service.isoformat() if last_service else None,
-            "lastIC":      last_dates["IC"].isoformat()  if last_dates["IC"]  else None,
-            "lastEC":      last_dates["EC"].isoformat()  if last_dates["EC"]  else None,
-            "lastDSC":     last_dates["DSC"].isoformat() if last_dates["DSC"] else None,
-            "lastCE":      last_dates["CE"].isoformat()  if last_dates["CE"]  else None,
+            "lastIC":      last_dates["IC"].isoformat() if last_dates["IC"] else None,
+            "lastEC":      last_dates["EC"].isoformat() if last_dates["EC"] else None,
+            "lastCE":      last_dates["CE"].isoformat() if last_dates["CE"] else None,
             "IC":          windows["IC"],
             "EC":          windows["EC"],
-            "DSC":         windows["DSC"],
             "CE":          windows["CE"],
         })
 
@@ -320,7 +315,6 @@ def send_email(token, to_addresses, subject, body_html):
 SVC_NAMES = {
     "IC": "Interior Detail",
     "EC": "Exterior Detail",
-    "DSC": "Deep Seat Clean",
     "CE": "Carpet Extraction",
 }
 

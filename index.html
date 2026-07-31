@@ -96,7 +96,7 @@
   .stat-sub{font-size:12px;color:var(--text-light);margin-top:4px;font-weight:500;}
 
   /* ── BREAKDOWN STRIP ── */
-  .breakdown-strip{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .breakdown-strip{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
   .breakdown-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--gray-light);box-shadow:var(--shadow-sm);padding:14px 16px 12px;}
   .breakdown-job{font-family:var(--cond);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-light);margin-bottom:4px;}
   .breakdown-job-full{font-size:11px;color:var(--text-light);font-weight:500;margin-bottom:10px;line-height:1.2;}
@@ -176,7 +176,7 @@
   .detail-status-pill.ok{background:var(--green);color:white;}
   .detail-close{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.1);color:white;font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s,border-color 0.15s;flex-shrink:0;}
   .detail-close:hover{background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.6);}
-  .compliance-grid{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--gray-light);}
+  .compliance-grid{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--gray-light);}
   .comp-cell{padding:18px 14px;text-align:center;border-right:1px solid var(--gray-light);}
   .comp-cell:last-child{border-right:none;}
   .comp-cell.over{background:var(--red-bg);} .comp-cell.warn{background:var(--amber-bg);}
@@ -268,7 +268,7 @@
   .req-field-error{font-size:11px;color:var(--red);font-weight:600;display:none;}
   .req-field-error.show{display:block;}
   textarea.req-field-input{resize:vertical;min-height:80px;}
-  .svc-checkboxes{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .svc-checkboxes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
   .svc-checkbox-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1.5px solid var(--gray);border-radius:4px;cursor:pointer;transition:all 0.15s;}
   .svc-checkbox-item:hover{border-color:var(--orange);background:var(--orange-pale);}
   .svc-checkbox-item.checked{border-color:var(--orange);background:var(--orange-pale);}
@@ -379,7 +379,6 @@
       <div class="breakdown-strip col-full">
         <div class="breakdown-card" id="bd-IC"></div>
         <div class="breakdown-card" id="bd-EC"></div>
-        <div class="breakdown-card" id="bd-DSC"></div>
         <div class="breakdown-card" id="bd-CE"></div>
       </div>
 
@@ -442,7 +441,6 @@
               <th>Last Service</th>
               <th class="r">ID&nbsp;&nbsp;(30d)</th>
               <th class="r">ED&nbsp;&nbsp;(90d)</th>
-              <th class="r">DSC (30d)</th>
               <th class="r">CE&nbsp;&nbsp;(90d)</th>
             </tr></thead>
             <tbody id="fleet-body"></tbody>
@@ -497,7 +495,6 @@
               <option value="">All Services</option>
               <option value="IC">Interior Detail (ID)</option>
               <option value="EC">Exterior Detail (ED)</option>
-              <option value="DSC">Deep Seat Clean (DSC)</option>
               <option value="CE">Carpet Extraction (CE)</option>
             </select>
           </div>
@@ -575,10 +572,6 @@
                 <div><div class="svc-checkbox-label">Exterior Detail (ED)</div><div class="svc-checkbox-sub">90-day cycle</div></div>
               </label>
               <label class="svc-checkbox-item" onclick="toggleSvcCheck(this)">
-                <input type="checkbox" value="DSC">
-                <div><div class="svc-checkbox-label">Deep Seat Clean (DSC)</div><div class="svc-checkbox-sub">30-day cycle</div></div>
-              </label>
-              <label class="svc-checkbox-item" onclick="toggleSvcCheck(this)">
                 <input type="checkbox" value="CE">
                 <div><div class="svc-checkbox-label">Carpet Extraction (CE)</div><div class="svc-checkbox-sub">90-day cycle</div></div>
               </label>
@@ -636,39 +629,39 @@ const SOON_DAYS  = 7;
 const GH_REPO    = 'sam-kosco/jsx-compliance-tracker';
 const GH_PAT     = 'REPLACE_WITH_PAT'; // Replace with actual PAT before deploying
 
-const JOBS = ['IC','EC','DSC','CE'];
-const JOB_NAMES  = {IC:'Interior Detail',EC:'Exterior Detail',DSC:'Deep Seat Clean',CE:'Carpet Extraction'};
-const JOB_DISP   = {IC:'ID',EC:'ED',DSC:'DSC',CE:'CE'};
-const JOB_COLORS = {IC:'#E07B20',EC:'#0891B2',DSC:'#6366F1',CE:'#7C3AED'};
+const JOBS = ['IC','EC','CE'];
+const JOB_NAMES  = {IC:'Interior Detail',EC:'Exterior Detail',CE:'Carpet Extraction'};
+const JOB_DISP   = {IC:'ID',EC:'ED',CE:'CE'};
+const JOB_COLORS = {IC:'#E07B20',EC:'#0891B2',CE:'#7C3AED'};
 const LOCATIONS  = ['PBI','OAK','BUR','LAS','DAL','SMO','OPF'];
 
 const SAMPLE = {
   generated: new Date().toISOString(),
   planes: [
-    { tail:"N241JX", type:"EMB 145", lastService:"2026-02-18", IC: 4,  EC: 34, DSC: 4,  CE:"No Service" },
-    { tail:"N242JX", type:"EMB 145", lastService:"2026-03-04", IC: 18, EC: 78, DSC: 18, CE: 78 },
-    { tail:"N243JX", type:"EMB 145", lastService:"2026-03-12", IC: 26, EC:"No Service", DSC: 26, CE:"No Service" },
-    { tail:"N244JX", type:"EMB 145", lastService:"2026-03-02", IC: 16, EC: 76, DSC: 16, CE: 76 },
-    { tail:"N245JX", type:"EMB 145", lastService:"2026-02-04", IC:-10, EC: 50, DSC:-10, CE: 50 },
-    { tail:"N246JX", type:"EMB 145", lastService:"2026-03-08", IC: 22, EC: 82, DSC: 22, CE: 82 },
-    { tail:"N247JX", type:"EMB 145", lastService:"2026-03-08", IC: 22, EC: 82, DSC: 22, CE: 82 },
-    { tail:"N912JX", type:"EMB 145", lastService:"2026-02-11", IC: -3, EC: 57, DSC: -3, CE: 57 },
-    { tail:"N913JX", type:"EMB 145", lastService:"2026-03-13", IC: 27, EC: 87, DSC: 27, CE:"No Service" },
-    { tail:"N914JX", type:"EMB 145", lastService:"2026-02-20", IC:  6, EC: 66, DSC:  6, CE: 66 },
-    { tail:"N915JX", type:"EMB 145", lastService:"2026-03-11", IC: 25, EC: 85, DSC: 25, CE: 85 },
+    { tail:"N241JX", type:"EMB 145", lastService:"2026-02-18", IC: 4,  EC: 34,  CE:"No Service" },
+    { tail:"N242JX", type:"EMB 145", lastService:"2026-03-04", IC: 18, EC: 78,  CE: 78 },
+    { tail:"N243JX", type:"EMB 145", lastService:"2026-03-12", IC: 26, EC:"No Service",  CE:"No Service" },
+    { tail:"N244JX", type:"EMB 145", lastService:"2026-03-02", IC: 16, EC: 76,  CE: 76 },
+    { tail:"N245JX", type:"EMB 145", lastService:"2026-02-04", IC:-10, EC: 50,  CE: 50 },
+    { tail:"N246JX", type:"EMB 145", lastService:"2026-03-08", IC: 22, EC: 82,  CE: 82 },
+    { tail:"N247JX", type:"EMB 145", lastService:"2026-03-08", IC: 22, EC: 82,  CE: 82 },
+    { tail:"N912JX", type:"EMB 145", lastService:"2026-02-11", IC: -3, EC: 57,  CE: 57 },
+    { tail:"N913JX", type:"EMB 145", lastService:"2026-03-13", IC: 27, EC: 87,  CE:"No Service" },
+    { tail:"N914JX", type:"EMB 145", lastService:"2026-02-20", IC:  6, EC: 66,  CE: 66 },
+    { tail:"N915JX", type:"EMB 145", lastService:"2026-03-11", IC: 25, EC: 85,  CE: 85 },
   ],
   debriefs: [
-    { tail:"N241JX", location:"PBI", date:"2026-02-18", tech:"Rachel Kim",   IC:1,EC:1,DSC:1,CE:0, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQDNx2OxUu64QrmUiUEIY-WFAdqYoNul7TUTb6blPLf_zyI" },
-    { tail:"N242JX", location:"BUR", date:"2026-03-04", tech:"Rachel Kim",   IC:1,EC:1,DSC:1,CE:1, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQAOUBI9Spy6QKCr3ExAiTO-ARzRIYO5SJo2Mo9XyP3aW74" },
-    { tail:"N243JX", location:"PBI", date:"2026-03-12", tech:"James Carter", IC:1,EC:0,DSC:1,CE:0, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQB8u785QjFdRZleEPc7D7AtAXyyuY4yky9UESfSEAP8qcQ" },
-    { tail:"N244JX", location:"OAK", date:"2026-03-02", tech:"James Carter", IC:1,EC:1,DSC:1,CE:1, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQCzLW4eI2naQIvS7re-5pP3AWnaHqcsw2kgIc6hTUGaDAQ" },
-    { tail:"N245JX", location:"LAS", date:"2026-02-04", tech:"Marcus Ellis", IC:1,EC:1,DSC:1,CE:1, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQCSJaNx3yooTrmi5jnculqLASuIO9VSosYHdLYppibMb-M" },
-    { tail:"N246JX", location:"OAK", date:"2026-03-08", tech:"Derek Hansen", IC:1,EC:1,DSC:1,CE:1, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQDRd_ISnvjFTLm9VBsugHWtAbj5BNNz-m_O4Sop0sRIrjc" },
-    { tail:"N247JX", location:"OAK", date:"2026-03-08", tech:"Sofia Nguyen", IC:1,EC:1,DSC:1,CE:1, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQCLz02lEnS1QKTHrWUBLmyuAUK-cwca8nmT6kX1CInjNWQ" },
-    { tail:"N912JX", location:"SMO", date:"2026-02-11", tech:"Aisha Patel",  IC:1,EC:1,DSC:1,CE:1, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQDLvI4fcACIT495gfBO0WSlAeMC2ufNYk4JeQpCCMvbLKQ" },
-    { tail:"N913JX", location:"OPF", date:"2026-03-13", tech:"Aisha Patel",  IC:1,EC:1,DSC:1,CE:0, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQB9PI6vf3ZkTYa0_1i-VOzeAUA7HRP-xP0jN13OomVXnoU" },
-    { tail:"N914JX", location:"LAS", date:"2026-02-20", tech:"Rachel Kim",   IC:1,EC:1,DSC:1,CE:1, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQCmU9Ob5GraQ4A8UCd-Uu_2AacAFtRNJg0UXZzjEpWDUXk" },
-    { tail:"N915JX", location:"DAL", date:"2026-03-11", tech:"Tyler Brooks", IC:1,EC:1,DSC:1,CE:1, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQCIDD6OE2TdSqARvCZ6uZo8AeuoU732SXNquk0MIJmr3gM" },
+    { tail:"N241JX", location:"PBI", date:"2026-02-18", tech:"Rachel Kim",   IC:1,EC:1, CE:0, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQDNx2OxUu64QrmUiUEIY-WFAdqYoNul7TUTb6blPLf_zyI" },
+    { tail:"N242JX", location:"BUR", date:"2026-03-04", tech:"Rachel Kim",   IC:1,EC:1, CE:1, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQAOUBI9Spy6QKCr3ExAiTO-ARzRIYO5SJo2Mo9XyP3aW74" },
+    { tail:"N243JX", location:"PBI", date:"2026-03-12", tech:"James Carter", IC:1,EC:0, CE:0, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQB8u785QjFdRZleEPc7D7AtAXyyuY4yky9UESfSEAP8qcQ" },
+    { tail:"N244JX", location:"OAK", date:"2026-03-02", tech:"James Carter", IC:1,EC:1, CE:1, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQCzLW4eI2naQIvS7re-5pP3AWnaHqcsw2kgIc6hTUGaDAQ" },
+    { tail:"N245JX", location:"LAS", date:"2026-02-04", tech:"Marcus Ellis", IC:1,EC:1, CE:1, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQCSJaNx3yooTrmi5jnculqLASuIO9VSosYHdLYppibMb-M" },
+    { tail:"N246JX", location:"OAK", date:"2026-03-08", tech:"Derek Hansen", IC:1,EC:1, CE:1, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQDRd_ISnvjFTLm9VBsugHWtAbj5BNNz-m_O4Sop0sRIrjc" },
+    { tail:"N247JX", location:"OAK", date:"2026-03-08", tech:"Sofia Nguyen", IC:1,EC:1, CE:1, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQCLz02lEnS1QKTHrWUBLmyuAUK-cwca8nmT6kX1CInjNWQ" },
+    { tail:"N912JX", location:"SMO", date:"2026-02-11", tech:"Aisha Patel",  IC:1,EC:1, CE:1, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQDLvI4fcACIT495gfBO0WSlAeMC2ufNYk4JeQpCCMvbLKQ" },
+    { tail:"N913JX", location:"OPF", date:"2026-03-13", tech:"Aisha Patel",  IC:1,EC:1, CE:0, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQB9PI6vf3ZkTYa0_1i-VOzeAUA7HRP-xP0jN13OomVXnoU" },
+    { tail:"N914JX", location:"LAS", date:"2026-02-20", tech:"Rachel Kim",   IC:1,EC:1, CE:1, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQCmU9Ob5GraQ4A8UCd-Uu_2AacAFtRNJg0UXZzjEpWDUXk" },
+    { tail:"N915JX", location:"DAL", date:"2026-03-11", tech:"Tyler Brooks", IC:1,EC:1, CE:1, link:"https://foxtrotaviationcom.sharepoint.com/:b:/s/DataHub/IQCIDD6OE2TdSqARvCZ6uZo8AeuoU732SXNquk0MIJmr3gM" },
   ]
 };
 
@@ -823,7 +816,6 @@ function renderAll() {
       <td style="font-size:12px;color:var(--text-light)">${fmtDate(p.lastService)}</td>
       <td class="ft-win ${wc(p.IC)}">${wl(p.IC)}</td>
       <td class="ft-win ${wc(p.EC)}">${wl(p.EC)}</td>
-      <td class="ft-win ${wc(p.DSC)}">${wl(p.DSC)}</td>
       <td class="ft-win ${wc(p.CE)}">${wl(p.CE)}</td>
     </tr>`;
   }).join('');
@@ -925,7 +917,7 @@ function toggleReqMenu(id) {
 
 // ── PLANE CARDS ───────────────────────────────────────
 function planeCard(p, type) {
-  const DISP = {IC:'ID',EC:'ED',DSC:'DSC',CE:'CE'};
+  const DISP = {IC:'ID',EC:'ED',CE:'CE'};
   const badges = JOBS.map(j=>`<span class="badge ${wc(p[j])}">${DISP[j]}: ${wl(p[j])}</span>`).join('');
   const w = worst(p);
   const indCls = type==='noncompliant'?'over':'warn';
@@ -990,7 +982,6 @@ function selectTail(tail) {
   const JOBS_DEF = [
     {key:'IC',name:'Interior Detail',cycle:'30-day cycle'},
     {key:'EC',name:'Exterior Detail',cycle:'90-day cycle'},
-    {key:'DSC',name:'Deep Seat Clean',cycle:'30-day cycle'},
     {key:'CE',name:'Carpet Extraction',cycle:'90-day cycle'},
   ];
   const cells = JOBS_DEF.map(j=>{
@@ -1001,7 +992,7 @@ function selectTail(tail) {
     return `<div class="comp-cell ${cls}"><div class="comp-job-full">${j.name}</div><div class="comp-cycle">${j.cycle}</div>${body}</div>`;
   }).join('');
 
-  const DISP = {IC:'ID',EC:'ED',DSC:'DSC',CE:'CE'};
+  const DISP = {IC:'ID',EC:'ED',CE:'CE'};
   const rows = debriefs.length ? debriefs.map((d,i)=>{
     const svcs = JOBS.map(s=>`<span class="svc-chip ${d[s]?'done':'skip'}">${DISP[s]}</span>`).join('');
     return `<div class="history-row ${i===0?'latest':''}">
@@ -1100,7 +1091,7 @@ function renderExtract() {
     }
   });
 
-  const DISP = {IC:'ID',EC:'ED',DSC:'DSC',CE:'CE'};
+  const DISP = {IC:'ID',EC:'ED',CE:'CE'};
   const tbody = document.getElementById('extract-body');
   if(!sorted.length) {
     tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-light);font-style:italic">No records match the selected filters</td></tr>';
@@ -1123,7 +1114,7 @@ function renderExtract() {
 
 function exportCSV() {
   if(!extractRows.length) { alert('No records to export. Apply filters first.'); return; }
-  const DISP = {IC:'ID',EC:'ED',DSC:'DSC',CE:'CE'};
+  const DISP = {IC:'ID',EC:'ED',CE:'CE'};
   const headers = ['Date','Tail Number','Type','Location','Services Performed','Technician','PDF Link'];
   const rows = extractRows.map(d=>{
     const svcs = JOBS.filter(j=>d[j]===1).map(j=>JOB_NAMES[j]).join('; ');

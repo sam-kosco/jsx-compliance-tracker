@@ -51,7 +51,6 @@ Fulfillment is checked on every hourly `data_refresh.yml` run — if all request
 |------|---------|-----------|-------|
 | IC | ID | Interior Detail | 30 days |
 | EC | ED | Exterior Detail | 90 days |
-| DSC | DSC | Deep Seat Clean | 30 days |
 | CE | CE | Carpet Extraction | 90 days |
 
 > **Note:** The data layer uses `IC` and `EC` as keys throughout the JSON, Python, and Excel. The display labels `ID` and `ED` are cosmetic only — applied in the HTML dashboard JavaScript.
@@ -87,7 +86,7 @@ Mixed EMB 145 / EMB 135 / ATR fleet (~58 tails). Tail roster is maintained on `S
       "requestId": "req_1714500000000",
       "tail": "N241JX",
       "requestDate": "2026-05-20",
-      "services": ["IC", "DSC"],
+      "services": ["IC", "CE"],
       "requestorName": "Ty Johnson",
       "requestorEmail": "ty@jsx.com",
       "additionalEmail": "",
@@ -170,7 +169,7 @@ const GH_PAT = 'ghp_xxxxxxxxxxxxxxxxxxxx';
 
 ### Tab 1 — Fleet Tracker
 - Stat strip (total, noncompliant, due soon, compliant)
-- Per-service compliance breakdown cards (IC/EC/DSC/CE %)
+- Per-service compliance breakdown cards (IC/EC/CE %)
 - Tail number lookup with searchable dropdown and detail panel
 - Cued Services widget (shows open service requests — hidden when empty)
 - Noncompliant and Due Soon plane card lists
