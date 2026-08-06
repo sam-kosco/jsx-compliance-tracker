@@ -2,7 +2,7 @@ name: JSX Compliance Data Refresh
 
 on:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "47 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -36,4 +36,9 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data.json requests.json
           git diff --cached --quiet || git commit -m "chore: refresh data.json [$(date -u '+%Y-%m-%d %H:%M UTC')]"
-          git push
+          n=0
+          until git push; do
+            n=$((n+1)); [ "$n" -ge 3 ] && exit 1
+            echo "push rejected (concurrent bot commit) — rebasing and retrying ($n/3)"
+            git pull --rebase
+          done

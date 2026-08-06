@@ -666,6 +666,21 @@ const SAMPLE = {
 };
 
 let DATA = null;
+
+// Auto-refresh: refetch every 10 minutes and whenever the tab regains focus,
+// reloading only when a newer data.json has been published. Without this, a
+// tab left open (especially on mobile) shows stale compliance indefinitely.
+async function refreshIfStale() {
+  try {
+    const r = await fetch(DATA_URL + '?t=' + Date.now());
+    if (!r.ok) return;
+    const d = await r.json();
+    if (DATA && d.generated === DATA.generated) return;
+    await loadAll();  // refetches data + requests, re-renders everything
+  } catch (e) { /* transient fetch error — keep current view */ }
+}
+setInterval(refreshIfStale, 10 * 60 * 1000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshIfStale(); });
 let REQUESTS = []; // open service requests
 let extractRows = []; // current filtered extract results
 let extractSort = {col:'date', dir:'desc'};
