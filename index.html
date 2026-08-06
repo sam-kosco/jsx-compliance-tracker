@@ -1128,7 +1128,7 @@ function renderExtract() {
 }
 
 function exportCSV() {
-  if(!extractRows.length) { alert('No records to export. Apply filters first.'); return; }
+  if(!extractRows.length) { document.getElementById('extract-info').textContent = 'No records to export. Apply filters first.'; return; }
   const DISP = {IC:'ID',EC:'ED',CE:'CE'};
   const headers = ['Date','Tail Number','Type','Location','Services Performed','Technician','PDF Link'];
   const rows = extractRows.map(d=>{
@@ -1300,9 +1300,31 @@ function editRequest(requestId) {
   document.querySelector('.req-form-card').scrollIntoView({behavior:'smooth'});
 }
 
+
+// In-page confirm dialog. Native confirm()/alert() are silently blocked in
+// cross-origin iframes (the SharePoint pages embed this dashboard), so
+// native dialogs must never be used here.
+function pageConfirm(message) {
+  return new Promise(resolve => {
+    const ov = document.createElement('div');
+    ov.style.cssText = 'position:fixed;inset:0;background:rgba(15,23,42,0.55);z-index:9999;display:flex;align-items:center;justify-content:center;';
+    ov.innerHTML = `<div style="background:#fff;border-radius:10px;max-width:380px;width:90%;padding:22px 24px;font-family:inherit;box-shadow:0 12px 40px rgba(0,0,0,0.25)">
+      <div style="font-size:14px;color:#1F2937;line-height:1.5">${message}</div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:18px">
+        <button data-act="no" style="padding:8px 16px;border:1.5px solid #D1D5DB;background:#fff;border-radius:6px;cursor:pointer;font-size:13px">Cancel</button>
+        <button data-act="yes" style="padding:8px 16px;border:none;background:#DC2626;color:#fff;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700">Confirm</button>
+      </div></div>`;
+    ov.addEventListener('click', e => {
+      const act = e.target.getAttribute ? e.target.getAttribute('data-act') : null;
+      if (act || e.target === ov) { ov.remove(); resolve(act === 'yes'); }
+    });
+    document.body.appendChild(ov);
+  });
+}
+
 async function deleteRequest(requestId) {
   document.querySelectorAll('.req-menu').forEach(m=>m.classList.remove('open'));
-  if(!confirm('Remove this service request? A notification will be sent to the JSX team.')) return;
+  if(!await pageConfirm('Remove this service request? A notification will be sent to the JSX team.')) return;
 
   const req = REQUESTS.find(r=>r.requestId===requestId);
   if(!req) return;
