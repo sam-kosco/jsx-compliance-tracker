@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-13T16:10:40.739183+00:00",
+  "generated": "2026-08-13T16:34:10.774439+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -788,7 +788,7 @@
     {
       "tail": "N256JX",
       "type": "EMB 135",
-      "location": "SDL",
+      "location": "SNA",
       "date": "2026-04-21",
       "tech": "",
       "ron": 0,
@@ -1040,7 +1040,7 @@
     {
       "tail": "N916JX",
       "type": "EMB 145",
-      "location": "SDL",
+      "location": "SNA",
       "date": "2026-05-16",
       "tech": "",
       "ron": 0,
