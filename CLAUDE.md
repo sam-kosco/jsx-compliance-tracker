@@ -191,7 +191,7 @@ const GH_PAT = 'ghp_xxxxxxxxxxxxxxxxxxxx';
 
 ## Locations
 
-JSX operates at: `PBI`, `OAK`, `BUR`, `LAS`, `DAL`, `SMO`, `OPF`, `FXE`
+JSX operates at: `PBI`, `OAK`, `BUR`, `LAS`, `DAL`, `SMO`, `OPF`, `FXE`, `HPN`, `SCF`, `SNA`, `TEB`
 
 ---
 
