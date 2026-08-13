@@ -1,9 +1,10 @@
 {
-  "generated": "2026-08-13T15:37:30.334561+00:00",
+  "generated": "2026-08-13T16:10:40.739183+00:00",
   "planes": [
     {
       "tail": "N241JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-14",
       "lastIC": "2026-07-14",
       "lastEC": "2026-06-25",
@@ -15,6 +16,7 @@
     {
       "tail": "N242JX",
       "type": "EMB 145",
+      "station": "SCF/BUR",
       "lastService": "2026-07-23",
       "lastIC": "2026-07-23",
       "lastEC": "2026-04-28",
@@ -26,6 +28,7 @@
     {
       "tail": "N243JX",
       "type": "EMB 145",
+      "station": "SNA/BUR",
       "lastService": "2026-06-03",
       "lastIC": "2026-06-03",
       "lastEC": "2026-05-12",
@@ -37,6 +40,7 @@
     {
       "tail": "N244JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-21",
       "lastIC": "2026-07-21",
       "lastEC": "2026-07-10",
@@ -48,6 +52,7 @@
     {
       "tail": "N245JX",
       "type": "EMB 145",
+      "station": "SNA",
       "lastService": "2026-07-21",
       "lastIC": "2026-07-21",
       "lastEC": "2026-03-17",
@@ -59,6 +64,7 @@
     {
       "tail": "N246JX",
       "type": "EMB 145",
+      "station": "BUR/SNA",
       "lastService": "2026-07-08",
       "lastIC": "2026-07-08",
       "lastEC": "2026-07-08",
@@ -70,6 +76,7 @@
     {
       "tail": "N247JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-13",
       "lastIC": "2026-07-13",
       "lastEC": "2026-07-08",
@@ -81,6 +88,7 @@
     {
       "tail": "N251JX",
       "type": "EMB 135",
+      "station": "SCF/LAS",
       "lastService": "2026-07-07",
       "lastIC": "2026-07-07",
       "lastEC": "2026-06-09",
@@ -92,6 +100,7 @@
     {
       "tail": "N252JX",
       "type": "EMB 135",
+      "station": "BUR/SNA",
       "lastService": "2026-07-02",
       "lastIC": "2026-06-29",
       "lastEC": "2026-05-08",
@@ -103,6 +112,7 @@
     {
       "tail": "N253JX",
       "type": "EMB 135",
+      "station": "SCF/BUR",
       "lastService": "2026-07-15",
       "lastIC": "2026-07-15",
       "lastEC": "2026-05-20",
@@ -114,6 +124,7 @@
     {
       "tail": "N254JX",
       "type": "EMB 135",
+      "station": "BUR/SNA",
       "lastService": "2026-07-07",
       "lastIC": "2026-07-07",
       "lastEC": "2026-05-27",
@@ -125,6 +136,7 @@
     {
       "tail": "N256JX",
       "type": "EMB 135",
+      "station": "SNA/BUR",
       "lastService": "2026-07-10",
       "lastIC": "2026-07-10",
       "lastEC": "2026-04-21",
@@ -136,6 +148,7 @@
     {
       "tail": "N257JX",
       "type": "EMB 135",
+      "station": "SNA/BUR",
       "lastService": "2026-06-23",
       "lastIC": "2026-06-23",
       "lastEC": "2026-06-23",
@@ -147,6 +160,7 @@
     {
       "tail": "N258JX",
       "type": "EMB 135",
+      "station": "BUR",
       "lastService": "2026-05-30",
       "lastIC": "2026-05-30",
       "lastEC": "2026-03-03",
@@ -158,6 +172,7 @@
     {
       "tail": "N259JX",
       "type": "EMB 135",
+      "station": "BUR/SNA",
       "lastService": "2026-07-23",
       "lastIC": "2026-07-08",
       "lastEC": "2026-07-09",
@@ -169,6 +184,7 @@
     {
       "tail": "N260JX",
       "type": "EMB 135",
+      "station": "SCF",
       "lastService": "2026-07-15",
       "lastIC": "2026-07-15",
       "lastEC": "2026-07-15",
@@ -180,6 +196,7 @@
     {
       "tail": "N261JX",
       "type": "EMB 135",
+      "station": "BUR/SNA",
       "lastService": "2026-07-14",
       "lastIC": "2026-07-14",
       "lastEC": "2026-06-15",
@@ -191,6 +208,7 @@
     {
       "tail": "N262JX",
       "type": "EMB 135",
+      "station": "BUR/SNA",
       "lastService": "2026-07-23",
       "lastIC": "2026-07-21",
       "lastEC": "2026-07-23",
@@ -202,6 +220,7 @@
     {
       "tail": "N263JX",
       "type": "EMB 135",
+      "station": "BUR/SNA",
       "lastService": "2026-06-27",
       "lastIC": "2026-06-27",
       "lastEC": "2026-06-27",
@@ -213,6 +232,7 @@
     {
       "tail": "N264JX",
       "type": "EMB 135",
+      "station": "SNA",
       "lastService": "2026-06-16",
       "lastIC": "2026-06-16",
       "lastEC": "2026-05-14",
@@ -224,6 +244,7 @@
     {
       "tail": "N266JX",
       "type": "EMB 135",
+      "station": "BUR/SNA",
       "lastService": "2026-07-18",
       "lastIC": "2026-07-18",
       "lastEC": "2026-05-20",
@@ -235,6 +256,7 @@
     {
       "tail": "N268JX",
       "type": "EMB 135",
+      "station": "SCF",
       "lastService": "2026-07-08",
       "lastIC": "2026-07-08",
       "lastEC": "2026-06-13",
@@ -244,19 +266,9 @@
       "CE": 18
     },
     {
-      "tail": "N4007JX",
-      "type": "ATR",
-      "lastService": null,
-      "lastIC": null,
-      "lastEC": null,
-      "lastCE": null,
-      "IC": "No Service",
-      "EC": "No Service",
-      "CE": "No Service"
-    },
-    {
       "tail": "N400JX",
       "type": "ATR",
+      "station": "BUR/SNA",
       "lastService": "2026-07-03",
       "lastIC": "2026-07-03",
       "lastEC": "2026-06-11",
@@ -268,6 +280,7 @@
     {
       "tail": "N401JX",
       "type": "ATR",
+      "station": "BUR/SNA",
       "lastService": "2026-06-23",
       "lastIC": "2026-06-22",
       "lastEC": "2026-06-23",
@@ -279,6 +292,7 @@
     {
       "tail": "N912JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-23",
       "lastIC": "2026-07-23",
       "lastEC": "2026-05-29",
@@ -290,6 +304,7 @@
     {
       "tail": "N913JX",
       "type": "EMB 145",
+      "station": "FXE/OPF",
       "lastService": "2026-07-20",
       "lastIC": "2026-07-20",
       "lastEC": "2026-05-19",
@@ -301,6 +316,7 @@
     {
       "tail": "N914JX",
       "type": "EMB 145",
+      "station": "BUR",
       "lastService": "2026-07-01",
       "lastIC": "2026-06-30",
       "lastEC": "2026-06-04",
@@ -312,6 +328,7 @@
     {
       "tail": "N915JX",
       "type": "EMB 145",
+      "station": "TEB",
       "lastService": "2026-07-18",
       "lastIC": "2026-07-18",
       "lastEC": "2026-06-10",
@@ -323,6 +340,7 @@
     {
       "tail": "N916JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-08",
       "lastIC": "2026-07-08",
       "lastEC": "2026-05-16",
@@ -334,6 +352,7 @@
     {
       "tail": "N917JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-10",
       "lastIC": "2026-06-15",
       "lastEC": "2026-07-07",
@@ -345,6 +364,7 @@
     {
       "tail": "N918JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-20",
       "lastIC": "2026-07-08",
       "lastEC": "2026-07-20",
@@ -356,6 +376,7 @@
     {
       "tail": "N919JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-22",
       "lastIC": "2026-07-22",
       "lastEC": "2026-07-14",
@@ -367,6 +388,7 @@
     {
       "tail": "N922JX",
       "type": "EMB 145",
+      "station": "BUR",
       "lastService": "2026-06-30",
       "lastIC": "2026-06-30",
       "lastEC": "2026-04-23",
@@ -378,6 +400,7 @@
     {
       "tail": "N926JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-06-24",
       "lastIC": "2026-05-20",
       "lastEC": "2026-06-24",
@@ -389,6 +412,7 @@
     {
       "tail": "N928JX",
       "type": "EMB 145",
+      "station": "HPN",
       "lastService": "2026-07-15",
       "lastIC": "2026-07-10",
       "lastEC": "2026-07-10",
@@ -400,6 +424,7 @@
     {
       "tail": "N931JX",
       "type": "EMB 145",
+      "station": "FXE",
       "lastService": "2026-07-15",
       "lastIC": "2026-07-03",
       "lastEC": "2026-07-15",
@@ -411,6 +436,7 @@
     {
       "tail": "N932JX",
       "type": "EMB 145",
+      "station": "DAL/SNA",
       "lastService": "2026-07-09",
       "lastIC": "2026-07-09",
       "lastEC": "2026-05-22",
@@ -422,6 +448,7 @@
     {
       "tail": "N933JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-06",
       "lastIC": "2026-07-06",
       "lastEC": "2026-07-06",
@@ -433,6 +460,7 @@
     {
       "tail": "N934JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-17",
       "lastIC": "2026-06-30",
       "lastEC": "2026-07-17",
@@ -444,6 +472,7 @@
     {
       "tail": "N935JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-02",
       "lastIC": "2026-07-02",
       "lastEC": "2026-07-02",
@@ -455,6 +484,7 @@
     {
       "tail": "N937JX",
       "type": "EMB 145",
+      "station": "FXE",
       "lastService": "2026-07-20",
       "lastIC": "2026-06-26",
       "lastEC": "2026-07-16",
@@ -466,6 +496,7 @@
     {
       "tail": "N940JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-02",
       "lastIC": "2026-07-02",
       "lastEC": "2026-07-02",
@@ -477,6 +508,7 @@
     {
       "tail": "N947JX",
       "type": "EMB 145",
+      "station": "BUR",
       "lastService": "2026-07-15",
       "lastIC": "2026-07-14",
       "lastEC": "2026-07-15",
@@ -488,6 +520,7 @@
     {
       "tail": "N948JX",
       "type": "EMB 145",
+      "station": "FXE",
       "lastService": "2026-07-17",
       "lastIC": "2026-07-17",
       "lastEC": "2026-07-08",
@@ -499,6 +532,7 @@
     {
       "tail": "N949JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-23",
       "lastIC": "2026-07-23",
       "lastEC": "2026-06-09",
@@ -510,6 +544,7 @@
     {
       "tail": "N950JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-06-08",
       "lastIC": "2026-06-08",
       "lastEC": "2026-05-07",
@@ -521,6 +556,7 @@
     {
       "tail": "N952JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-08",
       "lastIC": "2026-06-23",
       "lastEC": "2026-06-22",
@@ -532,6 +568,7 @@
     {
       "tail": "N954JX",
       "type": "EMB 145",
+      "station": "BUR/SNA",
       "lastService": "2026-06-30",
       "lastIC": "2026-06-30",
       "lastEC": "2026-06-30",
@@ -543,6 +580,7 @@
     {
       "tail": "N955JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-03",
       "lastIC": "2026-07-03",
       "lastEC": "2026-07-03",
@@ -554,6 +592,7 @@
     {
       "tail": "N956JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-09",
       "lastIC": "2026-07-03",
       "lastEC": "2026-07-03",
@@ -565,6 +604,7 @@
     {
       "tail": "N957JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-23",
       "lastIC": "2026-07-23",
       "lastEC": "2026-07-15",
@@ -576,6 +616,7 @@
     {
       "tail": "N958JX",
       "type": "EMB 145",
+      "station": "BUR",
       "lastService": "2026-07-13",
       "lastIC": "2026-07-13",
       "lastEC": "2026-07-13",
@@ -587,6 +628,7 @@
     {
       "tail": "N959JX",
       "type": "EMB 145",
+      "station": "HPN",
       "lastService": "2026-07-20",
       "lastIC": "2026-07-20",
       "lastEC": "2026-07-20",
@@ -598,6 +640,7 @@
     {
       "tail": "N960JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-16",
       "lastIC": "2026-07-16",
       "lastEC": "2026-07-16",
@@ -609,6 +652,7 @@
     {
       "tail": "N961JX",
       "type": "EMB 145",
+      "station": "HPN",
       "lastService": "2026-07-01",
       "lastIC": "2026-07-01",
       "lastEC": "2026-07-01",
@@ -620,6 +664,7 @@
     {
       "tail": "N962JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-07",
       "lastIC": "2026-06-23",
       "lastEC": "2026-04-29",
@@ -631,6 +676,7 @@
     {
       "tail": "N963JX",
       "type": "EMB 145",
+      "station": "DAL",
       "lastService": "2026-07-20",
       "lastIC": "2026-07-20",
       "lastEC": "2026-06-18",
