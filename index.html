@@ -367,6 +367,14 @@
     </div>
 
     <div class="main-grid">
+      <!-- STATION SCOPE BAR — everything on this tab follows this selection -->
+      <div class="col-full" style="display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-bottom:-8px">
+        <span style="font-family:var(--cond);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-light)">Station View</span>
+        <select id="fleet-station-filter" onchange="renderAll()"
+                style="padding:7px 12px;font-size:13px;font-family:inherit;border:1.5px solid #D1D5DB;border-radius:6px;outline:none;color:var(--navy);font-weight:700;background:white">
+          <option value="">All Stations</option>
+        </select>
+      </div>
       <!-- STAT STRIP -->
       <div class="stat-strip col-full">
         <div class="stat-card s-total"><div class="stat-label">Total Aircraft</div><div class="stat-value" id="stat-total">—</div><div class="stat-sub">in fleet</div></div>
@@ -430,13 +438,7 @@
       <div class="card col-full">
         <div class="card-header">
           <div class="card-title">Full Fleet Overview</div>
-          <div style="display:flex;align-items:center;gap:12px">
-            <select id="fleet-station-filter" onchange="renderFleetTable()"
-                    style="padding:6px 10px;font-size:12px;font-family:inherit;border:1.5px solid #D1D5DB;border-radius:6px;outline:none;color:var(--navy);font-weight:600">
-              <option value="">All Stations</option>
-            </select>
-            <div class="card-count" id="fleet-count">— aircraft</div>
-          </div>
+          <div class="card-count" id="fleet-count">— aircraft</div>
         </div>
         <div style="overflow-x:auto;">
           <table class="fleet-table">
@@ -797,14 +799,57 @@ function getRequestStatus(req) {
 }
 
 // ── RENDER ALL ────────────────────────────────────────
-// Full Fleet Overview table — respects the station filter. A tail with a
-// shared station ("BUR/SNA") appears under either station's filter.
-function renderFleetTable() {
+function renderAll() {
   if (!DATA) return;
+  const allPlanes = DATA.planes;
+
+  // Station scoping — the picker is populated from the full fleet, then the
+  // whole Fleet Tracker tab (stats, breakdowns, cards, table) follows the
+  // selection. A shared station like "BUR/SNA" counts for both stations.
   const sel = document.getElementById('fleet-station-filter');
-  const pick = sel ? sel.value : '';
-  const planes = DATA.planes.filter(p =>
-    !pick || (p.station||'').split('/').map(s=>s.trim()).includes(pick));
+  let pick = '';
+  if (sel) {
+    const prev = sel.value;
+    const stations = [...new Set(allPlanes.flatMap(p=>(p.station||'').split('/').map(s=>s.trim()).filter(Boolean)))].sort();
+    sel.innerHTML = '<option value="">All Stations</option>' + stations.map(s=>`<option>${s}</option>`).join('');
+    if (stations.includes(prev)) sel.value = prev;
+    pick = sel.value;
+  }
+  const planes = pick
+    ? allPlanes.filter(p=>(p.station||'').split('/').map(s=>s.trim()).includes(pick))
+    : allPlanes;
+
+  const gen = DATA.generated ? new Date(DATA.generated) : new Date();
+  const dateStr = gen.toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/New_York'});
+  document.getElementById('hdr-updated').textContent = 'Updated '+dateStr+' EST';
+  ['band-date','band-date-2','band-date-3'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.textContent = 'Current as of '+gen.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'2-digit',timeZone:'America/New_York'});
+  });
+
+  const nc   = planes.filter(isNC).sort((a,b)=>worst(a)-worst(b));
+  const soon = planes.filter(isSoon).sort((a,b)=>worst(a)-worst(b));
+  const ok   = planes.filter(p=>!isNC(p)&&!isSoon(p));
+
+  document.getElementById('stat-total').textContent   = planes.length;
+  document.querySelector('.s-total .stat-sub').textContent = pick ? `assigned to ${pick}` : 'in fleet';
+  document.getElementById('stat-noncomp').textContent = nc.length;
+  document.getElementById('stat-soon').textContent    = soon.length;
+  document.getElementById('stat-ok').textContent      = ok.length;
+  document.getElementById('nc-count').textContent     = nc.length+' aircraft';
+  document.getElementById('soon-count').textContent   = soon.length+' aircraft';
+
+  renderBreakdown(planes);
+  renderCuedServices();
+
+  document.getElementById('nc-list').innerHTML   = nc.length ? nc.map(p=>planeCard(p,'noncompliant')).join('') : '<div class="empty-state">✓ No noncompliant aircraft</div>';
+  document.getElementById('soon-list').innerHTML = soon.length ? soon.map(p=>planeCard(p,'soon')).join('') : '<div class="empty-state">No aircraft due within 7 days</div>';
+
+  // Tail lookup + request form stay unscoped — any tail is searchable
+  // regardless of the station view.
+  window._allTails = [...allPlanes].map(p=>p.tail).sort((a,b)=>a.localeCompare(b));
+
+  // Fleet table (scoped)
   document.getElementById('fleet-count').textContent =
     planes.length + ' aircraft' + (pick ? ` at ${pick}` : '');
   document.getElementById('fleet-body').innerHTML = [...planes].sort((a,b)=>a.tail.localeCompare(b.tail)).map(p => {
@@ -820,47 +865,6 @@ function renderFleetTable() {
       <td class="ft-win ${wc(p.CE)}">${wl(p.CE)}</td>
     </tr>`;
   }).join('');
-}
-
-function renderAll() {
-  if (!DATA) return;
-  const planes = DATA.planes;
-  const gen = DATA.generated ? new Date(DATA.generated) : new Date();
-  const dateStr = gen.toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/New_York'});
-  document.getElementById('hdr-updated').textContent = 'Updated '+dateStr+' EST';
-  ['band-date','band-date-2','band-date-3'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.textContent = 'Current as of '+gen.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'2-digit',timeZone:'America/New_York'});
-  });
-
-  const nc   = planes.filter(isNC).sort((a,b)=>worst(a)-worst(b));
-  const soon = planes.filter(isSoon).sort((a,b)=>worst(a)-worst(b));
-  const ok   = planes.filter(p=>!isNC(p)&&!isSoon(p));
-
-  document.getElementById('stat-total').textContent   = planes.length;
-  document.getElementById('stat-noncomp').textContent = nc.length;
-  document.getElementById('stat-soon').textContent    = soon.length;
-  document.getElementById('stat-ok').textContent      = ok.length;
-  document.getElementById('nc-count').textContent     = nc.length+' aircraft';
-  document.getElementById('soon-count').textContent   = soon.length+' aircraft';
-
-  renderBreakdown(planes);
-  renderCuedServices();
-
-  document.getElementById('nc-list').innerHTML   = nc.length ? nc.map(p=>planeCard(p,'noncompliant')).join('') : '<div class="empty-state">✓ No noncompliant aircraft</div>';
-  document.getElementById('soon-list').innerHTML = soon.length ? soon.map(p=>planeCard(p,'soon')).join('') : '<div class="empty-state">No aircraft due within 7 days</div>';
-
-  window._allTails = [...planes].map(p=>p.tail).sort((a,b)=>a.localeCompare(b));
-
-  // Station filter options — a shared station like "BUR/SNA" counts for both
-  const sel = document.getElementById('fleet-station-filter');
-  if (sel) {
-    const prev = sel.value;
-    const stations = [...new Set(planes.flatMap(p=>(p.station||'').split('/').map(s=>s.trim()).filter(Boolean)))].sort();
-    sel.innerHTML = '<option value="">All Stations</option>' + stations.map(s=>`<option>${s}</option>`).join('');
-    if (stations.includes(prev)) sel.value = prev;
-  }
-  renderFleetTable();
 
   // Populate tail dropdown filter on extract page
   const ftail = document.getElementById('f-tail');
