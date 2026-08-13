@@ -73,6 +73,11 @@
   .tab-page.active{display:block;}
 
   /* ── MAIN GRID ── */
+  /* Desktop zoom: renders the page at 135% like browser zoom, which makes the
+     66.66vw containers fill exactly 90% of the window (66.66 × 1.35), centered.
+     Media queries evaluate against the real viewport, so the ≤960px mobile
+     layout below is unaffected. */
+  @media (min-width:961px){ html{zoom:1.35;} }
   .main-grid{width:66.66vw;margin:0 auto;padding:24px 28px;display:grid;grid-template-columns:1fr 1fr;gap:20px;}
   .col-full{grid-column:1/-1;}
 
