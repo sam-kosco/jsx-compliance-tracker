@@ -430,7 +430,13 @@
       <div class="card col-full">
         <div class="card-header">
           <div class="card-title">Full Fleet Overview</div>
-          <div class="card-count" id="fleet-count">— aircraft</div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <select id="fleet-station-filter" onchange="renderFleetTable()"
+                    style="padding:6px 10px;font-size:12px;font-family:inherit;border:1.5px solid #D1D5DB;border-radius:6px;outline:none;color:var(--navy);font-weight:600">
+              <option value="">All Stations</option>
+            </select>
+            <div class="card-count" id="fleet-count">— aircraft</div>
+          </div>
         </div>
         <div style="overflow-x:auto;">
           <table class="fleet-table">
@@ -438,6 +444,7 @@
               <th style="width:4px;padding:0"></th>
               <th>Tail #</th>
               <th>Type</th>
+              <th>Station</th>
               <th>Last Service</th>
               <th class="r">ID&nbsp;&nbsp;(30d)</th>
               <th class="r">ED&nbsp;&nbsp;(90d)</th>
@@ -790,6 +797,31 @@ function getRequestStatus(req) {
 }
 
 // ── RENDER ALL ────────────────────────────────────────
+// Full Fleet Overview table — respects the station filter. A tail with a
+// shared station ("BUR/SNA") appears under either station's filter.
+function renderFleetTable() {
+  if (!DATA) return;
+  const sel = document.getElementById('fleet-station-filter');
+  const pick = sel ? sel.value : '';
+  const planes = DATA.planes.filter(p =>
+    !pick || (p.station||'').split('/').map(s=>s.trim()).includes(pick));
+  document.getElementById('fleet-count').textContent =
+    planes.length + ' aircraft' + (pick ? ` at ${pick}` : '');
+  document.getElementById('fleet-body').innerHTML = [...planes].sort((a,b)=>a.tail.localeCompare(b.tail)).map(p => {
+    const status = isNC(p)?'over':isSoon(p)?'warn':'ok';
+    return `<tr onclick="selectTail('${p.tail}')">
+      <td class="row-flag ${status}"></td>
+      <td>${tailBlock(p.tail,p.type)}</td>
+      <td style="font-size:12px;color:var(--text-light)">${p.type}</td>
+      <td style="font-size:12px;font-weight:700;color:var(--orange)">${p.station||'—'}</td>
+      <td style="font-size:12px;color:var(--text-light)">${fmtDate(p.lastService)}</td>
+      <td class="ft-win ${wc(p.IC)}">${wl(p.IC)}</td>
+      <td class="ft-win ${wc(p.EC)}">${wl(p.EC)}</td>
+      <td class="ft-win ${wc(p.CE)}">${wl(p.CE)}</td>
+    </tr>`;
+  }).join('');
+}
+
 function renderAll() {
   if (!DATA) return;
   const planes = DATA.planes;
@@ -819,21 +851,16 @@ function renderAll() {
   document.getElementById('soon-list').innerHTML = soon.length ? soon.map(p=>planeCard(p,'soon')).join('') : '<div class="empty-state">No aircraft due within 7 days</div>';
 
   window._allTails = [...planes].map(p=>p.tail).sort((a,b)=>a.localeCompare(b));
-  document.getElementById('fleet-count').textContent = planes.length+' aircraft';
 
-  // Fleet table
-  document.getElementById('fleet-body').innerHTML = [...planes].sort((a,b)=>a.tail.localeCompare(b.tail)).map(p => {
-    const status = isNC(p)?'over':isSoon(p)?'warn':'ok';
-    return `<tr onclick="selectTail('${p.tail}')">
-      <td class="row-flag ${status}"></td>
-      <td>${tailBlock(p.tail,p.type)}</td>
-      <td style="font-size:12px;color:var(--text-light)">${p.type}</td>
-      <td style="font-size:12px;color:var(--text-light)">${fmtDate(p.lastService)}</td>
-      <td class="ft-win ${wc(p.IC)}">${wl(p.IC)}</td>
-      <td class="ft-win ${wc(p.EC)}">${wl(p.EC)}</td>
-      <td class="ft-win ${wc(p.CE)}">${wl(p.CE)}</td>
-    </tr>`;
-  }).join('');
+  // Station filter options — a shared station like "BUR/SNA" counts for both
+  const sel = document.getElementById('fleet-station-filter');
+  if (sel) {
+    const prev = sel.value;
+    const stations = [...new Set(planes.flatMap(p=>(p.station||'').split('/').map(s=>s.trim()).filter(Boolean)))].sort();
+    sel.innerHTML = '<option value="">All Stations</option>' + stations.map(s=>`<option>${s}</option>`).join('');
+    if (stations.includes(prev)) sel.value = prev;
+  }
+  renderFleetTable();
 
   // Populate tail dropdown filter on extract page
   const ftail = document.getElementById('f-tail');

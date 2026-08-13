@@ -127,6 +127,8 @@ def read_tail_roster(wb):
       6: Status — "Disabled" hides the tail from the tracker; anything
          else (Active, blank) shows it, so a forgotten status on a newly
          added tail doesn't silently drop it.
+      7: Location — the tail's common station(s), slash-separated when
+         shared (e.g. "BUR/SNA"). Surfaced as "station" on each plane.
     """
     ws = wb["Sheet2"]
     roster = []
@@ -141,7 +143,9 @@ def read_tail_roster(wb):
         if status == "disabled":
             disabled += 1
             continue
-        roster.append({"tail": tail, "type": str(row[1] or "").strip()})
+        station = str(row[7] or "").strip().upper() if len(row) > 7 else ""
+        roster.append({"tail": tail, "type": str(row[1] or "").strip(),
+                       "station": station})
     print(f"  Tail roster (Sheet2): {len(roster)} active tails ({disabled} disabled)")
     return roster
 
@@ -243,6 +247,7 @@ def build_planes(roster, debriefs):
         planes.append({
             "tail":        tail,
             "type":        entry["type"],
+            "station":     entry["station"],
             "lastService": last_service.isoformat() if last_service else None,
             "lastIC":      last_dates["IC"].isoformat() if last_dates["IC"] else None,
             "lastEC":      last_dates["EC"].isoformat() if last_dates["EC"] else None,
