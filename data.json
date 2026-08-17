@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-17T04:24:56.461860+00:00",
+  "generated": "2026-08-17T05:20:50.134078+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -557,7 +557,7 @@
       "tail": "N952JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-07-08",
+      "lastService": "2026-08-16",
       "lastIC": "2026-06-23",
       "lastEC": "2026-06-22",
       "lastCE": "2026-07-08",
@@ -2799,6 +2799,20 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6627494202414689621",
+      "link": null
+    },
+    {
+      "tail": "N952JX",
+      "type": "",
+      "location": "TEB",
+      "date": "2026-08-16",
+      "tech": "Karla Gattorno Machado",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6627525211714057444",
       "link": null
     }
   ],
