@@ -1,0 +1,32 @@
+name: Mirror to legacy URL
+# The canonical repo moved to the org; old links (sam-kosco.github.io)
+# stay live via a mirror repo on Sam's personal account until the platform
+# is rolled out and the legacy URLs are retired. Pushes main to the mirror
+# after every data refresh, plus a daily backstop.
+on:
+  push:
+    branches: [main]
+  workflow_run:
+    types: [completed]
+    workflows:
+      - "JSX Compliance Data Refresh"
+      - "Manage Service Requests"  schedule:
+    - cron: "45 9 * * *"
+  workflow_dispatch:
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Push main to the legacy mirror
+        env:
+          KEY: ${{ secrets.MIRROR_DEPLOY_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%%s
+' "$KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+          git push --force git@github.com:sam-kosco/jsx-compliance-tracker.git HEAD:main
