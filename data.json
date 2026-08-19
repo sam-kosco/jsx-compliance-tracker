@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-19T14:17:18.067167+00:00",
+  "generated": "2026-08-19T15:06:31.028935+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -509,11 +509,11 @@
       "tail": "N947JX",
       "type": "EMB 145",
       "station": "BUR",
-      "lastService": "2026-07-15",
-      "lastIC": "2026-07-14",
+      "lastService": "2026-08-18",
+      "lastIC": "2026-08-18",
       "lastEC": "2026-07-15",
       "lastCE": "2026-05-30",
-      "IC": -6,
+      "IC": 29,
       "EC": 55,
       "CE": 9
     },
@@ -2897,6 +2897,20 @@
       "CE": 0,
       "biohazard": 1,
       "subId": "_6629148769422779461",
+      "link": null
+    },
+    {
+      "tail": "N947JX",
+      "type": "",
+      "location": "SCF",
+      "date": "2026-08-18",
+      "tech": "Briza Garibay",
+      "ron": 0,
+      "IC": 1,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6629595389233176102",
       "link": null
     }
   ],
