@@ -1,12 +1,28 @@
 # jsx-compliance-tracker
 
 **Owner:** Samuel Kosco — Data Analyst, Foxtrot Aviation Services  
-**Repo:** `sam-kosco/jsx-compliance-tracker`  
-**Hosted at:** `sam-kosco.github.io/jsx-compliance-tracker/`  
+**Repo:** `Foxtrot-Aviation-Services/jsx-compliance-tracker` (private)  
+**Hosted at:** `foxtrot-aviation-services.github.io/jsx-compliance-tracker/` (legacy `sam-kosco.github.io/jsx-compliance-tracker/` mirrored — see Org migration)  
 **Access:** Password-protected — password is `JSX2026`
 
 This repo hosts the JSX Air fleet detailing compliance dashboard. It is client-facing — JSX operations staff have access. It includes a Fleet Tracker, Data Extraction tab, and Service Requests tab.
 
+
+## Org migration (2026-08-19)
+
+Canonical repo: **Foxtrot-Aviation-Services/jsx-compliance-tracker** (private; the Pages
+site is public at `foxtrot-aviation-services.github.io/jsx-compliance-tracker/`). The old
+`sam-kosco.github.io/jsx-compliance-tracker/` URL stays live via a same-named mirror repo
+on Sam's personal account, force-synced by this repo's "Mirror to legacy
+URL" workflow (deploy key in `MIRROR_DEPLOY_KEY`). The mirror has Actions
+DISABLED — never push to it or run anything there. Retire the legacy URL
+(delete the mirror repo + mirror.yml) once the Foxtrot Platform rollout
+replaces old links.
+
+> Service-request dispatches in index.html now target the org repo, but
+> `GH_PAT` is still the `REPLACE_WITH_PAT` placeholder — page submissions
+> have never worked in the committed source and need a real fine-grained
+> token (org repo, Actions read/write) before they do.
 ---
 
 ## Repository Structure
