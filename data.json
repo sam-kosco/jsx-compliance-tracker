@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-20T17:05:29.381263+00:00",
+  "generated": "2026-08-20T18:01:32.495042+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -365,11 +365,11 @@
       "tail": "N918JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-07-20",
-      "lastIC": "2026-07-08",
+      "lastService": "2026-08-18",
+      "lastIC": "2026-08-18",
       "lastEC": "2026-07-20",
       "lastCE": "2026-05-13",
-      "IC": -13,
+      "IC": 28,
       "EC": 59,
       "CE": -9
     },
@@ -2925,6 +2925,34 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6629965523011019041",
+      "link": null
+    },
+    {
+      "tail": "N407SV",
+      "type": "",
+      "location": "DAL",
+      "date": "2026-08-19",
+      "tech": "Robert Murillo",
+      "ron": 0,
+      "IC": 1,
+      "EC": 1,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6630566002858504245",
+      "link": null
+    },
+    {
+      "tail": "N918JX",
+      "type": "",
+      "location": "SNA",
+      "date": "2026-08-18",
+      "tech": "Heidi Cromer",
+      "ron": 0,
+      "IC": 1,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6630569726857769260",
       "link": null
     }
   ],
