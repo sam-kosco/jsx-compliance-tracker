@@ -15,6 +15,12 @@ on:
     - cron: "45 9 * * *"
   workflow_dispatch:
 
+# Refreshes can finish near-simultaneously; serialize the mirror pushes
+# so two force-pushes never race (2026-08-21: one such race failed).
+concurrency:
+  group: mirror-legacy
+  cancel-in-progress: false
+
 jobs:
   mirror:
     runs-on: ubuntu-latest
