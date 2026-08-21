@@ -30,4 +30,13 @@ jobs:
           echo "$KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+          # The mirror is a Pages site only: strip workflow files so nothing
+          # can run (or fail spam) over there. Its repo keeps Actions ENABLED
+          # because branch-built Pages deploy via the internal
+          # pages-build-deployment workflow - disabling Actions freezes the
+          # site (2026-08-21 incident: mirrors stale at Aug 19).
+          git config user.name "mirror-bot"
+          git config user.email "foxtrot.automation@foxtrotaviation.com"
+          git rm -rq --ignore-unmatch .github/workflows
+          git commit -qm "mirror: strip workflows" --allow-empty
           git push --force git@github.com:sam-kosco/jsx-compliance-tracker.git HEAD:main
