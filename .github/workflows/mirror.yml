@@ -25,10 +25,32 @@ jobs:
   mirror:
     runs-on: ubuntu-latest
     steps:
+      - name: Skip if the mirror already matches
+        id: sync
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Same-SHA short-circuit: the mirror's strip commit sits directly on
+          # the org head it mirrored, so its PARENT sha tells us what the
+          # mirror serves — no checkout needed to compare. workflow_run fires
+          # after every refresher completion (mostly no-op probes), and the
+          # full-history checkout + force-push of this repo was the expensive
+          # part of ~150 mirror runs/day org-wide.
+          OURS=$(gh api "repos/${GITHUB_REPOSITORY}/commits/main" -q .sha)
+          THEIRS=$(gh api "repos/sam-kosco/jsx-compliance-tracker/commits/main"                    -q '.parents[0].sha' 2>/dev/null || true)
+          if [ -n "$OURS" ] && [ "$OURS" = "$THEIRS" ]; then
+            echo "mirror already at $OURS — nothing to push"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "mirror parent=$THEIRS ours=$OURS — pushing"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/checkout@v4
+        if: steps.sync.outputs.changed == 'true'
         with:
           fetch-depth: 0
       - name: Push main to the legacy mirror
+        if: steps.sync.outputs.changed == 'true'
         env:
           KEY: ${{ secrets.MIRROR_DEPLOY_KEY }}
         run: |
