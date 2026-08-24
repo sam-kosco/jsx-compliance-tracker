@@ -15,26 +15,44 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v4
 
+      - name: Check source freshness
+        id: src
+        env:
+          TENANT_ID:     ${{ secrets.TENANT_ID }}
+          CLIENT_ID:     ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        run: python3 check_source_modified.py "Power Flows/Debriefs/JSX Debriefs.xlsx" refresh_state/jsx.mtime
+
       - name: Set up Python
+        if: steps.src.outputs.changed == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
       - name: Install dependencies
+        if: steps.src.outputs.changed == 'true'
         run: pip install openpyxl requests
 
       - name: Run data relay
+        if: steps.src.outputs.changed == 'true'
         env:
           TENANT_ID:     ${{ secrets.TENANT_ID }}
           CLIENT_ID:     ${{ secrets.CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         run: python generate_data.py
 
+      - name: Record source watermark
+        if: steps.src.outputs.changed == 'true'
+        run: |
+          mkdir -p refresh_state
+          printf '%s' "${{ steps.src.outputs.mtime }}" > refresh_state/jsx.mtime
+
       - name: Commit and push data.json
+        if: steps.src.outputs.changed == 'true'
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data.json requests.json
+          git add data.json requests.json refresh_state/jsx.mtime
           git diff --cached --quiet || git commit -m "chore: refresh data.json [$(date -u '+%Y-%m-%d %H:%M UTC')]"
           n=0
           until git push; do
