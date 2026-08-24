@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-23T06:01:13.970266+00:00",
+  "generated": "2026-08-24T14:48:54.722637+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -9,9 +9,9 @@
       "lastIC": "2026-07-14",
       "lastEC": "2026-06-25",
       "lastCE": "2026-05-20",
-      "IC": -10,
-      "EC": 31,
-      "CE": -5
+      "IC": -11,
+      "EC": 30,
+      "CE": -6
     },
     {
       "tail": "N242JX",
@@ -21,9 +21,9 @@
       "lastIC": "2026-07-23",
       "lastEC": "2026-08-21",
       "lastCE": "2026-07-23",
-      "IC": -1,
-      "EC": 88,
-      "CE": 59
+      "IC": -2,
+      "EC": 87,
+      "CE": 58
     },
     {
       "tail": "N243JX",
@@ -33,9 +33,9 @@
       "lastIC": "2026-06-03",
       "lastEC": "2026-05-12",
       "lastCE": "2026-04-29",
-      "IC": -51,
-      "EC": -13,
-      "CE": -26
+      "IC": -52,
+      "EC": -14,
+      "CE": -27
     },
     {
       "tail": "N244JX",
@@ -45,9 +45,9 @@
       "lastIC": "2026-07-21",
       "lastEC": "2026-07-10",
       "lastCE": "2026-07-21",
-      "IC": -3,
-      "EC": 46,
-      "CE": 57
+      "IC": -4,
+      "EC": 45,
+      "CE": 56
     },
     {
       "tail": "N245JX",
@@ -57,9 +57,9 @@
       "lastIC": "2026-07-21",
       "lastEC": "2026-03-17",
       "lastCE": "2026-04-27",
-      "IC": -3,
-      "EC": -69,
-      "CE": -28
+      "IC": -4,
+      "EC": -70,
+      "CE": -29
     },
     {
       "tail": "N246JX",
@@ -69,21 +69,21 @@
       "lastIC": "2026-07-08",
       "lastEC": "2026-07-08",
       "lastCE": "2026-07-08",
-      "IC": -16,
-      "EC": 44,
-      "CE": 44
+      "IC": -17,
+      "EC": 43,
+      "CE": 43
     },
     {
       "tail": "N247JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-08-22",
+      "lastService": "2026-08-23",
       "lastIC": "2026-07-13",
       "lastEC": "2026-07-08",
       "lastCE": "2026-07-13",
-      "IC": -11,
-      "EC": 44,
-      "CE": 49
+      "IC": -12,
+      "EC": 43,
+      "CE": 48
     },
     {
       "tail": "N251JX",
@@ -93,9 +93,9 @@
       "lastIC": "2026-07-07",
       "lastEC": "2026-06-09",
       "lastCE": "2026-06-20",
-      "IC": -17,
-      "EC": 15,
-      "CE": 26
+      "IC": -18,
+      "EC": 14,
+      "CE": 25
     },
     {
       "tail": "N252JX",
@@ -105,9 +105,9 @@
       "lastIC": "2026-06-29",
       "lastEC": "2026-05-08",
       "lastCE": "2026-07-02",
-      "IC": -25,
-      "EC": -17,
-      "CE": 38
+      "IC": -26,
+      "EC": -18,
+      "CE": 37
     },
     {
       "tail": "N253JX",
@@ -117,9 +117,9 @@
       "lastIC": "2026-07-15",
       "lastEC": "2026-05-20",
       "lastCE": "2026-07-15",
-      "IC": -9,
-      "EC": -5,
-      "CE": 51
+      "IC": -10,
+      "EC": -6,
+      "CE": 50
     },
     {
       "tail": "N254JX",
@@ -129,9 +129,9 @@
       "lastIC": "2026-07-07",
       "lastEC": "2026-05-27",
       "lastCE": "2026-05-27",
-      "IC": -17,
-      "EC": 2,
-      "CE": 2
+      "IC": -18,
+      "EC": 1,
+      "CE": 1
     },
     {
       "tail": "N256JX",
@@ -141,9 +141,9 @@
       "lastIC": "2026-07-10",
       "lastEC": "2026-04-21",
       "lastCE": "2026-04-06",
-      "IC": -14,
-      "EC": -34,
-      "CE": -49
+      "IC": -15,
+      "EC": -35,
+      "CE": -50
     },
     {
       "tail": "N257JX",
@@ -153,9 +153,9 @@
       "lastIC": "2026-06-23",
       "lastEC": "2026-06-23",
       "lastCE": "2026-06-01",
-      "IC": -31,
-      "EC": 29,
-      "CE": 7
+      "IC": -32,
+      "EC": 28,
+      "CE": 6
     },
     {
       "tail": "N258JX",
@@ -165,9 +165,9 @@
       "lastIC": "2026-05-30",
       "lastEC": "2026-03-03",
       "lastCE": "2026-05-30",
-      "IC": -55,
-      "EC": -83,
-      "CE": 5
+      "IC": -56,
+      "EC": -84,
+      "CE": 4
     },
     {
       "tail": "N259JX",
@@ -177,9 +177,9 @@
       "lastIC": "2026-07-08",
       "lastEC": "2026-07-09",
       "lastCE": "2026-07-23",
-      "IC": -16,
-      "EC": 45,
-      "CE": 59
+      "IC": -17,
+      "EC": 44,
+      "CE": 58
     },
     {
       "tail": "N260JX",
@@ -189,9 +189,9 @@
       "lastIC": "2026-07-15",
       "lastEC": "2026-07-15",
       "lastCE": "2026-07-15",
-      "IC": -9,
-      "EC": 51,
-      "CE": 51
+      "IC": -10,
+      "EC": 50,
+      "CE": 50
     },
     {
       "tail": "N261JX",
@@ -201,9 +201,9 @@
       "lastIC": "2026-07-14",
       "lastEC": "2026-06-15",
       "lastCE": "2026-05-20",
-      "IC": -10,
-      "EC": 21,
-      "CE": -5
+      "IC": -11,
+      "EC": 20,
+      "CE": -6
     },
     {
       "tail": "N262JX",
@@ -213,9 +213,9 @@
       "lastIC": "2026-07-21",
       "lastEC": "2026-07-23",
       "lastCE": "2026-04-13",
-      "IC": -3,
-      "EC": 59,
-      "CE": -42
+      "IC": -4,
+      "EC": 58,
+      "CE": -43
     },
     {
       "tail": "N263JX",
@@ -225,9 +225,9 @@
       "lastIC": "2026-06-27",
       "lastEC": "2026-06-27",
       "lastCE": "2026-06-08",
-      "IC": -27,
-      "EC": 33,
-      "CE": 14
+      "IC": -28,
+      "EC": 32,
+      "CE": 13
     },
     {
       "tail": "N264JX",
@@ -237,21 +237,21 @@
       "lastIC": "2026-06-16",
       "lastEC": "2026-05-14",
       "lastCE": "2026-03-24",
-      "IC": -38,
-      "EC": -11,
-      "CE": -62
+      "IC": -39,
+      "EC": -12,
+      "CE": -63
     },
     {
       "tail": "N266JX",
       "type": "EMB 135",
       "station": "BUR/SNA",
-      "lastService": "2026-07-18",
-      "lastIC": "2026-07-18",
+      "lastService": "2026-08-21",
+      "lastIC": "2026-08-21",
       "lastEC": "2026-05-20",
-      "lastCE": "2026-05-20",
-      "IC": -6,
-      "EC": -5,
-      "CE": -5
+      "lastCE": "2026-08-21",
+      "IC": 27,
+      "EC": -6,
+      "CE": 87
     },
     {
       "tail": "N268JX",
@@ -261,9 +261,9 @@
       "lastIC": "2026-07-08",
       "lastEC": "2026-06-13",
       "lastCE": "2026-06-02",
-      "IC": -16,
-      "EC": 19,
-      "CE": 8
+      "IC": -17,
+      "EC": 18,
+      "CE": 7
     },
     {
       "tail": "N400JX",
@@ -273,9 +273,9 @@
       "lastIC": "2026-07-03",
       "lastEC": "2026-06-11",
       "lastCE": "2026-07-03",
-      "IC": -21,
-      "EC": 17,
-      "CE": 39
+      "IC": -22,
+      "EC": 16,
+      "CE": 38
     },
     {
       "tail": "N401JX",
@@ -285,9 +285,9 @@
       "lastIC": "2026-06-22",
       "lastEC": "2026-06-23",
       "lastCE": "2026-05-25",
-      "IC": -32,
-      "EC": 29,
-      "CE": 0
+      "IC": -33,
+      "EC": 28,
+      "CE": -1
     },
     {
       "tail": "N912JX",
@@ -297,21 +297,21 @@
       "lastIC": "2026-07-23",
       "lastEC": "2026-05-29",
       "lastCE": "2026-05-11",
-      "IC": -1,
-      "EC": 4,
-      "CE": -14
+      "IC": -2,
+      "EC": 3,
+      "CE": -15
     },
     {
       "tail": "N913JX",
       "type": "EMB 145",
       "station": "FXE/OPF",
-      "lastService": "2026-08-20",
+      "lastService": "2026-08-23",
       "lastIC": "2026-07-20",
       "lastEC": "2026-05-19",
       "lastCE": "2026-05-15",
-      "IC": -4,
-      "EC": -6,
-      "CE": -10
+      "IC": -5,
+      "EC": -7,
+      "CE": -11
     },
     {
       "tail": "N914JX",
@@ -321,9 +321,9 @@
       "lastIC": "2026-06-30",
       "lastEC": "2026-06-04",
       "lastCE": "2026-07-01",
-      "IC": -24,
-      "EC": 10,
-      "CE": 37
+      "IC": -25,
+      "EC": 9,
+      "CE": 36
     },
     {
       "tail": "N915JX",
@@ -333,9 +333,9 @@
       "lastIC": "2026-07-18",
       "lastEC": "2026-06-10",
       "lastCE": "2026-07-18",
-      "IC": -6,
-      "EC": 16,
-      "CE": 54
+      "IC": -7,
+      "EC": 15,
+      "CE": 53
     },
     {
       "tail": "N916JX",
@@ -345,9 +345,9 @@
       "lastIC": "2026-07-08",
       "lastEC": "2026-05-16",
       "lastCE": "2026-07-08",
-      "IC": -16,
-      "EC": -9,
-      "CE": 44
+      "IC": -17,
+      "EC": -10,
+      "CE": 43
     },
     {
       "tail": "N917JX",
@@ -357,9 +357,9 @@
       "lastIC": "2026-06-15",
       "lastEC": "2026-07-07",
       "lastCE": "2026-05-22",
-      "IC": -39,
-      "EC": 43,
-      "CE": -3
+      "IC": -40,
+      "EC": 42,
+      "CE": -4
     },
     {
       "tail": "N918JX",
@@ -369,9 +369,9 @@
       "lastIC": "2026-08-18",
       "lastEC": "2026-07-20",
       "lastCE": "2026-05-13",
-      "IC": 25,
-      "EC": 56,
-      "CE": -12
+      "IC": 24,
+      "EC": 55,
+      "CE": -13
     },
     {
       "tail": "N919JX",
@@ -381,9 +381,9 @@
       "lastIC": "2026-07-22",
       "lastEC": "2026-07-14",
       "lastCE": "2026-07-14",
-      "IC": -2,
-      "EC": 50,
-      "CE": 50
+      "IC": -3,
+      "EC": 49,
+      "CE": 49
     },
     {
       "tail": "N922JX",
@@ -393,9 +393,9 @@
       "lastIC": "2026-06-30",
       "lastEC": "2026-04-23",
       "lastCE": "2026-04-23",
-      "IC": -24,
-      "EC": -32,
-      "CE": -32
+      "IC": -25,
+      "EC": -33,
+      "CE": -33
     },
     {
       "tail": "N926JX",
@@ -405,9 +405,9 @@
       "lastIC": "2026-05-20",
       "lastEC": "2026-06-24",
       "lastCE": "2026-03-24",
-      "IC": -65,
-      "EC": 30,
-      "CE": -62
+      "IC": -66,
+      "EC": 29,
+      "CE": -63
     },
     {
       "tail": "N928JX",
@@ -417,9 +417,9 @@
       "lastIC": "2026-07-10",
       "lastEC": "2026-07-10",
       "lastCE": "2026-07-15",
-      "IC": -14,
-      "EC": 46,
-      "CE": 51
+      "IC": -15,
+      "EC": 45,
+      "CE": 50
     },
     {
       "tail": "N931JX",
@@ -429,9 +429,9 @@
       "lastIC": "2026-07-03",
       "lastEC": "2026-07-15",
       "lastCE": "2026-05-05",
-      "IC": -21,
-      "EC": 51,
-      "CE": -20
+      "IC": -22,
+      "EC": 50,
+      "CE": -21
     },
     {
       "tail": "N932JX",
@@ -441,9 +441,9 @@
       "lastIC": "2026-07-09",
       "lastEC": "2026-05-22",
       "lastCE": "2026-05-21",
-      "IC": -15,
-      "EC": -3,
-      "CE": -4
+      "IC": -16,
+      "EC": -4,
+      "CE": -5
     },
     {
       "tail": "N933JX",
@@ -453,9 +453,9 @@
       "lastIC": "2026-07-06",
       "lastEC": "2026-07-06",
       "lastCE": "2026-05-13",
-      "IC": -18,
-      "EC": 42,
-      "CE": -12
+      "IC": -19,
+      "EC": 41,
+      "CE": -13
     },
     {
       "tail": "N934JX",
@@ -465,9 +465,9 @@
       "lastIC": "2026-06-30",
       "lastEC": "2026-07-17",
       "lastCE": "2026-05-26",
-      "IC": -24,
-      "EC": 53,
-      "CE": 1
+      "IC": -25,
+      "EC": 52,
+      "CE": 0
     },
     {
       "tail": "N935JX",
@@ -477,9 +477,9 @@
       "lastIC": "2026-07-02",
       "lastEC": "2026-07-02",
       "lastCE": "2026-06-02",
-      "IC": -22,
-      "EC": 38,
-      "CE": 8
+      "IC": -23,
+      "EC": 37,
+      "CE": 7
     },
     {
       "tail": "N937JX",
@@ -489,9 +489,9 @@
       "lastIC": "2026-06-26",
       "lastEC": "2026-07-16",
       "lastCE": "2026-05-30",
-      "IC": -28,
-      "EC": 52,
-      "CE": 5
+      "IC": -29,
+      "EC": 51,
+      "CE": 4
     },
     {
       "tail": "N940JX",
@@ -501,9 +501,9 @@
       "lastIC": "2026-07-02",
       "lastEC": "2026-07-02",
       "lastCE": "2026-06-26",
-      "IC": -22,
-      "EC": 38,
-      "CE": 32
+      "IC": -23,
+      "EC": 37,
+      "CE": 31
     },
     {
       "tail": "N947JX",
@@ -513,9 +513,9 @@
       "lastIC": "2026-08-18",
       "lastEC": "2026-07-15",
       "lastCE": "2026-05-30",
-      "IC": 25,
-      "EC": 51,
-      "CE": 5
+      "IC": 24,
+      "EC": 50,
+      "CE": 4
     },
     {
       "tail": "N948JX",
@@ -525,9 +525,9 @@
       "lastIC": "2026-07-17",
       "lastEC": "2026-07-08",
       "lastCE": "2026-04-14",
-      "IC": -7,
-      "EC": 44,
-      "CE": -41
+      "IC": -8,
+      "EC": 43,
+      "CE": -42
     },
     {
       "tail": "N949JX",
@@ -537,9 +537,9 @@
       "lastIC": "2026-07-23",
       "lastEC": "2026-06-09",
       "lastCE": "2026-06-07",
-      "IC": -1,
-      "EC": 15,
-      "CE": 13
+      "IC": -2,
+      "EC": 14,
+      "CE": 12
     },
     {
       "tail": "N950JX",
@@ -549,9 +549,9 @@
       "lastIC": "2026-06-08",
       "lastEC": "2026-05-07",
       "lastCE": "2026-05-20",
-      "IC": -46,
-      "EC": -18,
-      "CE": -5
+      "IC": -47,
+      "EC": -19,
+      "CE": -6
     },
     {
       "tail": "N952JX",
@@ -561,9 +561,9 @@
       "lastIC": "2026-06-23",
       "lastEC": "2026-06-22",
       "lastCE": "2026-07-08",
-      "IC": -31,
-      "EC": 28,
-      "CE": 44
+      "IC": -32,
+      "EC": 27,
+      "CE": 43
     },
     {
       "tail": "N954JX",
@@ -573,9 +573,9 @@
       "lastIC": "2026-06-30",
       "lastEC": "2026-06-30",
       "lastCE": "2026-06-26",
-      "IC": -24,
-      "EC": 36,
-      "CE": 32
+      "IC": -25,
+      "EC": 35,
+      "CE": 31
     },
     {
       "tail": "N955JX",
@@ -585,9 +585,9 @@
       "lastIC": "2026-07-03",
       "lastEC": "2026-07-03",
       "lastCE": "2026-05-12",
-      "IC": -21,
-      "EC": 39,
-      "CE": -13
+      "IC": -22,
+      "EC": 38,
+      "CE": -14
     },
     {
       "tail": "N956JX",
@@ -597,9 +597,9 @@
       "lastIC": "2026-07-03",
       "lastEC": "2026-07-03",
       "lastCE": "2026-07-09",
-      "IC": -21,
-      "EC": 39,
-      "CE": 45
+      "IC": -22,
+      "EC": 38,
+      "CE": 44
     },
     {
       "tail": "N957JX",
@@ -609,9 +609,9 @@
       "lastIC": "2026-07-23",
       "lastEC": "2026-07-15",
       "lastCE": "2026-07-23",
-      "IC": -1,
-      "EC": 51,
-      "CE": 59
+      "IC": -2,
+      "EC": 50,
+      "CE": 58
     },
     {
       "tail": "N958JX",
@@ -621,9 +621,9 @@
       "lastIC": "2026-07-13",
       "lastEC": "2026-07-13",
       "lastCE": "2026-06-09",
-      "IC": -11,
-      "EC": 49,
-      "CE": 15
+      "IC": -12,
+      "EC": 48,
+      "CE": 14
     },
     {
       "tail": "N959JX",
@@ -633,21 +633,21 @@
       "lastIC": "2026-07-20",
       "lastEC": "2026-07-20",
       "lastCE": "2026-04-29",
-      "IC": -4,
-      "EC": 56,
-      "CE": -26
+      "IC": -5,
+      "EC": 55,
+      "CE": -27
     },
     {
       "tail": "N960JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-07-16",
+      "lastService": "2026-08-23",
       "lastIC": "2026-07-16",
       "lastEC": "2026-07-16",
       "lastCE": "2026-05-04",
-      "IC": -8,
-      "EC": 52,
-      "CE": -21
+      "IC": -9,
+      "EC": 51,
+      "CE": -22
     },
     {
       "tail": "N961JX",
@@ -657,21 +657,21 @@
       "lastIC": "2026-07-01",
       "lastEC": "2026-07-01",
       "lastCE": "2026-07-01",
-      "IC": -23,
-      "EC": 37,
-      "CE": 37
+      "IC": -24,
+      "EC": 36,
+      "CE": 36
     },
     {
       "tail": "N962JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-08-22",
+      "lastService": "2026-08-23",
       "lastIC": "2026-06-23",
       "lastEC": "2026-04-29",
       "lastCE": "2026-07-07",
-      "IC": -31,
-      "EC": -26,
-      "CE": 43
+      "IC": -32,
+      "EC": -27,
+      "CE": 42
     },
     {
       "tail": "N963JX",
@@ -681,9 +681,9 @@
       "lastIC": "2026-07-20",
       "lastEC": "2026-06-18",
       "lastCE": "2026-06-17",
-      "IC": -4,
-      "EC": 24,
-      "CE": 23
+      "IC": -5,
+      "EC": 23,
+      "CE": 22
     }
   ],
   "debriefs": [
@@ -2733,7 +2733,7 @@
     },
     {
       "tail": "N959JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "HPN",
       "date": "2026-08-15",
       "tech": "Karla Gattorno Machado",
@@ -2747,7 +2747,7 @@
     },
     {
       "tail": "N963JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "HPN",
       "date": "2026-08-15",
       "tech": "Karla Gattorno Machado",
@@ -2761,7 +2761,7 @@
     },
     {
       "tail": "N922JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "HPN",
       "date": "2026-08-16",
       "tech": "Karla Gattorno Machado",
@@ -2775,7 +2775,7 @@
     },
     {
       "tail": "N962JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "HPN",
       "date": "2026-08-16",
       "tech": "Karla Gattorno Machado",
@@ -2789,7 +2789,7 @@
     },
     {
       "tail": "N247JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "TEB",
       "date": "2026-08-16",
       "tech": "Karla Gattorno Machado",
@@ -2803,7 +2803,7 @@
     },
     {
       "tail": "N952JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "TEB",
       "date": "2026-08-16",
       "tech": "Karla Gattorno Machado",
@@ -2817,7 +2817,7 @@
     },
     {
       "tail": "N962JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "HPN",
       "date": "2026-08-17",
       "tech": "Karla Gattorno Machado",
@@ -2831,7 +2831,7 @@
     },
     {
       "tail": "N963JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "HPN",
       "date": "2026-08-17",
       "tech": "Karla Gattorno Machado",
@@ -2845,7 +2845,7 @@
     },
     {
       "tail": "N961JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "TEB",
       "date": "2026-08-17",
       "tech": "Karla Gattorno Machado",
@@ -2859,7 +2859,7 @@
     },
     {
       "tail": "N247JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "TEB",
       "date": "2026-08-17",
       "tech": "Karla Gattorno Machado",
@@ -2873,7 +2873,7 @@
     },
     {
       "tail": "N922JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "HPN",
       "date": "2026-08-18",
       "tech": "Karla Gattorno Machado",
@@ -2887,7 +2887,7 @@
     },
     {
       "tail": "N919JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "HPN",
       "date": "2026-08-18",
       "tech": "Karla Gattorno Machado",
@@ -2901,7 +2901,7 @@
     },
     {
       "tail": "N947JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "SCF",
       "date": "2026-08-18",
       "tech": "Briza Garibay",
@@ -2915,7 +2915,7 @@
     },
     {
       "tail": "N922JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "HPN",
       "date": "2026-08-19",
       "tech": "Karla Gattorno Machado",
@@ -2929,7 +2929,7 @@
     },
     {
       "tail": "N407SV",
-      "type": "",
+      "type": "#N/A",
       "location": "DAL",
       "date": "2026-08-19",
       "tech": "Robert Murillo",
@@ -2943,7 +2943,7 @@
     },
     {
       "tail": "N918JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "SNA",
       "date": "2026-08-18",
       "tech": "Heidi Cromer",
@@ -2957,7 +2957,7 @@
     },
     {
       "tail": "N913JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "HPN",
       "date": "2026-08-20",
       "tech": "Karla Gattorno Machado",
@@ -2971,7 +2971,7 @@
     },
     {
       "tail": "N932JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "HPN",
       "date": "2026-08-20",
       "tech": "Karla Gattorno Machado",
@@ -2985,7 +2985,7 @@
     },
     {
       "tail": "N922JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "HPN",
       "date": "2026-08-20",
       "tech": "Karla Gattorno Machado",
@@ -2999,7 +2999,7 @@
     },
     {
       "tail": "N952JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "TEB",
       "date": "2026-08-20",
       "tech": "Karla Gattorno Machado",
@@ -3013,7 +3013,7 @@
     },
     {
       "tail": "N961JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "TEB",
       "date": "2026-08-20",
       "tech": "Karla Gattorno Machado",
@@ -3027,7 +3027,7 @@
     },
     {
       "tail": "N935JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "HPN",
       "date": "2026-08-21",
       "tech": "Karla Gattorno Machado",
@@ -3041,7 +3041,7 @@
     },
     {
       "tail": "N922JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "HPN",
       "date": "2026-08-21",
       "tech": "Karla Gattorno Machado",
@@ -3055,7 +3055,7 @@
     },
     {
       "tail": "N247JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "TEB",
       "date": "2026-08-21",
       "tech": "Karla Gattorno Machado",
@@ -3069,7 +3069,7 @@
     },
     {
       "tail": "N952JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "TEB",
       "date": "2026-08-21",
       "tech": "Karla Gattorno Machado",
@@ -3083,7 +3083,7 @@
     },
     {
       "tail": "N242JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "SCF",
       "date": "2026-08-21",
       "tech": "Briza Garibay",
@@ -3097,7 +3097,7 @@
     },
     {
       "tail": "N922JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "HPN",
       "date": "2026-08-22",
       "tech": "Karla Gattorno Machado",
@@ -3111,7 +3111,7 @@
     },
     {
       "tail": "N962JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "HPN",
       "date": "2026-08-22",
       "tech": "Karla Gattorno Machado",
@@ -3125,7 +3125,7 @@
     },
     {
       "tail": "N247JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "TEB",
       "date": "2026-08-22",
       "tech": "Karla Gattorno Machado",
@@ -3139,7 +3139,7 @@
     },
     {
       "tail": "N928JX",
-      "type": "",
+      "type": "EMB 145",
       "location": "TEB",
       "date": "2026-08-22",
       "tech": "Karla Gattorno Machado",
@@ -3149,6 +3149,76 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6632724995114630827",
+      "link": null
+    },
+    {
+      "tail": "N913JX",
+      "type": "EMB 145",
+      "location": "HPN",
+      "date": "2026-08-23",
+      "tech": "Karla Gattorno Machado",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6633373458811499311",
+      "link": null
+    },
+    {
+      "tail": "N962JX",
+      "type": "EMB 145",
+      "location": "HPN",
+      "date": "2026-08-23",
+      "tech": "Karla Gattorno Machado",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6633456123018726882",
+      "link": null
+    },
+    {
+      "tail": "N960JX",
+      "type": "EMB 145",
+      "location": "HPN",
+      "date": "2026-08-23",
+      "tech": "Karla Gattorno Machado",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6633463252016700216",
+      "link": null
+    },
+    {
+      "tail": "N266JX",
+      "type": "EMB 135",
+      "location": "BUR",
+      "date": "2026-08-21",
+      "tech": "Vida Curi",
+      "ron": 0,
+      "IC": 1,
+      "EC": 0,
+      "CE": 1,
+      "biohazard": 0,
+      "subId": "_6633465557696422325",
+      "link": null
+    },
+    {
+      "tail": "N247JX",
+      "type": "EMB 145",
+      "location": "TEB",
+      "date": "2026-08-23",
+      "tech": "Karla Gattorno Machado",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6633553355811097746",
       "link": null
     }
   ],
