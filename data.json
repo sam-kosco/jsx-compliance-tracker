@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-28T06:21:00.885079+00:00",
+  "generated": "2026-08-28T17:42:38.866426+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -377,7 +377,7 @@
       "tail": "N919JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-08-21",
+      "lastService": "2026-08-27",
       "lastIC": "2026-08-21",
       "lastEC": "2026-07-14",
       "lastCE": "2026-07-14",
@@ -3485,6 +3485,20 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6637036336119347777",
+      "link": null
+    },
+    {
+      "tail": "N919JX",
+      "type": "EMB 145",
+      "location": "FXE",
+      "date": "2026-08-27",
+      "tech": "ANGEL GUINER Francois",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6637448480128488003",
       "link": null
     }
   ],
