@@ -1,8 +1,8 @@
 name: JSX Compliance Data Refresh
 
 on:
-  schedule:
-    - cron: "47 * * * *"
+  # No native cron (Sam, 2026-08-28): the platform's dispatcher fires this
+  # hourly at :47 from Monitoring/schedules.json.
   workflow_dispatch:
 
 jobs:
