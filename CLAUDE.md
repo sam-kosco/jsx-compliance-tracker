@@ -138,6 +138,15 @@ All emails are sent from `foxtrot.automation@foxtrotaviation.com` via Microsoft 
 
 Distro membership for `jsx.requests@foxtrotaviation.com` is managed in Microsoft 365 Admin.
 
+> **Planned — recurring compliance emails (~Oct 10, 2026).** A recurring
+> compliance-status digest (mirroring the PSA compliance tracker) is intentionally
+> deferred until **all JSX compliance windows have fully elapsed** so the numbers
+> reflect real work: IC = 30d, EC/CE = 90d cycles against a ~March 2026 go-live, so
+> the 90-day windows clear around early October. A one-time reminder is scheduled
+> for 2026-10-10 to build it — reuse the existing Graph email plumbing in
+> `generate_data.py`; open questions at that point are the recipient list and send
+> cadence. Not yet built.
+
 ---
 
 ## GitHub Secrets
