@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-03T16:48:10.436753+00:00",
+  "generated": "2026-09-03T19:48:17.085037+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -125,11 +125,11 @@
       "tail": "N254JX",
       "type": "EMB 135",
       "station": "BUR/SNA",
-      "lastService": "2026-07-07",
-      "lastIC": "2026-07-07",
+      "lastService": "2026-09-02",
+      "lastIC": "2026-09-02",
       "lastEC": "2026-05-27",
       "lastCE": "2026-05-27",
-      "IC": -28,
+      "IC": 29,
       "EC": -9,
       "CE": -9
     },
@@ -3947,6 +3947,20 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6642609090122748497",
+      "link": null
+    },
+    {
+      "tail": "N254JX",
+      "type": "EMB 135",
+      "location": "BUR",
+      "date": "2026-09-02",
+      "tech": "Vida Curi",
+      "ron": 0,
+      "IC": 1,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6642729025616776918",
       "link": null
     }
   ],
