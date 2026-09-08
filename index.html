@@ -58,6 +58,7 @@
   @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(126,237,184,0.4)}50%{opacity:0.7;box-shadow:0 0 0 4px rgba(126,237,184,0)}}
 
   /* ── TABS ── */
+  body.embedded .tab-bar{display:none;}
   .tab-bar{background:var(--navy);border-top:1px solid rgba(255,255,255,0.1);display:flex;justify-content:center;}
   .tab-btn{font-family:var(--cond);font-size:14px;font-weight:700;color:rgba(255,255,255,0.5);padding:12px 20px;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;letter-spacing:0.5px;transition:color 0.15s,border-color 0.15s;text-transform:uppercase;}
   .tab-btn:hover{color:rgba(255,255,255,0.8);}
@@ -1406,6 +1407,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const fend=document.getElementById('f-end');
   if(fend) fend.value=todayISO();
 });
+
+// Platform embed support: a hash like "#extract&embed=1" hides this page's
+// own tab bar (embed=1) and lets the platform shell's navy tabs drive tab
+// switches via hashchange (same-document navigation, no reload). The public
+// page and legacy mirror never carry the hash, so they keep their own tabs.
+function applyEmbedHash() {
+  const parts = (location.hash.slice(1) || '').split('&');
+  if (parts.includes('embed=1')) document.body.classList.add('embedded');
+  const tab = parts[0];
+  if (tab && document.getElementById('tab-' + tab)) switchTab(tab);
+}
+window.addEventListener('hashchange', applyEmbedHash);
+applyEmbedHash();
 </script>
 </body>
 </html>
