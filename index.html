@@ -103,6 +103,11 @@
      Media queries evaluate against the real viewport, so the ≤960px mobile
      layout below is unaffected. */
   @media (min-width:961px){ html{zoom:1.35;} .login-box{zoom:1.5;} }
+  /* In the platform / SharePoint embed, drop the standalone desktop zoom: the
+     shell sizes this iframe like every other fleet tracker (none of which zoom),
+     so the 1.35 zoom made JSX render 35% larger than its siblings. data-embedded
+     is set on <html> synchronously whenever the page is framed. */
+  @media (min-width:961px){ html[data-embedded]{zoom:1;} }
   .main-grid{width:66.66vw;margin:0 auto;padding:24px 28px;display:grid;grid-template-columns:1fr 1fr;gap:20px;}
   .col-full{grid-column:1/-1;}
 
