@@ -73,6 +73,29 @@
   /* ── TAB PAGES ── */
   .tab-page{display:none;}
   .tab-page.active{display:block;}
+  /* ── WORK ORDER TAB ── */
+  .wo-intro{font-size:13px;color:var(--text-mid);line-height:1.55;margin-bottom:18px;}
+  .wo-multi-wrap{position:relative;}
+  /* let the dropdown escape the card instead of being clipped by overflow:hidden */
+  #tab-work .card,#tab-work .card-body,#tab-work .wo-multi-wrap{overflow:visible;}
+  .wo-control{display:flex;flex-wrap:wrap;align-items:center;gap:6px;border:1.5px solid var(--gray);border-radius:4px;padding:8px 10px;min-height:48px;background:var(--white);cursor:text;}
+  .wo-control:focus-within{border-color:var(--orange);}
+  #wo-chips{display:contents;}
+  .wo-chip{display:inline-flex;align-items:center;gap:7px;background:var(--navy);color:#fff;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:0.5px;padding:5px 8px 5px 11px;border-radius:4px;}
+  .wo-chip-x{cursor:pointer;font-size:16px;line-height:1;opacity:0.65;}
+  .wo-chip-x:hover{opacity:1;}
+  .wo-input{flex:1;min-width:160px;border:none;outline:none;font-family:var(--sans);font-size:15px;padding:5px 4px;text-transform:uppercase;background:transparent;color:var(--text);}
+  .wo-dropdown{position:absolute;top:calc(100% + 2px);left:0;right:0;background:var(--white);border:1.5px solid var(--orange);border-radius:0 0 4px 4px;box-shadow:var(--shadow-md);max-height:440px;overflow-y:auto;z-index:200;display:none;}
+  .wo-dropdown-item{padding:9px 14px;font-size:14px;font-family:var(--sans);cursor:pointer;border-bottom:1px solid var(--gray-light);text-transform:uppercase;letter-spacing:0.3px;color:var(--text);}
+  .wo-dropdown-item:hover{background:var(--orange-pale);color:var(--orange);}
+  .wo-dropdown-empty{padding:12px 14px;font-size:13px;color:var(--text-light);}
+  .wo-row2{display:flex;align-items:center;justify-content:space-between;margin-top:12px;}
+  .wo-count{font-size:12px;font-weight:600;color:var(--text-light);}
+  .wo-clear{font-size:12px;color:var(--orange);cursor:pointer;font-weight:600;display:none;}
+  .wo-clear:hover{text-decoration:underline;}
+  .wo-generate{margin-top:18px;width:100%;padding:14px;background:var(--orange);color:#fff;font-family:var(--cond);font-size:15px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:none;border-radius:6px;cursor:pointer;transition:background 0.15s;}
+  .wo-generate:hover{background:var(--orange-light);}
+  .wo-generate:disabled{background:var(--gray);cursor:not-allowed;}
 
   /* ── MAIN GRID ── */
   /* Desktop zoom: renders the page at 135% like browser zoom, which makes the
@@ -319,6 +342,8 @@
 <style>/* Inside the Foxtrot Platform the shell provides the header - hide this
    page's own topbar to avoid the double-header (standalone visits keep it). */
 [data-embedded] header.topbar,[data-embedded] header:has(.hdr-inner){display:none!important}</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 </head>
 <body>
 
@@ -361,6 +386,7 @@
   <div class="tab-bar">
     <div class="tab-bar-inner">
       <button class="tab-btn active" onclick="switchTab('fleet')">Fleet Tracker</button>
+      <button class="tab-btn" onclick="switchTab('work')">Work Order</button>
       <button class="tab-btn" onclick="switchTab('extract')">Data Extraction</button>
       <button class="tab-btn" onclick="switchTab('requests')">Service Requests</button>
     </div>
@@ -474,6 +500,27 @@
   <!-- ═══════════════════════════════════════════════
        TAB 2: DATA EXTRACTION
   ═══════════════════════════════════════════════ -->
+  <div class="tab-page" id="tab-work">
+    <div class="card col-full">
+      <div class="card-header"><div class="card-title">📋 Work Order Builder</div></div>
+      <div class="card-body">
+        <p class="wo-intro">Select the tail numbers on site for tonight's shift, then generate a printable work order. Jobs are prioritized by how far each tail is past compliance — the most overdue aircraft come first.</p>
+        <div class="wo-multi-wrap">
+          <div class="wo-control" id="wo-control" onclick="document.getElementById('wo-input').focus()">
+            <span id="wo-chips"></span>
+            <input type="text" id="wo-input" class="wo-input" placeholder="Search and add tail numbers…" autocomplete="off" oninput="woRenderDropdown(this.value)" onfocus="woOpen()" onblur="woClose()" onkeydown="woKey(event)">
+          </div>
+          <div class="wo-dropdown" id="wo-dropdown"></div>
+        </div>
+        <div class="wo-row2">
+          <span class="wo-count" id="wo-count">0 tails selected</span>
+          <span class="wo-clear" id="wo-clear" onclick="woClear()">Clear all</span>
+        </div>
+        <button class="wo-generate" id="wo-generate" onclick="woGenerate()" disabled>Generate Work Order&nbsp;&darr;</button>
+      </div>
+    </div>
+  </div><!-- /tab-work -->
+
   <div class="tab-page" id="tab-extract">
     <div class="orange-band">
       <div class="band-inner">
@@ -731,6 +778,166 @@ function switchTab(name) {
     if(b.textContent.toLowerCase().includes(name==='fleet'?'fleet':name==='extract'?'data':name)) b.classList.add('active');
   });
   if (name==='extract') renderExtract();
+}
+
+/* ===== WORK ORDER ===== */
+const WO_PROGRAM = 'JSX';
+const WO_TRACKED = (typeof TRACKED !== 'undefined') ? TRACKED : Object.keys(JOB_NAMES);
+let woSelected = [];
+
+function woAvail(){ return (window._allTails||[]).filter(t=>!woSelected.includes(t)); }
+function woRenderChips(){
+  document.getElementById('wo-chips').innerHTML = woSelected.map(t=>
+    '<span class="wo-chip">'+t+'<span class="wo-chip-x" onmousedown="event.preventDefault();woRemove(\''+t+'\')">×</span></span>').join('');
+  document.getElementById('wo-count').textContent = woSelected.length+' tail'+(woSelected.length===1?'':'s')+' selected';
+  document.getElementById('wo-generate').disabled = woSelected.length===0;
+  document.getElementById('wo-clear').style.display = woSelected.length? 'inline':'none';
+}
+function woRenderDropdown(query){
+  const dd=document.getElementById('wo-dropdown'); if(!dd) return;
+  const q=(query||'').trim().toUpperCase();
+  const list=woAvail().filter(t=> q? t.toUpperCase().includes(q): true);
+  dd.innerHTML = list.length
+    ? list.map(t=>'<div class="wo-dropdown-item" onmousedown="event.preventDefault();woAdd(\''+t+'\')">'+t+'</div>').join('')
+    : '<div class="wo-dropdown-empty">No matching tails</div>';
+  dd.style.display='block';
+}
+function woOpen(){ woRenderDropdown(document.getElementById('wo-input').value); }
+function woClose(){ const dd=document.getElementById('wo-dropdown'); if(dd) setTimeout(function(){dd.style.display='none';},150); }
+function woAdd(t){ if(!woSelected.includes(t)) woSelected.push(t); const inp=document.getElementById('wo-input'); inp.value=''; woRenderChips(); woRenderDropdown(''); inp.focus(); }
+function woRemove(t){ woSelected=woSelected.filter(x=>x!==t); woRenderChips(); }
+function woClear(){ woSelected=[]; woRenderChips(); const dd=document.getElementById('wo-dropdown'); if(dd) dd.style.display='none'; }
+function woKey(e){
+  const inp=document.getElementById('wo-input');
+  if(e.key==='Enter'){ e.preventDefault(); const q=inp.value.trim().toUpperCase(); const list=woAvail().filter(t=>t.toUpperCase().includes(q)); if(list.length) woAdd(list[0]); }
+  else if(e.key==='Backspace' && !inp.value && woSelected.length){ woRemove(woSelected[woSelected.length-1]); }
+}
+
+function woClassify(p){
+  const overdue=[],noService=[],dueSoon=[];
+  WO_TRACKED.forEach(function(code){
+    const v=p[code];
+    if(v==='No Service'||v===null||v===undefined) noService.push(code);
+    else if(typeof v==='number'){ if(v<0) overdue.push({code:code,days:-v}); else if(v<=7) dueSoon.push({code:code,days:v}); }
+  });
+  return {overdue:overdue,noService:noService,dueSoon:dueSoon};
+}
+function woBuildLines(e){
+  const out=[];
+  e.noService.forEach(function(code){ out.push({txt:(JOB_NAMES[code]||code)+'  —  never serviced', t:'od'}); });
+  e.overdue.slice().sort(function(a,b){return b.days-a.days;}).forEach(function(o){ out.push({txt:(JOB_NAMES[o.code]||o.code)+'  —  '+o.days+' day'+(o.days===1?'':'s')+' overdue', t:'od'}); });
+  e.dueSoon.slice().sort(function(a,b){return a.days-b.days;}).forEach(function(d){ out.push({txt:(JOB_NAMES[d.code]||d.code)+'  —  '+(d.days===0?'due today':'due in '+d.days+' day'+(d.days===1?'':'s')), t:'ds'}); });
+  return out;
+}
+function woGenerate(){
+  if(!woSelected.length || typeof DATA==='undefined' || !DATA){ return; }
+  if(!window.jspdf){ const b=document.getElementById('wo-generate'); const t=b.textContent; b.textContent='PDF library not loaded — retry'; setTimeout(()=>{b.textContent=t;}, 4000); return; }
+  const byTail={}; DATA.planes.forEach(function(p){ byTail[p.tail]=p; });
+  const entries=woSelected.map(function(t){
+    const p=byTail[t]||{tail:t};
+    const c=woClassify(p);
+    const overdueSum=c.overdue.reduce(function(s,o){return s+o.days;},0);
+    let tier;
+    if(c.noService.length) tier='ncNo';
+    else if(c.overdue.length) tier='ncNum';
+    else if(c.dueSoon.length) tier='ds';
+    else tier='ok';
+    return {tail:t,p:p,overdue:c.overdue,noService:c.noService,dueSoon:c.dueSoon,overdueSum:overdueSum,tier:tier};
+  });
+  const ncNo=entries.filter(function(e){return e.tier==='ncNo';}).sort(function(a,b){ return (b.noService.length-a.noService.length) || (b.overdueSum-a.overdueSum) || a.tail.localeCompare(b.tail); });
+  const ncNum=entries.filter(function(e){return e.tier==='ncNum';}).sort(function(a,b){ return (b.overdueSum-a.overdueSum) || a.tail.localeCompare(b.tail); });
+  const noncompliant=ncNo.concat(ncNum);
+  const dueSoon=entries.filter(function(e){return e.tier==='ds';}).sort(function(a,b){ return (Math.min.apply(null,a.dueSoon.map(function(d){return d.days;}))-Math.min.apply(null,b.dueSoon.map(function(d){return d.days;}))) || a.tail.localeCompare(b.tail); });
+  const compliant=entries.filter(function(e){return e.tier==='ok';}).sort(function(a,b){return a.tail.localeCompare(b.tail);});
+
+  const jsPDF=window.jspdf.jsPDF;
+  const doc=new jsPDF({unit:'pt',format:'letter'});
+  const PW=doc.internal.pageSize.getWidth(), PH=doc.internal.pageSize.getHeight(), M=48;
+  const NAVY=[27,42,74],ORANGE=[224,123,32],RED=[198,48,48],AMBER=[181,99,0],GREEN=[22,128,58],MID=[74,90,120],GRAY=[138,149,168],LINE=[228,231,238];
+  let y=M;
+  function np(){ doc.addPage(); y=M; }
+  function need(h){ if(y+h>PH-M) np(); }
+
+  const now=new Date();
+  const disp=(now.getMonth()+1)+'/'+now.getDate()+'/'+String(now.getFullYear()).slice(2);
+  // Unique work-order ID + QR (top-right). The QR encodes this ID so a closeout can
+  // carry a photo of it and the reconciler can tie the closeout to THIS exact work
+  // order (identity, not a date lookup). Drawn as vector modules to stay crisp.
+  const woId='WO:'+WO_PROGRAM+':'+now.getFullYear()+String(now.getMonth()+1).padStart(2,'0')+String(now.getDate()).padStart(2,'0')+':'+((window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now().toString(36)+Math.random().toString(36).slice(2,10)));
+  const QRSZ=54;
+  try{
+    const qr=qrcode(0,'M'); qr.addData(woId); qr.make();
+    const nMod=qr.getModuleCount(), cell=QRSZ/nMod, qx=PW-M-QRSZ, qy=y-8;
+    doc.setFillColor(0,0,0);
+    for(let r=0;r<nMod;r++){ for(let c=0;c<nMod;c++){ if(qr.isDark(r,c)) doc.rect(qx+c*cell, qy+r*cell, cell, cell, 'F'); } }
+  }catch(e){ /* QR lib not loaded — skip the code, still produce the work order */ }
+  doc.setFont('helvetica','bold'); doc.setFontSize(19); doc.setTextColor.apply(doc,NAVY);
+  doc.text(WO_PROGRAM+' Fleet — Nightly Work Order', M, y+4);
+  y+=16;
+  doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor.apply(doc,GRAY);
+  doc.text('Foxtrot Aviation Services — Detailing Compliance   ·   '+disp, M, y+4);
+  y+=12;
+  doc.setDrawColor.apply(doc,ORANGE); doc.setLineWidth(2); doc.line(M,y,PW-M-QRSZ-12,y);
+  y+=20;
+
+  doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor.apply(doc,NAVY);
+  doc.text('Tails on shift ('+woSelected.length+'):', M, y);
+  y+=15;
+  doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor.apply(doc,MID);
+  doc.splitTextToSize(woSelected.slice().sort(function(a,b){return a.localeCompare(b);}).join('     '), PW-2*M).forEach(function(ln){ need(14); doc.text(ln,M,y); y+=13; });
+  y+=12;
+
+  function sectionHeader(title,count,color){
+    need(42);
+    doc.setFillColor.apply(doc,color); doc.rect(M,y-1,4,17,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor.apply(doc,NAVY);
+    doc.text(title, M+12, y+12);
+    doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor.apply(doc,GRAY);
+    doc.text(count+(count===1?' tail':' tails'), PW-M, y+12, {align:'right'});
+    y+=22;
+    doc.setDrawColor.apply(doc,LINE); doc.setLineWidth(0.6); doc.line(M,y,PW-M,y); y+=12;
+  }
+  function tailBlock(e){
+    const lines=woBuildLines(e);
+    need(20+lines.length*13+10);
+    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor.apply(doc,NAVY);
+    doc.text(e.tail, M+6, y+8);
+    const lw=doc.getTextWidth(e.tail);
+    if(e.p && (e.p.lastLocation||e.p.station)){ doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor.apply(doc,GRAY); doc.text('   '+(e.p.lastLocation||e.p.station), M+6+lw, y+8); }
+    y+=18;
+    lines.forEach(function(ln){
+      need(13);
+      const col= ln.t==='od'?RED:AMBER;
+      doc.setFillColor.apply(doc,col); doc.circle(M+14,y+2,1.8,'F');
+      doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor.apply(doc,col);
+      doc.text(ln.txt, M+22, y+5);
+      y+=13;
+    });
+    y+=10;
+  }
+  function okBlock(e){
+    need(15);
+    doc.setFillColor.apply(doc,GREEN); doc.circle(M+8,y+2,1.8,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor.apply(doc,NAVY);
+    doc.text(e.tail, M+16, y+5);
+    const lw=doc.getTextWidth(e.tail);
+    doc.setFont('helvetica','normal'); doc.setTextColor.apply(doc,MID);
+    doc.text('   No additional services required', M+16+lw, y+5);
+    y+=15;
+  }
+
+  if(noncompliant.length){ sectionHeader('NONCOMPLIANT — PRIORITY', noncompliant.length, RED); noncompliant.forEach(tailBlock); y+=4; }
+  if(dueSoon.length){ sectionHeader('DUE SOON', dueSoon.length, AMBER); dueSoon.forEach(tailBlock); y+=4; }
+  if(compliant.length){ sectionHeader('COMPLIANT', compliant.length, GREEN); compliant.forEach(okBlock); }
+
+  const pages=doc.internal.getNumberOfPages();
+  for(let i=1;i<=pages;i++){ doc.setPage(i); doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor.apply(doc,GRAY);
+    doc.text('Generated '+now.toLocaleString()+'   ·   '+woId, M, PH-22);
+    doc.text('Page '+i+' of '+pages, PW-M, PH-22, {align:'right'}); }
+
+  const iso=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+  doc.save(WO_PROGRAM+'_Work_Order_'+iso+'.pdf');
+  woClear();
 }
 
 // ── DATA LOADING ──────────────────────────────────────
