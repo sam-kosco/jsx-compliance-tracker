@@ -788,6 +788,32 @@ function switchTab(name) {
 /* ===== WORK ORDER ===== */
 const WO_PROGRAM = 'JSX';
 const WO_TRACKED = (typeof TRACKED !== 'undefined') ? TRACKED : Object.keys(JOB_NAMES);
+// Work-order snapshot store: when a work order is generated we POST a JSON
+// snapshot of it (keyed by the QR's woId) so a closeout done on a phone can
+// upload a PHOTO of the QR instead of the PDF, and the reconciler fetches the
+// work order by id. Empty URL = not wired yet: the QR still prints and closeouts
+// keep uploading the PDF. Set this to the Power Automate "When an HTTP request is
+// received" flow that writes Monitoring/WorkOrders/<woId>.json (write-only, so a
+// public page holding the URL can only create snapshot files — low risk).
+const WO_STORE_WEBHOOK_URL = '';
+function woStoreSnapshot(woId, entries, roster, dateIso){
+  if(!WO_STORE_WEBHOOK_URL) return;
+  try{
+    const snap={ woId:woId, program:WO_PROGRAM, fleet:WO_PROGRAM, date:dateIso,
+      generatedAt:new Date().toISOString(),
+      onShift:roster.slice().sort(),
+      tails:entries.map(function(e){ return {
+        tail:e.tail,
+        station:(e.p&&(e.p.lastLocation||e.p.station))||null,
+        overdue:e.overdue.map(function(o){return {name:(JOB_NAMES[o.code]||o.code),days:o.days};}),
+        dueSoon:e.dueSoon.map(function(d){return {name:(JOB_NAMES[d.code]||d.code),days:d.days};}),
+        never:e.noService.map(function(code){return (JOB_NAMES[code]||code);})
+      };})
+    };
+    fetch(WO_STORE_WEBHOOK_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(snap),keepalive:true}).catch(function(){});
+  }catch(e){}
+}
 let woSelected = [];
 
 function woAvail(){ return (window._allTails||[]).filter(t=>!woSelected.includes(t)); }
@@ -868,7 +894,7 @@ function woGenerate(){
   // Unique work-order ID + QR (top-right). The QR encodes this ID so a closeout can
   // carry a photo of it and the reconciler can tie the closeout to THIS exact work
   // order (identity, not a date lookup). Drawn as vector modules to stay crisp.
-  const woId='WO:'+WO_PROGRAM+':'+now.getFullYear()+String(now.getMonth()+1).padStart(2,'0')+String(now.getDate()).padStart(2,'0')+':'+((window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now().toString(36)+Math.random().toString(36).slice(2,10)));
+  const woId='WO_'+WO_PROGRAM+'_'+now.getFullYear()+String(now.getMonth()+1).padStart(2,'0')+String(now.getDate()).padStart(2,'0')+'_'+((window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now().toString(36)+Math.random().toString(36).slice(2,10)));
   const QRSZ=54;
   try{
     const qr=qrcode(0,'M'); qr.addData(woId); qr.make();
@@ -942,6 +968,7 @@ function woGenerate(){
 
   const iso=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
   doc.save(WO_PROGRAM+'_Work_Order_'+iso+'.pdf');
+  woStoreSnapshot(woId, entries, woSelected, iso);
   woClear();
 }
 
