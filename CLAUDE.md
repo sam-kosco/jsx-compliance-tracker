@@ -3,7 +3,7 @@
 **Owner:** Samuel Kosco — Data Analyst, Foxtrot Aviation Services  
 **Repo:** `Foxtrot-Aviation-Services/jsx-compliance-tracker` (private)  
 **Hosted at:** `foxtrot-aviation-services.github.io/jsx-compliance-tracker/` (legacy `sam-kosco.github.io/jsx-compliance-tracker/` mirrored — see Org migration)  
-**Access:** Password-protected — password is `JSX2026`
+**Access:** Password-protected — password is `JSX2026`. The gate is skipped under the platform embed (`embed=1` hash) and on the platform's client-facing `/t/jsx/` proxy (path check in `skipLogin()`, Sam 2026-09-21) — hand JSX the proxy URL; the public Pages/mirror URLs keep the code screen.
 
 This repo hosts the JSX Air fleet detailing compliance dashboard. It is client-facing — JSX operations staff have access. It includes a Fleet Tracker, Data Extraction tab, and Service Requests tab.
 

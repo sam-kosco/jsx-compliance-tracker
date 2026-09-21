@@ -1652,20 +1652,26 @@ document.addEventListener('DOMContentLoaded', () => {
 // own tab bar (embed=1) and lets the platform shell's navy tabs drive tab
 // switches via hashchange (same-document navigation, no reload). The public
 // page and legacy mirror never carry the hash, so they keep their own tabs.
+// Skip the access-code screen (client-side deterrence only — the code is in
+// this file's source). Used by the platform embed (embed=1; sign-in already
+// happened) and by the platform's client-facing /t/jsx/ proxy (Sam,
+// 2026-09-21 — that URL is handed to JSX directly, no gate). Standalone
+// Pages/mirror visits still get the code screen.
+function skipLogin() {
+  const login = document.getElementById('login-screen');
+  if (login && login.style.display !== 'none') {
+    login.style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadAll();
+  }
+}
 function applyEmbedHash() {
   const parts = (location.hash.slice(1) || '').split('&');
   if (parts.includes('embed=1')) {
     document.body.classList.add('embedded');
-    // The platform already sign-in-gates its users, so skip the access-code
-    // screen (which is client-side deterrence only — the code is in this
-    // file's source). Standalone visits still get it.
-    const login = document.getElementById('login-screen');
-    if (login && login.style.display !== 'none') {
-      login.style.display = 'none';
-      document.getElementById('app').style.display = 'block';
-      loadAll();
-    }
+    skipLogin();
   }
+  if (location.pathname.startsWith('/t/')) skipLogin();
   const tab = parts[0];
   if (tab && document.getElementById('tab-' + tab)) switchTab(tab);
 }
