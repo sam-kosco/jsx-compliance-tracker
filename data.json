@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-21T07:47:39.471396+00:00",
+  "generated": "2026-09-21T14:47:32.887593+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -329,7 +329,7 @@
       "tail": "N915JX",
       "type": "EMB 145",
       "station": "TEB",
-      "lastService": "2026-09-18",
+      "lastService": "2026-09-20",
       "lastIC": "2026-09-13",
       "lastEC": "2026-06-10",
       "lastCE": "2026-07-18",
@@ -413,7 +413,7 @@
       "tail": "N928JX",
       "type": "EMB 145",
       "station": "HPN",
-      "lastService": "2026-09-18",
+      "lastService": "2026-09-20",
       "lastIC": "2026-09-15",
       "lastEC": "2026-07-10",
       "lastCE": "2026-07-15",
@@ -581,7 +581,7 @@
       "tail": "N955JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-09-18",
+      "lastService": "2026-09-20",
       "lastIC": "2026-08-30",
       "lastEC": "2026-07-03",
       "lastCE": "2026-09-18",
@@ -677,13 +677,13 @@
       "tail": "N963JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-09-08",
-      "lastIC": "2026-08-21",
+      "lastService": "2026-09-20",
+      "lastIC": "2026-09-20",
       "lastEC": "2026-06-18",
-      "lastCE": "2026-06-17",
-      "IC": -1,
+      "lastCE": "2026-09-20",
+      "IC": 29,
       "EC": -5,
-      "CE": -6
+      "CE": 89
     }
   ],
   "debriefs": [
@@ -5109,6 +5109,62 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6657834975611495617",
+      "link": null
+    },
+    {
+      "tail": "N963JX",
+      "type": "EMB 145",
+      "location": "HPN",
+      "date": "2026-09-20",
+      "tech": "Karla Gattorno Machado",
+      "ron": 0,
+      "IC": 1,
+      "EC": 0,
+      "CE": 1,
+      "biohazard": 0,
+      "subId": "_6658076489429957529",
+      "link": null
+    },
+    {
+      "tail": "N955JX",
+      "type": "EMB 145",
+      "location": "HPN",
+      "date": "2026-09-20",
+      "tech": "Karla Gattorno Machado",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6658077149428141748",
+      "link": null
+    },
+    {
+      "tail": "N928JX",
+      "type": "EMB 145",
+      "location": "TEB",
+      "date": "2026-09-20",
+      "tech": "Karla Gattorno Machado",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6658080899422737495",
+      "link": null
+    },
+    {
+      "tail": "N915JX",
+      "type": "EMB 145",
+      "location": "TEB",
+      "date": "2026-09-20",
+      "tech": "Karla Gattorno Machado",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6658082269429710248",
       "link": null
     }
   ],
