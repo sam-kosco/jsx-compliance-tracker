@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-22T04:48:02.806927+00:00",
+  "generated": "2026-09-22T07:47:41.812660+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -497,12 +497,12 @@
       "tail": "N940JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-07-02",
-      "lastIC": "2026-07-02",
-      "lastEC": "2026-07-02",
+      "lastService": "2026-09-21",
+      "lastIC": "2026-09-21",
+      "lastEC": "2026-09-21",
       "lastCE": "2026-06-26",
-      "IC": -52,
-      "EC": 8,
+      "IC": 29,
+      "EC": 89,
       "CE": 2
     },
     {
@@ -5221,6 +5221,20 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6658611669428598425",
+      "link": null
+    },
+    {
+      "tail": "N940JX",
+      "type": "EMB 145",
+      "location": "DAL",
+      "date": "2026-09-21",
+      "tech": "Robert Murillo",
+      "ron": 0,
+      "IC": 1,
+      "EC": 1,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6658722948312824822",
       "link": null
     }
   ],
