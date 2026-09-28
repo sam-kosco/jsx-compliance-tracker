@@ -131,6 +131,13 @@ def read_tail_roster(wb):
          shared (e.g. "BUR/SNA"). Surfaced as "station" on each plane.
     """
     ws = wb["Sheet2"]
+    # Optional "Added" header column — the day the tail joined the fleet,
+    # stamped by the Add/Remove Tails PA flow. A stamped tail starts as if
+    # every job were completed that day (floor applied in build_planes);
+    # no column / blank cell = no baseline (pre-feature rows).
+    hdr = [str(c or "").strip().lower()
+           for c in next(ws.iter_rows(values_only=True), ())]
+    added_idx = hdr.index("added") if "added" in hdr else None
     roster = []
     seen = set()
     disabled = 0
@@ -144,8 +151,10 @@ def read_tail_roster(wb):
             disabled += 1
             continue
         station = str(row[7] or "").strip().upper() if len(row) > 7 else ""
+        added = (parse_date_val(row[added_idx])
+                 if added_idx is not None and len(row) > added_idx else None)
         roster.append({"tail": tail, "type": str(row[1] or "").strip(),
-                       "station": station})
+                       "station": station, "added": added})
     print(f"  Tail roster (Sheet2): {len(roster)} active tails ({disabled} disabled)")
     return roster
 
@@ -236,6 +245,16 @@ def build_planes(roster, debriefs):
             for job in CYCLES:
                 if d[job] == 1 and (last_dates[job] is None or d_date > last_dates[job]):
                     last_dates[job] = d_date
+
+        # Added-date baseline: a tail stamped by the Add Tail flow starts as
+        # if every job were completed on its Added day.
+        base = entry.get("added")
+        if base:
+            if last_service is None or last_service < base:
+                last_service = base
+            for job in last_dates:
+                if last_dates[job] is None or last_dates[job] < base:
+                    last_dates[job] = base
 
         windows = {}
         for job, cycle in CYCLES.items():
