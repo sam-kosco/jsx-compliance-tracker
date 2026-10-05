@@ -138,14 +138,21 @@ All emails are sent from `foxtrot.automation@foxtrotaviation.com` via Microsoft 
 
 Distro membership for `jsx.requests@foxtrotaviation.com` is managed in Microsoft 365 Admin.
 
-> **Planned — recurring compliance emails (~Oct 10, 2026).** A recurring
-> compliance-status digest (mirroring the PSA compliance tracker) is intentionally
-> deferred until **all JSX compliance windows have fully elapsed** so the numbers
-> reflect real work: IC = 30d, EC/CE = 90d cycles against a ~March 2026 go-live, so
-> the 90-day windows clear around early October. A one-time reminder is scheduled
-> for 2026-10-10 to build it — reuse the existing Graph email plumbing in
-> `generate_data.py`; open questions at that point are the recipient list and send
-> cadence. Not yet built.
+> **Daily compliance report — LIVE (built 2026-10-05,** once the 90-day
+> EC/CE windows had elapsed per the original deferral note**).**
+> `jsx_daily_report.py` + `jsx_daily_report.yml` mirror the PSA daily
+> report: a styled per-tail workbook ("JSX-FoxTrot Compliance
+> MM-DD-YYYY.xlsx", green/yellow/red per service window, Type + Station
+> columns, IC/EC shown as ID/ED) emailed from foxtrot.automation@.
+> **Recipients are INTERNAL ONLY by design** (Sam, 2026-10-05): Sam,
+> Daniel DiGiambattista, Chris Stump, Anthony Pentz — `EMAIL_LIST` at the
+> top of the script; JSX client staff use the dashboard instead. Fired by
+> the platform dispatcher at **9:09 AM ET daily** (Monitoring/
+> schedules.json; no native cron). The workflow deliberately does NOT
+> re-run `generate_data.py` — that script also sends request-fulfillment
+> emails, and re-running it without committing requests.json would make
+> the hourly refresh double-send them; the report reads the committed
+> `data.json` (≤1 h old) and the email carries its timestamp.
 
 ---
 
@@ -187,6 +194,11 @@ const GH_PAT = 'ghp_xxxxxxxxxxxxxxxxxxxx';
 - **Trigger:** `workflow_dispatch` only — called by the dashboard via GitHub API
 - **Inputs:** `action` (`create` / `update` / `delete`), `payload` (JSON string)
 - **What it does:** Reads `requests.json`, applies the action, sends appropriate emails, commits updated `requests.json`
+
+### `jsx_daily_report.yml`
+- **Trigger:** `workflow_dispatch` only — fired by the platform dispatcher at 9:09 AM ET daily (Monitoring/schedules.json)
+- **Inputs:** `recipients` (comma-separated override — testing), `dry_run` (`1` = build, send nothing)
+- **Script:** `jsx_daily_report.py` — reads the committed `data.json` (never re-runs `generate_data.py`; see the Emails section note), builds the styled workbook, emails it to `EMAIL_LIST`. Nothing is committed.
 
 ---
 
@@ -251,6 +263,8 @@ Check that `TENANT_ID`, `CLIENT_ID`, and `CLIENT_SECRET` secrets are all set cor
 | Add tail to fleet | As needed | Add to Sheet2 (tail roster) in JSX Debriefs on SharePoint with Status = Active |
 | Hide tail from tracker | As needed | Set Status = Disabled on Sheet2 in JSX Debriefs |
 | Change dashboard password | As needed | Update `const PASSWORD = 'JSX2026'` in `index.html` |
+| Change daily report recipients | As needed | Edit `EMAIL_LIST` at the top of `jsx_daily_report.py` |
+| Change daily report send time | As needed | Edit the `jsx_daily_report.yml` cron in `Monitoring/schedules.json` (ET) — no deploy |
 | Pause hourly refresh | As needed | Comment out `cron:` line in `data_refresh.yml` |
 | Excel moved on SharePoint | If relocated | Update `FILE_PATH` in `generate_data.py` |
 
