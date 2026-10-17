@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-17T03:47:22.905712+00:00",
+  "generated": "2026-10-17T06:47:51.452584+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -233,12 +233,12 @@
       "tail": "N264JX",
       "type": "EMB 135",
       "station": "SNA",
-      "lastService": "2026-09-30",
+      "lastService": "2026-10-16",
       "lastIC": "2026-09-30",
-      "lastEC": "2026-05-14",
+      "lastEC": "2026-10-16",
       "lastCE": "2026-08-25",
       "IC": 13,
-      "EC": -66,
+      "EC": 89,
       "CE": 37
     },
     {
@@ -7377,6 +7377,20 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6680174309429316495",
+      "link": null
+    },
+    {
+      "tail": "N264JX",
+      "type": "EMB 135",
+      "location": "SCF",
+      "date": "2026-10-16",
+      "tech": "Briza Garibay",
+      "ron": 0,
+      "IC": 0,
+      "EC": 1,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6680279579319889918",
       "link": null
     }
   ],
