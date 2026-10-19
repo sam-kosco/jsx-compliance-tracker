@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-19T13:47:23.722805+00:00",
+  "generated": "2026-10-19T18:47:16.371806+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -7545,20 +7545,6 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6682086995619103813",
-      "link": null
-    },
-    {
-      "tail": "N258JX",
-      "type": "EMB 135",
-      "location": "BUR",
-      "date": "2026-10-16",
-      "tech": "Vida Curi",
-      "ron": 0,
-      "IC": 0,
-      "EC": 1,
-      "CE": 0,
-      "biohazard": 0,
-      "subId": "_6682094955612813028",
       "link": null
     },
     {
