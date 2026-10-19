@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-19T09:47:42.021797+00:00",
+  "generated": "2026-10-19T11:47:54.069432+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -7573,6 +7573,20 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6682104565613762160",
+      "link": null
+    },
+    {
+      "tail": "N934JX",
+      "type": "EMB 145",
+      "location": "HPN",
+      "date": "2026-10-18",
+      "tech": "Karla Gattorno Machado",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6682194042457117596",
       "link": null
     }
   ],
