@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-23T08:48:05.747721+00:00",
+  "generated": "2026-10-23T14:47:41.397268+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -8080,7 +8080,7 @@
     {
       "tail": "N260JX",
       "type": "EMB 135",
-      "location": "BUR",
+      "location": "SNA",
       "date": "2026-10-20",
       "tech": "Vida Curi",
       "ron": 0,
@@ -8094,7 +8094,7 @@
     {
       "tail": "N919JX",
       "type": "EMB 145",
-      "location": "BUR",
+      "location": "SNA",
       "date": "2026-10-13",
       "tech": "Vida Curi",
       "ron": 0,
