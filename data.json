@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-27T16:47:32.387484+00:00",
+  "generated": "2026-10-27T18:47:47.922757+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -17,11 +17,11 @@
       "tail": "N242JX",
       "type": "EMB 145",
       "station": "SCF/BUR",
-      "lastService": "2026-09-10",
-      "lastIC": "2026-09-10",
+      "lastService": "2026-10-26",
+      "lastIC": "2026-10-26",
       "lastEC": "2026-08-21",
       "lastCE": "2026-07-23",
-      "IC": -17,
+      "IC": 29,
       "EC": 23,
       "CE": -6
     },
@@ -8551,6 +8551,20 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6689263879419677956",
+      "link": null
+    },
+    {
+      "tail": "N242JX",
+      "type": "EMB 145",
+      "location": "DAL",
+      "date": "2026-10-26",
+      "tech": "Bob Wilcox",
+      "ron": 0,
+      "IC": 1,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6689344544013490266",
       "link": null
     }
   ],
