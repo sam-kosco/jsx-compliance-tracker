@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-28T08:47:44.576354+00:00",
+  "generated": "2026-10-28T11:47:16.972273+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -509,12 +509,12 @@
       "tail": "N947JX",
       "type": "EMB 145",
       "station": "BUR",
-      "lastService": "2026-10-21",
+      "lastService": "2026-10-27",
       "lastIC": "2026-10-21",
-      "lastEC": "2026-07-15",
+      "lastEC": "2026-10-27",
       "lastCE": "2026-05-30",
       "IC": 23,
-      "EC": -15,
+      "EC": 89,
       "CE": -61
     },
     {
@@ -8803,6 +8803,20 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6689852305618895340",
+      "link": null
+    },
+    {
+      "tail": "N947JX",
+      "type": "EMB 145",
+      "location": "BUR",
+      "date": "2026-10-27",
+      "tech": "Vida Curi",
+      "ron": 0,
+      "IC": 0,
+      "EC": 1,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6689941155612787113",
       "link": null
     }
   ],
