@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-30T07:47:36.519858+00:00",
+  "generated": "2026-10-30T20:48:10.873293+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -269,12 +269,12 @@
       "tail": "N400JX",
       "type": "ATR",
       "station": "BUR/SNA",
-      "lastService": "2026-10-21",
+      "lastService": "2026-10-30",
       "lastIC": "2026-10-21",
-      "lastEC": "2026-06-11",
+      "lastEC": "2026-10-30",
       "lastCE": "2026-07-03",
       "IC": 21,
-      "EC": -51,
+      "EC": 90,
       "CE": -29
     },
     {
@@ -8985,6 +8985,20 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6691543213452000204",
+      "link": null
+    },
+    {
+      "tail": "N400JX",
+      "type": "ATR",
+      "location": "LAS",
+      "date": "2026-10-30",
+      "tech": "Kimberly Romero",
+      "ron": 0,
+      "IC": 0,
+      "EC": 1,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6692005377301375098",
       "link": null
     }
   ],
