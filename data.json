@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-02T18:47:45.179834+00:00",
+  "generated": "2026-11-02T19:47:25.941740+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -84,30 +84,6 @@
       "IC": 12,
       "EC": 72,
       "CE": -22
-    },
-    {
-      "tail": "N251JX",
-      "type": "EMB 135",
-      "station": "SCF/LAS",
-      "lastService": "2026-10-06",
-      "lastIC": "2026-08-26",
-      "lastEC": "2026-06-09",
-      "lastCE": "2026-06-20",
-      "IC": -38,
-      "EC": -56,
-      "CE": -45
-    },
-    {
-      "tail": "N252JX",
-      "type": "EMB 135",
-      "station": "BUR/SNA",
-      "lastService": "2026-07-02",
-      "lastIC": "2026-06-29",
-      "lastEC": "2026-05-08",
-      "lastCE": "2026-07-02",
-      "IC": -96,
-      "EC": -88,
-      "CE": -33
     },
     {
       "tail": "N253JX",
@@ -278,18 +254,6 @@
       "CE": -32
     },
     {
-      "tail": "N401JX",
-      "type": "ATR",
-      "station": "BUR/SNA",
-      "lastService": "2026-10-28",
-      "lastIC": "2026-10-28",
-      "lastEC": "2026-06-23",
-      "lastCE": "2026-05-25",
-      "IC": 25,
-      "EC": -42,
-      "CE": -71
-    },
-    {
       "tail": "N912JX",
       "type": "EMB 145",
       "station": "DAL",
@@ -348,18 +312,6 @@
       "IC": -6,
       "EC": 21,
       "CE": -27
-    },
-    {
-      "tail": "N917JX",
-      "type": "EMB 145",
-      "station": "DAL",
-      "lastService": "2026-10-15",
-      "lastIC": "2026-10-15",
-      "lastEC": "2026-10-15",
-      "lastCE": "2026-05-22",
-      "IC": 12,
-      "EC": 72,
-      "CE": -74
     },
     {
       "tail": "N918JX",
