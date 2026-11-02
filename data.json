@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-02T15:48:04.651786+00:00",
+  "generated": "2026-11-02T16:47:40.895217+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -137,12 +137,12 @@
       "tail": "N256JX",
       "type": "EMB 135",
       "station": "SNA/BUR",
-      "lastService": "2026-10-01",
+      "lastService": "2026-10-28",
       "lastIC": "2026-10-01",
-      "lastEC": "2026-04-21",
+      "lastEC": "2026-10-28",
       "lastCE": "2026-04-06",
       "IC": -2,
-      "EC": -105,
+      "EC": 85,
       "CE": -120
     },
     {
@@ -9279,6 +9279,20 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6694422345614052226",
+      "link": null
+    },
+    {
+      "tail": "N256JX",
+      "type": "EMB 135",
+      "location": "LAS",
+      "date": "2026-10-28",
+      "tech": "Kimberly Romero",
+      "ron": 0,
+      "IC": 0,
+      "EC": 1,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6694459505023570619",
       "link": null
     }
   ],
