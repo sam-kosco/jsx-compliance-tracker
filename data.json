@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-02T20:47:53.871893+00:00",
+  "generated": "2026-11-02T21:47:36.253322+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -9231,6 +9231,20 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6694459505023570619",
+      "link": null
+    },
+    {
+      "tail": "N955JX",
+      "type": "EMB 145",
+      "location": "FXE",
+      "date": "2026-10-25",
+      "tech": "Angel Guiner Francois",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6694651348322124317",
       "link": null
     }
   ],
