@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-02T16:47:40.895217+00:00",
+  "generated": "2026-11-02T17:48:06.784687+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -557,7 +557,7 @@
       "tail": "N952JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-11-01",
+      "lastService": "2026-10-30",
       "lastIC": "2026-10-14",
       "lastEC": "2026-09-29",
       "lastCE": "2026-10-14",
@@ -9145,7 +9145,7 @@
       "tail": "N952JX",
       "type": "EMB 145",
       "location": "HPN",
-      "date": "2026-11-01",
+      "date": "2026-10-30",
       "tech": "Karla Gattorno Machado",
       "ron": 1,
       "IC": 0,
