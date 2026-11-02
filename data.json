@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-02T00:47:45.353185+00:00",
+  "generated": "2026-11-02T07:48:12.197690+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -293,7 +293,7 @@
       "tail": "N912JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-10-30",
+      "lastService": "2026-11-01",
       "lastIC": "2026-10-06",
       "lastEC": "2026-10-06",
       "lastCE": "2026-09-12",
@@ -461,7 +461,7 @@
       "tail": "N934JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-10-31",
+      "lastService": "2026-11-01",
       "lastIC": "2026-10-16",
       "lastEC": "2026-10-25",
       "lastCE": "2026-09-07",
@@ -557,7 +557,7 @@
       "tail": "N952JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-10-30",
+      "lastService": "2026-11-01",
       "lastIC": "2026-10-14",
       "lastEC": "2026-09-29",
       "lastCE": "2026-10-14",
@@ -9139,6 +9139,48 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6693873832457597737",
+      "link": null
+    },
+    {
+      "tail": "N952JX",
+      "type": "EMB 145",
+      "location": "HPN",
+      "date": "2026-11-01",
+      "tech": "Karla Gattorno Machado",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6694133152454919659",
+      "link": null
+    },
+    {
+      "tail": "N912JX",
+      "type": "EMB 145",
+      "location": "HPN",
+      "date": "2026-11-01",
+      "tech": "Karla Gattorno Machado",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6694134082453820101",
+      "link": null
+    },
+    {
+      "tail": "N934JX",
+      "type": "EMB 145",
+      "location": "HPN",
+      "date": "2026-11-01",
+      "tech": "Karla Gattorno Machado",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6694134922457336472",
       "link": null
     }
   ],
