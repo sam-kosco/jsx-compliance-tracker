@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-02T08:47:41.004552+00:00",
+  "generated": "2026-11-02T15:48:04.651786+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -125,13 +125,13 @@
       "tail": "N254JX",
       "type": "EMB 135",
       "station": "BUR/SNA",
-      "lastService": "2026-10-23",
+      "lastService": "2026-10-29",
       "lastIC": "2026-10-23",
       "lastEC": "2026-05-27",
-      "lastCE": "2026-05-27",
+      "lastCE": "2026-10-29",
       "IC": 20,
       "EC": -69,
-      "CE": -69
+      "CE": 86
     },
     {
       "tail": "N256JX",
@@ -221,11 +221,11 @@
       "tail": "N263JX",
       "type": "EMB 135",
       "station": "BUR/SNA",
-      "lastService": "2026-09-05",
-      "lastIC": "2026-09-05",
+      "lastService": "2026-10-29",
+      "lastIC": "2026-10-29",
       "lastEC": "2026-06-27",
       "lastCE": "2026-09-05",
-      "IC": -28,
+      "IC": 26,
       "EC": -38,
       "CE": 32
     },
@@ -379,10 +379,10 @@
       "station": "DAL",
       "lastService": "2026-11-01",
       "lastIC": "2026-10-13",
-      "lastEC": "2026-07-14",
+      "lastEC": "2026-10-30",
       "lastCE": "2026-07-14",
       "IC": 10,
-      "EC": -21,
+      "EC": 87,
       "CE": -21
     },
     {
@@ -9223,6 +9223,62 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6694152593453615624",
+      "link": null
+    },
+    {
+      "tail": "N263JX",
+      "type": "EMB 135",
+      "location": "BUR",
+      "date": "2026-10-29",
+      "tech": "Vida Curi",
+      "ron": 0,
+      "IC": 1,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6694408415619610694",
+      "link": null
+    },
+    {
+      "tail": "N263JX",
+      "type": "EMB 135",
+      "location": "BUR",
+      "date": "2026-10-29",
+      "tech": "Vida Curi",
+      "ron": 0,
+      "IC": 1,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6694408415619610694",
+      "link": null
+    },
+    {
+      "tail": "N254JX",
+      "type": "EMB 135",
+      "location": "BUR",
+      "date": "2026-10-29",
+      "tech": "Vida Curi",
+      "ron": 0,
+      "IC": 0,
+      "EC": 0,
+      "CE": 1,
+      "biohazard": 0,
+      "subId": "_6694416825615277740",
+      "link": null
+    },
+    {
+      "tail": "N919JX",
+      "type": "EMB 145",
+      "location": "BUR",
+      "date": "2026-10-30",
+      "tech": "Vida Curi",
+      "ron": 0,
+      "IC": 0,
+      "EC": 1,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6694422345614052226",
       "link": null
     }
   ],
