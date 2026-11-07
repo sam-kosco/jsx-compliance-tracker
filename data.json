@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-07T07:47:37.426493+00:00",
+  "generated": "2026-11-07T15:48:07.318097+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -257,7 +257,7 @@
       "tail": "N912JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-11-05",
+      "lastService": "2026-11-06",
       "lastIC": "2026-10-06",
       "lastEC": "2026-10-06",
       "lastCE": "2026-09-12",
@@ -329,11 +329,11 @@
       "tail": "N919JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-11-05",
-      "lastIC": "2026-10-13",
+      "lastService": "2026-11-06",
+      "lastIC": "2026-11-06",
       "lastEC": "2026-07-14",
       "lastCE": "2026-10-30",
-      "IC": 5,
+      "IC": 29,
       "EC": -26,
       "CE": 82
     },
@@ -629,7 +629,7 @@
       "tail": "N963JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-11-05",
+      "lastService": "2026-11-06",
       "lastIC": "2026-10-15",
       "lastEC": "2026-10-20",
       "lastCE": "2026-09-20",
@@ -9903,6 +9903,48 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6698447970115606272",
+      "link": null
+    },
+    {
+      "tail": "N919JX",
+      "type": "EMB 145",
+      "location": "HPN",
+      "date": "2026-11-06",
+      "tech": "Karla Gattorno Machado",
+      "ron": 0,
+      "IC": 1,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6698747413459336064",
+      "link": null
+    },
+    {
+      "tail": "N912JX",
+      "type": "EMB 145",
+      "location": "HPN",
+      "date": "2026-11-06",
+      "tech": "Karla Gattorno Machado",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6698747973451870037",
+      "link": null
+    },
+    {
+      "tail": "N963JX",
+      "type": "EMB 145",
+      "location": "HPN",
+      "date": "2026-11-06",
+      "tech": "Karla Gattorno Machado",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6698748783453100010",
       "link": null
     }
   ],
