@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-10T16:47:34.855412+00:00",
+  "generated": "2026-11-10T20:48:05.306988+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -425,7 +425,7 @@
       "tail": "N935JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-11-07",
+      "lastService": "2026-11-09",
       "lastIC": "2026-11-04",
       "lastEC": "2026-11-05",
       "lastCE": "2026-09-17",
@@ -509,7 +509,7 @@
       "tail": "N952JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-11-06",
+      "lastService": "2026-11-09",
       "lastIC": "2026-10-14",
       "lastEC": "2026-09-29",
       "lastCE": "2026-10-14",
@@ -10379,6 +10379,62 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6701379650914429773",
+      "link": null
+    },
+    {
+      "tail": "N935JX",
+      "type": "EMB 145",
+      "location": "FXE",
+      "date": "2026-11-08",
+      "tech": "Angel Guiner Francois",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6701520276502118027",
+      "link": null
+    },
+    {
+      "tail": "N952JX",
+      "type": "EMB 145",
+      "location": "FXE",
+      "date": "2026-11-08",
+      "tech": "Angel Guiner Francois",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6701520766505382080",
+      "link": null
+    },
+    {
+      "tail": "N935JX",
+      "type": "EMB 145",
+      "location": "FXE",
+      "date": "2026-11-09",
+      "tech": "Angel Guiner Francois",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6701526246027659391",
+      "link": null
+    },
+    {
+      "tail": "N952JX",
+      "type": "EMB 145",
+      "location": "FXE",
+      "date": "2026-11-09",
+      "tech": "Angel Guiner Francois",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6701526496027691874",
       "link": null
     }
   ],
