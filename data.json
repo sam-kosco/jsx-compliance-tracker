@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-10T06:47:30.390955+00:00",
+  "generated": "2026-11-10T07:48:00.605179+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -353,12 +353,12 @@
       "tail": "N926JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-10-14",
-      "lastIC": "2026-10-12",
-      "lastEC": "2026-06-24",
+      "lastService": "2026-11-09",
+      "lastIC": "2026-11-09",
+      "lastEC": "2026-11-09",
       "lastCE": "2026-10-12",
-      "IC": 1,
-      "EC": -49,
+      "IC": 29,
+      "EC": 89,
       "CE": 61
     },
     {
@@ -581,12 +581,12 @@
       "tail": "N959JX",
       "type": "EMB 145",
       "station": "HPN",
-      "lastService": "2026-11-06",
+      "lastService": "2026-11-09",
       "lastIC": "2026-11-06",
-      "lastEC": "2026-07-20",
+      "lastEC": "2026-11-09",
       "lastCE": "2026-09-25",
       "IC": 26,
-      "EC": -23,
+      "EC": 89,
       "CE": 44
     },
     {
@@ -10337,6 +10337,34 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6701023697339465101",
+      "link": null
+    },
+    {
+      "tail": "N959JX",
+      "type": "EMB 145",
+      "location": "SCF",
+      "date": "2026-11-09",
+      "tech": "Briza Garibay",
+      "ron": 0,
+      "IC": 0,
+      "EC": 1,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6701043291919468669",
+      "link": null
+    },
+    {
+      "tail": "N926JX",
+      "type": "EMB 145",
+      "location": "SCF",
+      "date": "2026-11-09",
+      "tech": "Briza Garibay",
+      "ron": 0,
+      "IC": 1,
+      "EC": 1,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6701043641912035236",
       "link": null
     }
   ],
