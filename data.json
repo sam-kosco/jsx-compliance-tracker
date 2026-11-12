@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-12T05:48:03.781388+00:00",
+  "generated": "2026-11-12T15:47:50.921113+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -545,7 +545,7 @@
       "tail": "N956JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-11-11",
+      "lastService": "2026-11-10",
       "lastIC": "2026-11-10",
       "lastEC": "2026-07-03",
       "lastCE": "2026-10-25",
@@ -569,7 +569,7 @@
       "tail": "N958JX",
       "type": "EMB 145",
       "station": "BUR",
-      "lastService": "2026-11-10",
+      "lastService": "2026-11-11",
       "lastIC": "2026-10-15",
       "lastEC": "2026-10-24",
       "lastCE": "2026-09-29",
@@ -10578,7 +10578,7 @@
       "link": null
     },
     {
-      "tail": "N956JX",
+      "tail": "N958JX",
       "type": "EMB 145",
       "location": "TEB",
       "date": "2026-11-11",
