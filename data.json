@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-16T08:47:39.036897+00:00",
+  "generated": "2026-11-16T13:47:33.857492+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -161,13 +161,13 @@
       "tail": "N260JX",
       "type": "EMB 135",
       "station": "SCF",
-      "lastService": "2026-11-10",
+      "lastService": "2026-11-12",
       "lastIC": "2026-11-10",
       "lastEC": "2026-10-27",
-      "lastCE": "2026-07-15",
+      "lastCE": "2026-11-12",
       "IC": 24,
       "EC": 70,
-      "CE": -34
+      "CE": 86
     },
     {
       "tail": "N261JX",
@@ -10967,6 +10967,20 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6706268562811792623",
+      "link": null
+    },
+    {
+      "tail": "N260JX",
+      "type": "EMB 135",
+      "location": "BUR",
+      "date": "2026-11-12",
+      "tech": "Vida Curi",
+      "ron": 0,
+      "IC": 0,
+      "EC": 0,
+      "CE": 1,
+      "biohazard": 0,
+      "subId": "_6706439495618406708",
       "link": null
     }
   ],
