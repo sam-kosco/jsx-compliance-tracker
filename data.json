@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-16T13:47:33.857492+00:00",
+  "generated": "2026-11-16T18:47:50.330291+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -365,12 +365,12 @@
       "tail": "N928JX",
       "type": "EMB 145",
       "station": "HPN",
-      "lastService": "2026-11-06",
+      "lastService": "2026-11-11",
       "lastIC": "2026-11-06",
-      "lastEC": "2026-07-10",
+      "lastEC": "2026-11-11",
       "lastCE": "2026-07-15",
       "IC": 20,
-      "EC": -39,
+      "EC": 85,
       "CE": -34
     },
     {
@@ -545,12 +545,12 @@
       "tail": "N956JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-11-10",
+      "lastService": "2026-11-11",
       "lastIC": "2026-11-10",
-      "lastEC": "2026-07-03",
+      "lastEC": "2026-11-11",
       "lastCE": "2026-10-25",
       "IC": 24,
-      "EC": -46,
+      "EC": 85,
       "CE": 68
     },
     {
@@ -10981,6 +10981,34 @@
       "CE": 1,
       "biohazard": 0,
       "subId": "_6706439495618406708",
+      "link": null
+    },
+    {
+      "tail": "N956JX",
+      "type": "EMB 145",
+      "location": "DAL",
+      "date": "2026-11-11",
+      "tech": "Heidi Cromer",
+      "ron": 0,
+      "IC": 0,
+      "EC": 1,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6706611506852075385",
+      "link": null
+    },
+    {
+      "tail": "N928JX",
+      "type": "EMB 145",
+      "location": "LAS",
+      "date": "2026-11-11",
+      "tech": "Heidi Cromer",
+      "ron": 0,
+      "IC": 0,
+      "EC": 1,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6706612326859656366",
       "link": null
     }
   ],
