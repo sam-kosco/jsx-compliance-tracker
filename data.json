@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-17T11:47:53.991833+00:00",
+  "generated": "2026-11-17T12:47:34.033635+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -437,7 +437,7 @@
       "tail": "N937JX",
       "type": "EMB 145",
       "station": "FXE",
-      "lastService": "2026-11-15",
+      "lastService": "2026-11-17",
       "lastIC": "2026-11-13",
       "lastEC": "2026-11-13",
       "lastCE": "2026-09-24",
@@ -449,7 +449,7 @@
       "tail": "N940JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-11-15",
+      "lastService": "2026-11-17",
       "lastIC": "2026-11-05",
       "lastEC": "2026-09-21",
       "lastCE": "2026-10-19",
@@ -11121,6 +11121,34 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6707245928758081747",
+      "link": null
+    },
+    {
+      "tail": "N937JX",
+      "type": "EMB 145",
+      "location": "FXE",
+      "date": "2026-11-17",
+      "tech": "David Kistner",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6707265813027788260",
+      "link": null
+    },
+    {
+      "tail": "N940JX",
+      "type": "EMB 145",
+      "location": "FXE",
+      "date": "2026-11-17",
+      "tech": "David Kistner",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6707266193021219791",
       "link": null
     }
   ],
