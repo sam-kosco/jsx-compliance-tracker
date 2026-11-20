@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-20T16:47:58.307619+00:00",
+  "generated": "2026-11-20T19:47:42.410840+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -245,11 +245,11 @@
       "tail": "N400JX",
       "type": "ATR",
       "station": "BUR/SNA",
-      "lastService": "2026-11-03",
-      "lastIC": "2026-10-21",
+      "lastService": "2026-11-19",
+      "lastIC": "2026-11-19",
       "lastEC": "2026-10-30",
       "lastCE": "2026-11-03",
-      "IC": 0,
+      "IC": 29,
       "EC": 69,
       "CE": 73
     },
@@ -437,7 +437,7 @@
       "tail": "N937JX",
       "type": "EMB 145",
       "station": "FXE",
-      "lastService": "2026-11-17",
+      "lastService": "2026-11-19",
       "lastIC": "2026-11-13",
       "lastEC": "2026-11-13",
       "lastCE": "2026-09-24",
@@ -449,7 +449,7 @@
       "tail": "N940JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-11-17",
+      "lastService": "2026-11-19",
       "lastIC": "2026-11-05",
       "lastEC": "2026-09-21",
       "lastCE": "2026-10-19",
@@ -11551,6 +11551,48 @@
       "CE": 0,
       "biohazard": 0,
       "subId": "_6710014896411761178",
+      "link": null
+    },
+    {
+      "tail": "N937JX",
+      "type": "EMB 145",
+      "location": "FXE",
+      "date": "2026-11-19",
+      "tech": "Angel Guiner Francois",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6710123868326018504",
+      "link": null
+    },
+    {
+      "tail": "N940JX",
+      "type": "EMB 145",
+      "location": "FXE",
+      "date": "2026-11-19",
+      "tech": "Angel Guiner Francois",
+      "ron": 1,
+      "IC": 0,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6710125718327401796",
+      "link": null
+    },
+    {
+      "tail": "N400JX",
+      "type": "ATR",
+      "location": "LAS",
+      "date": "2026-11-19",
+      "tech": "Kimberly Romero",
+      "ron": 0,
+      "IC": 1,
+      "EC": 0,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6710127170612604768",
       "link": null
     }
   ],
