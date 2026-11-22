@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-22T07:48:11.998722+00:00",
+  "generated": "2026-11-22T08:47:38.575713+00:00",
   "planes": [
     {
       "tail": "N241JX",
@@ -557,12 +557,12 @@
       "tail": "N957JX",
       "type": "EMB 145",
       "station": "DAL",
-      "lastService": "2026-11-16",
+      "lastService": "2026-11-21",
       "lastIC": "2026-11-16",
-      "lastEC": "2026-07-15",
+      "lastEC": "2026-11-21",
       "lastCE": "2026-10-14",
       "IC": 24,
-      "EC": -40,
+      "EC": 89,
       "CE": 51
     },
     {
@@ -11747,6 +11747,20 @@
       "CE": 1,
       "biohazard": 0,
       "subId": "_6711428428714393815",
+      "link": null
+    },
+    {
+      "tail": "N957JX",
+      "type": "EMB 145",
+      "location": "LAS",
+      "date": "2026-11-21",
+      "tech": "Kimberly Romero",
+      "ron": 0,
+      "IC": 0,
+      "EC": 1,
+      "CE": 0,
+      "biohazard": 0,
+      "subId": "_6711428888718013286",
       "link": null
     }
   ],
